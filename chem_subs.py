@@ -1,0 +1,1 @@
+/home/irikura/bin/chem_subs.py

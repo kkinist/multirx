@@ -1,0 +1,1 @@
+/home/irikura/bin/gaussian_subs.py

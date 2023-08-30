@@ -1,0 +1,16 @@
+#!/bin/bash
+# Run all MOLPRO jobs in pwd
+export TMPDIR=/wrk/irikura/molproscr
+mkdir -p $TMPDIR
+#
+cd ./
+#
+for fin in *.in; do
+    fout=${fin/\.in/.pro}
+    if [ ! -f $fout ]; then
+        echo "**Running $fin"
+        molpro -n 3 --nobackup -o $fout $fin
+    else
+        echo "$fout already exists"
+    fi
+done

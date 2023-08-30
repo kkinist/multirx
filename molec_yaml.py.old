@@ -1,0 +1,438 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+'''
+Create YAML data file for molecule (in ./molec_data/)
+Read these files in ./refdata/:
+  ATcT (tab-separated)
+  WebBook (tab-separated)
+  Spin-orbit corrections (Excel)
+  Naming codes (tab-separated)
+  Molecule-specific reference data (yaml)
+Read this file in ./geomfreq/:
+  Geometry, vibrations (Gaussian output)
+Read this file in ./energysp:/
+  CCSD(T)-F12 energy (Molpro output)
+  
+To do:
+  - Read these files in ./rotors/:
+      Torsional transition-states (Gaussian output)
+  - Consider multiple conformations
+'''
+
+import yaml, re, sys, os
+import pandas as pd
+import numpy as np
+import glob
+
+sys.path.insert(0, '/home/irikura/bin')
+import molpro_subs as mpr
+import chem_subs as chem
+import gaussian_subs as gau
+
+
+def gau_geom_freq_energy(FGAU):
+    # return a dict with coordinates, frequencies, optimized SCF energy, and metadata
+    # also return the line number of the last (freq calc) "Optimized" announcement
+    cmd = str(gau.read_command(FGAU).at[0, 'Command']).split('#', 1)[1].strip()
+    comment = str(gau.read_comments(FGAU).at[0, 'Comment'])
+    retval = {'command': cmd, 'comment': comment}
+    rev = gau.read_version(FGAU)
+    vers = 'Gaussian{:s} {:s}'.format(rev[0], rev[2])
+    retval['software'] = vers    
+    # the calculation is supposed to be geom + freq (analytical)
+    #lineno = chem.find_line_number(FGAU, 'Stationary point found')[1] # fails if freq part not "converged"
+    lineno = chem.find_line_number(FGAU, 'Thermochemistry')[0]
+    dfscf = gau.read_scfe(FGAU)
+    dfcrd = gau.read_std_orient(FGAU)
+    dfscf = dfscf[dfscf.line < lineno].sort_values('line')
+    scfE = float(dfscf['Energy'].iloc[-1])  # last energy before the "Optimized" announcement
+    retval['E_scf'] = scfE
+    # choose the last geometry listed before the "Optimized" announcement in the freq calc
+    dfcrd = dfcrd[dfcrd.line < lineno].sort_values('line')
+    crd = dfcrd['Coordinates'].iloc[-1]
+    unit = str(dfcrd['Unit'].iloc[-1])
+    coords = []
+    for i, row in crd.iterrows():
+        c = [chem.elz(row.Z, 'symbol')] + list(row[['x', 'y', 'z']])
+        coords.append(c)
+    retval['coordinates'] = coords
+    retval['basis_functions'] = gau.read_nbfn(FGAU)[0][0]
+    # remove trailing "s" from name of unit
+    if unit[-1] == 's':
+        unit = unit[:-1]
+    retval['unit'] = unit
+    if len(coords) > 1:
+        # harmonic vibrational frequencies
+        retval['Frequencies'] = gau.read_freqs(FGAU)[-1][2]['Freq'].values.tolist()
+        # number of imaginary frequencies in the geometry block
+        retval['nimag'] = int(np.sum(np.array(retval['Frequencies']) < 0))
+    return retval, lineno
+
+if len(sys.argv) < 2:
+    sys.exit('\tUsage: molec_yaml.py <molecule label>')
+molec = sys.argv[1]
+
+# Import reference data
+atct_version = '1p122r'
+atct = pd.read_csv(f'./refdata/ATcT_{atct_version}_gases.csv', sep='\t')
+webbook = pd.read_csv(r'./refdata/gas-enthalpies_webbook.csv', sep='\t')
+soc = pd.read_excel(r'./refdata/spin_orbit_correction.xlsx', skiprows=1)
+dfnames = pd.read_csv(r'./refdata/label_meanings.csv', sep='\t')
+reflocal = f'./refdata/ref_{molec}.yml'
+felec = f'./refdata/elec_{molec}.csv'  # tab-delimited
+fspecial = f'./refdata/special_{molec}.yml'  # to override everything else
+
+try:
+    local_name = dfnames[dfnames.Label == molec].values[0][1]
+except KeyError:
+    print('*** Error: "{:s}" is missing from file refdata/label_meanings.csv'.format(molec))
+    sys.exit(1)
+# check names list for duplicates
+dup1 = dfnames.duplicated(subset='Label', keep=False)  # now giving KeyError if 'Label' is the index
+dup2 = dfnames.duplicated(subset='Name', keep=False)
+if dup1.any() or dup2.any():
+    print('** Duplication in label_meanings.csv **')
+    if dup1.any():
+        print('>>> dup1 =', dup1)
+        print(dfnames[dup1])
+    if dup2.any():
+        print(dfnames[dup2])
+# make 'Label' the index
+dfnames.set_index('Label', inplace=True)
+# put formulas into a standard format
+soc['Formula'] = soc['Species'].apply(lambda x: chem.formula(chem.formula_to_atomlist(x)))
+webbook['Hill'] = webbook['Formula'].apply(lambda x: chem.formula(chem.formula_to_atomlist(x), Hill=True))
+
+doc = {}
+# get charge and spin multiplicity from Gaussian geom/freq file
+fgau = r'./geomfreq/{:s}.out'.format(molec)
+fpro = r'./energysp/{:s}.pro'.format(molec)
+FGAU = open(fgau, 'r')
+df = gau.read_charge_mult(FGAU)
+charge = df['Charge'].iloc[-1]
+mult = df['Mult'].iloc[-1]
+doc = {'Charge': int(charge)}
+doc['Spin_mult'] = int(mult)
+
+    
+geom, lineno = gau_geom_freq_energy(FGAU)
+doc['Geometry'] = geom
+natom = len(geom['coordinates'])
+if natom > 1:
+    doc['Frequencies'] = geom.pop('Frequencies')  # move freqs to top level
+    # rotational constants
+    dfrot = gau.read_rotational(FGAU)
+    dfrot = dfrot[dfrot.line < lineno].sort_values('line')
+    rotat = {s: float(x) for s, x in zip(['A','B','C'], dfrot['Rotational Constants'].iloc[-1])}
+    pg = gau.read_pointgroup(FGAU)['point group'].iloc[-1]  # last PG (freq calc) is probably tightest
+    if '*' in pg:
+        # linear molecule should have only one rotational constant
+        rotat = {'A': rotat['A']}
+    PG = str(pg)
+    rotat['point_group'] = PG
+    rotat['unit'] = str(dfrot['Unit'].iloc[-1])
+    # external symmetry number
+    rotat['symmetry_number'] = gau.read_symno(FGAU)
+    doc['Rotational'] = rotat
+
+
+# create formula from list of atoms
+atlist = [x[0] for x in geom['coordinates']]
+formula = chem.formula(atlist)
+print('formula:', formula)
+hill = chem.formula(atlist, Hill=True)  # Hill convention
+
+
+# collect identifiers
+identifier = {
+    'local_label': molec,  # the label used internally here
+    'local_name': local_name,
+    'formula': formula,
+    'Hill': hill,
+}
+# look for standard identifiers
+if natom > 2:
+    identifier['IUPAC'] = chem.CIRconvert(formula, 'iupac_name')
+    if 'failed' in identifier['IUPAC']:
+        identifier['IUPAC'] = chem.CIRconvert(identifier['local_name'], 'iupac_name')
+    s = chem.CIRconvert(formula, 'stdinchi')
+    if 'failed' in s:
+        s = chem.CIRconvert(identifier['local_name'], 'stdinchi')
+        if '=' in s:
+            identifier['InChI'] = s.split('=')[1]
+    cas = ', '.join(chem.CIRconvert(formula, 'cas').split('\n'))  # multiple values will be spliced into one string
+    if 'failed' in cas:
+        cas = ', '.join(chem.CIRconvert(identifier['local_name'], 'cas').split('\n'))
+        if 'failed' in cas:
+            cas = ''  # so it will evaluate to False
+    identifier['CASRN'] = cas
+    if len(identifier['IUPAC'].split('\n')) > 1:
+        # do not show multiple IUPAC names
+        del identifier['IUPAC']
+else:
+    # don't trust CIRconvert for atoms and diatomics
+    identifier['CASRN'] = ''
+doc['Identifiers'] = identifier
+# get reference thermochemical data
+df_atct = atct[(atct.Hill == formula) | (atct.Formula == formula) | (atct.Hill == hill)]
+df_wb = webbook[(webbook.Formula == formula)]
+nDB = 2  # two thermo databases: ATcT and WebBook
+def newcas(scas):
+    # given a DB identifier that might encode a CASRN, 
+    #   extract a (possibly abbreviated) CASRN
+    cas = scas.replace('C', '').replace('*0', '')
+    return cas
+def simplify_formula(formula):
+    # given an ATcT 'Formula', remove parentheses and convert to lower case
+    simpl = formula.replace('(', '').replace(')', '').lower()
+    return simpl
+for ndb in range(nDB):
+    # info (like ID number) in one DB might aid identification in the other
+    for source, prefix, df in zip(['WebBook', 'ATcT'], ['WB', 'ATcT'], [df_wb, df_atct]):
+        if source in identifier.keys():
+            # this DB already handled successfully in previous loop iteration
+            continue
+        # Don't print repeated info
+        if len(df) == 0:
+            if ndb == 0:
+                print(f'\tNotice: "{formula}" not found in {source} list')
+        elif len(df) == 1:
+            print(f'\tSuccessful {source} match using "{formula}"')
+        elif len(df) > 1:
+            # more than one formula match
+            if ndb == 0:
+                print(f'\tMultiple {source} matches for "{formula}"')
+            # does the 'Species' match the 'local_name' ?
+            df2 = df[df.Species.str.lower() == local_name]
+            if len(df2) == 1:
+                print(f'\tSuccessful {source} match using "{local_name}"')
+                df = df2
+            else:
+                # seek a match with CASRN
+                idcol = f'{prefix}_ID'
+                for casrn in re.split('[,\s]+', identifier['CASRN']):
+                    df2 = df[df[idcol].str.contains(casrn) | df[idcol].str.contains(casrn.replace('-', ''))]
+                    if len(df2) == 1:
+                        print(f'\tSuccessful {source} match using "{casrn}"')
+                        df = df2
+                        break
+            if len(df) > 1:
+                # ATcT 'Formula' is often structural (WB is not)
+                #   compare it with the molecule/file name
+                if source == 'ATcT':
+                    df2 = df[df['Formula'].map(simplify_formula) == molec]
+                    if len(df2) == 1:
+                        print(f'\tSuccessful {source} Formula match using "{molec}"')                        
+                        df = df2
+        if len(df) == 1:
+            identifier[source] = df[prefix+'_ID'].iloc[0]
+            identifier['name'] = df['Species'].iloc[0]
+            if not identifier['CASRN']:
+                # CASRN is missing; try to get abbreviated CASRN from thermo DB
+                identifier['CASRN'] = newcas(identifier[source])
+
+# collect reference enthalpy of formation
+refdata = {}
+for source, prefix, df in zip(['ATcT', 'WebBook'], ['ATcT', 'WB'], [df_atct, df_wb]):
+    if len(df) > 1:
+        # look for record of previous successful search
+        try:
+            df = df[df[f'{prefix}_ID'] == identifier[source]]
+        except KeyError:
+            # no such record
+            pass
+    if len(df) == 1:
+        data = {}
+        try:
+            data['EoF0'] = float(df['EoF0'].iloc[0])
+        except:
+            if source != 'WebBook':
+                print(f'No EoF0 found in {source}')
+        try:
+            data['source'] = str(df['Squib'].iloc[0])
+        except:
+            # ATcT source cannot be further specified
+            pass
+        try:
+            data['comment'] = str(df['Method'].iloc[0])
+        except:
+            # ATcT method cannot be further specified
+            pass
+        data['EoF298'] = float(df['EoF298'].iloc[0])
+        data['unc'] = float(df['Unc'].iloc[0])
+        data['unit'] = 'kJ/mol'  # for both WebBook and ATcT
+        if source == 'ATcT':
+            data['ATcT_version'] = atct_version.replace('p', '.', 1)
+        refdata[source] = data
+
+# look for additional reference data for molecule
+if os.path.isfile(reflocal):
+    print(f'\tReading local reference data from {reflocal}')
+    with open(reflocal, 'r') as YML:
+        lref = yaml.safe_load(YML)
+        refdata['Local'] = lref
+
+# look for additional data about electronic energy levels
+def fmult(label):
+    global PG
+    g = None
+    if '*' in PG:
+        # linear molecule
+        # label might have trailing omega following underscore
+        words = label.split('_')
+        if len(words) > 1:
+            omega = float(words[-1])
+            if omega == 0:
+                g = 1
+            else:
+                g = 2
+    if g is None:
+        # non-linear, or omega not specified
+        # I'm not handling degenerate irreps of symmetric tops!
+        # use (leading) spin multiplicity from state label (e.g., 2A1)
+        m = re.match(r'(\d+).+', label)
+        if m:
+            g = int(m.group(1))
+        else:
+            # label really should have a leading spin multiplicity!
+            g = None
+    return g
+    
+def nrot(point_group):
+    # return order of rotational axis in name of point group (Schönflies)
+    m = re.search('(\d+)', point_group)
+    if m:
+        n = int(m.group(1))
+    elif '*' in point_group:
+        n = np.inf
+    else:
+        n = None
+    return n
+    
+elec = {}
+if os.path.isfile(felec):
+    print(f'\tReading electronic energy levels from {felec}')
+    dfelec = pd.read_csv(felec, sep='\t')
+    if natom == 1:
+        # convert J to degeneracy
+        dfelec['degen'] = dfelec.J * 2 + 1
+    else:
+        # get degeneracy from leading numeral in 'label'
+        dfelec['degen'] = dfelec['label'].apply(fmult)
+    chem.displayDF(dfelec)
+    # convert DataFrame to dict
+    dfdict = dfelec.reset_index().to_dict(orient='list')
+    del dfdict['index'] # unwanted
+    elec['levels'] = dfdict
+else:
+    # no electronic energy levels provided
+    # parse term symbol (if available)
+    try:
+        elec['term'] = term
+        # compute term degeneracy
+        gelec = chem.term_degeneracy(term)
+        nax = nrot(PG)
+        if (nax is not None):
+            if (nax > 2) and (nax < np.inf):
+                print('** electronic degeneracy assumes non-degenerate state irreps')
+            elif nax == np.inf:
+                # linear molecule
+                if 'S' not in term:
+                    # not a Sigma state
+                    gelec *= 2  # spin degeneracy * spatial degen
+        elec['degeneracy'] = gelec
+    except NameError:
+        # no term info was provided
+        elec['degeneracy'] = doc['Spin_mult']
+        elec['term'] = None
+
+# look for spin-orbit correction
+subsoc = soc[soc.Formula == formula]
+if len(subsoc == 1):
+    socdata = {'value': float(subsoc['Value'].iloc[0])}
+    socdata['unc'] = float(subsoc['Unc'].iloc[0])
+    socdata['unit'] = subsoc['Unit'].iloc[0]
+    socdata['source'] = subsoc['Source'].iloc[0]
+    refdata['spin_orbit'] = socdata
+    term = subsoc['Term'].iloc[0]
+doc['Refdata'] = refdata
+    
+# read single-point CCSD(T)-F12b energy 
+regx = re.compile(r'CCSD\(T\)-F12b energy')
+rx_nbf = re.compile(r'NUMBER OF CONTRACTIONS:')
+rx_hf = re.compile(r'HF STATE\s*\d+\.\d Energy')
+rx_ccsd = re.compile(r'CCSD-F12b energy')
+rx_bs = re.compile(r'SETTING BASIS\s+=')
+with open(fpro, 'r') as FPRO:
+    for line in FPRO:
+        if regx.search(line):
+            w = line.split()
+            ecc = float(w[-1])
+        if rx_nbf.search(line):
+            w = line.split()
+            nbf = int(w[3])
+        if rx_hf.search(line):
+            w = line.split()
+            ehf = float(w[-1])
+        if rx_ccsd.search(line):
+            w = line.split()
+            eccsd = float(w[-1])
+        if rx_bs.search(line):
+            w = line.split('=')
+            bs = w[-1].strip()
+energy = {'CCSD(T)-F12b': ecc, 'basis_functions': nbf, 'HF': ehf,
+    'CCSD-F12b': eccsd, 'basis': bs}
+energy['software'] = 'Molpro Version ' + mpr.molpro_version(fpro)
+doc['Energy'] = energy
+doc['Electronic'] = elec
+
+
+# Look for computations of torsional barriers
+ftors = glob.glob(f'./rotors/{molec}_*TS_*.out')
+rotors = []
+for itor, ftor in enumerate(ftors):
+    with open(ftor, 'r') as FGAU:
+        print(ftor)
+        df = gau.read_charge_mult(FGAU)
+        tcharge = df['Charge'].iloc[-1]
+        tmult = df['Mult'].iloc[-1]
+        if charge != tcharge:
+            print(f'*** Error: TS calculation has charge {tcharge} but optimized geometry has {charge}')
+            continue
+        if mult != tmult:
+            print(f'*** Error: TS calculation has spin multiplicity {tmult} but optimized geometry has {mult}')
+            continue
+        rotor, lineno = gau_geom_freq_energy(FGAU)
+        # compare the first 'word' in the command with that in the geometry optimization
+        w0 = geom['command'].split()[0].lower()
+        w1 = rotor['command'].split()[0].lower()
+        if w0 != w1:
+            print(f'*** Error: TS barrier calculation uses "{w1}" but geometry optimization uses "{w0}"')
+            continue
+        nbf = rotor['basis_functions']
+        if geom['basis_functions'] != nbf:
+            print('*** Error: TS barrier calculation has {:d} basis functions but geom opt has {:d}'.format(nbf,
+                geom['basis_functions']))
+            continue
+        # check number of imaginary vibrational frequencies
+        nimag = int(np.sum(np.array(rotor['Frequencies']) < 0))
+        if nimag != 1:
+            print(f'*** Error: barrier TS calculation has nimag = {nimag} instead of 1')
+            continue
+        # add to the document
+        doc['Torsional_TS_{:d}'.format(itor + 1)] = rotor
+FGAU.close()
+
+# look for overriding data
+if os.path.isfile(fspecial):
+    with open(fspecial, 'r') as YML:
+        special = yaml.safe_load(YML)
+    chem.merge_dicts(doc, special)
+
+# save to YAML file
+fout = molec + '.yml'
+fout = './molec_data/' + fout
+with open(fout, 'w') as F:
+    F.write(yaml.dump(doc))
+print('\tYAML file {:s} created.'.format(fout))

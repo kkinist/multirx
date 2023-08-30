@@ -1,0 +1,17 @@
+***, CCSD(T)-F12b/cc-pVTZ-F12 energy, fluoroethynyl, B3LYP/pcseg-2 geom
+memory,1,G;
+
+symmetry,nosym;
+geometry={
+C   -0.000000    0.232876    0.000000
+C    0.960185    1.061372   -0.000000
+F   -0.640123   -0.862832    0.000000
+};
+
+basis=cc-pVTZ-F12
+! try anion to get better guess
+{rhf;wf,sym=1,spin=0,charge=-1}
+
+{rhf;wf,sym=1,spin=1,charge=0}
+uccsd(t)-f12
+

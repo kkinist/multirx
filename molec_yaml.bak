@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+# create YAML data file for molecule
+
+import yaml, re, sys, os
+import pandas as pd
+
+sys.path.insert(0, '/home/irikura/bin')
+import molpro_subs as mpr
+import chem_subs as chem
+import gaussian_subs as gau
+
+
+# Import reference data
+atct = pd.read_csv(r'./refdata/ATcT_1p122r_gases.csv')
+webbook = pd.read_csv(r'./refdata/gas-enthalpies_webbook.csv')
+
+if len(sys.argv) < 2:
+    sys.exit('\tUsage: molec_yaml.py <molecule label>')
+molec = sys.argv[1]
+
+
+# get charge and spin multiplicity from Gaussian geom/freq file
+fgau = r'./geomfreq/{:s}_geom.out'.format(molec)
+fpro = r'./energysp/{:s}_cc.pro'.format(molec)
+FGAU = open(fgau, 'r')
+df = gau.read_charge_mult(FGAU)
+charge = df['Charge'].iloc[-1]
+mult = df['Mult'].iloc[-1]
+doc = {'Charge': int(charge)}
+doc['Spin multiplicity'] = int(mult)
+
+
+# collect identifiers
+identifier = {
+    'local': molec,  # the label used internally here
+    'formula': chem.CIRconvert(molec, 'formula'),
+    'IUPAC': chem.CIRconvert(molec, 'iupac_name'),
+    #'names': chem.CIRconvert(molec, 'names').split('\n'),  This returns too much junk
+    'InChI': chem.CIRconvert(molec, 'stdinchi').split('=')[1]
+}
+cas = ', '.join(chem.CIRconvert(molec, 'cas').split('\n'))  # multiple values will be spliced into one string
+identifier['CASRN'] = cas
+smol = molec.lower()
+df_atct = atct[(atct.Formula.str.lower() == smol) | (atct.Hill.str.lower() == smol)]
+df_wb = webbook[(webbook.Formula.str.lower() == smol)]
+for source, prefix, df in zip(['ATcT', 'WebBook'], ['ATcT', 'WB'], [df_atct, df_wb]):
+    if len(df) == 1:
+        identifier[source] = df[prefix+'_ID'].iloc[0]
+    elif len(df) == 0:
+        print(f'Notice: "{molec}" not found in {source} list')
+    else:
+        # more than one
+        print(f'Multiple {source} matches for "{molec}"')
+        print(df)
+        print('Formula = {:s}'.format(identifier['formula']))
+doc = {'Identifiers': identifier}
+
+
+# collect reference enthalpy of formation
+refdata = {}
+for source, df in zip(['ATcT', 'WebBook'], [df_atct, df_wb]):
+    if len(df) == 1:
+        data = {}
+        try:
+            data['EoF0'] = float(df['EoF0'].iloc[0])
+        except:
+            if source != 'WebBook':
+                print(f'No EoF0 found in {source}')
+        try:
+            data['source'] = str(df['Squib'].iloc[0])
+        except:
+            # ATcT source cannot be further specified
+            pass
+        try:
+            data['comment'] = str(df['Method'].iloc[0])
+        except:
+            # ATcT method cannot be further specified
+            pass
+        data['EoF298'] = float(df['EoF298'].iloc[0])
+        data['unc'] = float(df['Unc'].iloc[0])
+        data['unit'] = 'kJ/mol'  # for both WebBook and ATcT
+        refdata[source] = data
+doc['Refdata'] = refdata
+
+
+# collect meta-information about computed geometry
+cmd = str(gau.read_command(FGAU).at[0, 'Command']).split('#', 1)[1].strip()
+comment = str(gau.read_comments(FGAU).at[0, 'Comment'])
+geom = {'command': cmd, 'comment': comment}
+rev = gau.read_version(FGAU)
+vers = 'Gaussian{:s} {:s}'.format(rev[0], rev[2])
+geom['software'] = vers
+
+
+# find the geometry with lowest energy, assuming an SCF method
+dfopt = gau.read_optim_param(FGAU)
+lineno = dfopt['line'].iloc[0]  # geometry optimization (frequency calc probably follows)
+dfscf = gau.read_scfe(FGAU)
+dfscf = dfscf[dfscf.line < lineno].sort_values('line')
+scfE = float(dfscf['Energy'].iloc[-1])  # last energy before the "Optimized" announcement
+geom['E_scf'] = scfE
+dfcrd = gau.read_std_orient(FGAU)
+dfcrd = dfcrd[dfcrd.line > lineno].sort_values('line')
+unit = str(dfcrd['Unit'].iloc[0])  # first geometry listed after the "Optimized" announcement
+geom['units'] = unit
+crd = dfcrd['Coordinates'].iloc[0]  # last geom before the lowest energy
+coords = []
+for i, row in crd.iterrows():
+    c = [chem.elz(row.Z, 'symbol')] + list(row[['x', 'y', 'z']])
+    coords.append(c)
+geom['coordinates'] = coords
+geom['basis_functions'] = gau.read_nbfn(FGAU)[0][0]
+doc['Geometry'] = geom
+# rotational constants
+dfrot = gau.read_rotational(FGAU)
+dfrot = dfrot[dfrot.line > lineno].sort_values('line')
+rotat = {s: float(x) for s, x in zip(['A','B','C'], dfrot['Rotational Constants'].iloc[0])}
+pg = gau.read_pointgroup(FGAU)['point group'].iloc[-1]  # last PG (freq calc) is probably tightest
+if '*' in pg:
+    # linear molecule should have only one rotational constant
+    rotat = {'A': rotat['A']}
+rotat['point_group'] = str(pg)
+rotat['units'] = str(dfrot['Unit'].iloc[0])
+# external symmetry number
+rotat['symmetry_number'] = gau.read_symno(FGAU)
+doc['Rotational'] = rotat
+
+
+# harmonic vibrational frequencies
+doc['Frequencies'] = gau.read_freqs(FGAU)[-1][2]['Freq'].values.tolist()
+
+
+FGAU.close()
+# read single-point CCSD(T)-F12b energy 
+regx = re.compile(r'CCSD\(T\)-F12b energy')
+rx_nbf = re.compile(r'NUMBER OF CONTRACTIONS:')
+rx_hf = re.compile(r'HF STATE\s*\d+\.\d Energy')
+with open(fpro, 'r') as FPRO:
+    for line in FPRO:
+        if regx.search(line):
+            w = line.split()
+            ecc = float(w[-1])
+        if rx_nbf.search(line):
+            w = line.split()
+            nbf = int(w[3])
+        if rx_hf.search(line):
+            w = line.split()
+            ehf = float(w[-1])
+energy = {'CCSD(T)-F12b': ecc, 'basis_functions': nbf, 'HF': ehf}
+doc['Energy'] = energy
+
+
+# save to YAML file
+fout = molec + '.yml'
+with open(fout, 'w') as F:
+    F.write(yaml.dump(doc))
+print('YAML file {:s} created.'.format(fout))

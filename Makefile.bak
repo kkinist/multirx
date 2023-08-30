@@ -1,0 +1,59 @@
+# Run missing calculations: Multi-reaction thermochemistry
+# KKI start 10/26/20
+
+
+# check for list of molecules
+fpros := $(wildcard *.pro) $(shell find ./energysp -name "*_cc.pro")
+molecules.txt: $(fpros)
+	@echo Making list of molecules $@
+	python3 list_molecs.py
+
+# check for basis sets
+pcseg2.gbs:
+	@echo Retrieving basis set $@
+	cp ~/basis/pcseg2.gbs ./
+	
+# check for current Gaussian output file
+%.out: %.gjf pcseg2.gbs
+	rungau $< -nocheck
+
+# run all geometry optimizations in directory
+outputs := $(patsubst %.gjf,%.out,$(wildcard *_geom.gjf))
+out: $(outputs)
+	# run all Gaussian geometry optimizations
+
+# create MOLPRO input file from Gaussian output file
+%_cc.in: %_geom.out
+	@echo $@
+	@echo $<
+	python3 make_f12_input.py $<
+
+# create MOLPRO input file for every geom opt file
+molinps := $(patsubst %_geom.out,%_cc.in,$(wildcard *_geom.out))
+f12inp: $(molinps)
+	# create all MOLPRO input files
+
+# check for missing MOLPRO output file
+%.pro: %.in
+	molpro -n 4 --nobackup -o $@ $<
+
+# create all ccsd(t)-f12 outputs
+ccf12 := $(patsubst %_geom.gjf,%_cc.pro,$(wildcard *_geom.gjf))
+f12out: $(ccf12)
+	# run all Molpro single-point energies
+
+# create YAML molecular data file
+%.yml: ./geomfreq/%_geom.out ./energysp/%_cc.out \
+	./refdata/gas-enthalpies_webbook.csv \
+	./refdata/ATcT_1p122r_gases.csv \
+	./refdata/spin_orbit_correction.xlsx
+	python3 molec_yaml.py $@
+
+# move files to subdirectories and delete xml files
+clean:
+	mv $(wildcard *_geom.gjf) ./geomfreq
+	mv $(wildcard *_geom.out) ./geomfreq
+	mv $(wildcard *_cc.in) ./energysp
+	mv $(wildcard *_cc.pro) ./energysp
+	rm $(wildcard *_cc.xml)
+

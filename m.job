@@ -1,0 +1,8 @@
+#!/bin/bash
+export TMPDIR=/wrk/irikura/molproscr
+export jobn=p_cc
+mkdir -p $TMPDIR
+#
+cd ./
+#
+molpro -n 3 --nobackup -o $jobn.pro $jobn.in
