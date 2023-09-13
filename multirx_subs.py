@@ -50,7 +50,7 @@ BOND_SEPARATION_PROTOTYPES = {
     (('Cl', 'Si'), 1): 'sih3cl', 
     (('P', 'P'), 1): 'p2h4', (('P', 'P'), 2): 'hpph',
     (('P', 'S'), 1): 'ph2sh', (('P', 'S'), 2): 'hps',
-    (('F', 'P'), 1): 'ph2f', (('Cl', 'P'), 1): 'ph2cl',
+    (('Cl', 'P'), 1): 'ph2cl',
     (('S', 'S'), 1): 'hssh', (('Cl', 'S'), 2): 'hscl',
     }
 BOND_SEP_PROTO_STOICHIOMETRIES = {
@@ -79,7 +79,7 @@ BOND_SEP_PROTO_STOICHIOMETRIES = {
     'sih3cl': {'Si': 1, 'H': 3, 'Cl': 1},
     'p2h4': {'P': 2, 'H': 4}, 'hpph': {'P': 2, 'H': 2}, 
     'ph2sh': {'P': 1, 'H': 3, 'S': 1}, 'hps': {'P': 1, 'H': 1, 'S': 1},
-    'ph2f': {'P': 1, 'H': 2, 'F': 1}, 'ph2cl': {'P': 1, 'H': 2, 'Cl': 1}, 
+    'ph2cl': {'P': 1, 'H': 2, 'Cl': 1}, 
     'hssh': {'S': 2, 'H': 2}, 'hscl': {'S': 1, 'H': 1, 'Cl': 1},
     # binary hydrides
     'ch4': {'C': 1, 'H': 4}, 'nh3': {'N': 1, 'H': 3}, 'h2o': {'O': 1, 'H': 2},
@@ -211,10 +211,39 @@ def generate_reactions(target, moldata, Gdict):
     # brxns may be very similar to each other
     crx = cull_too_similar_reactions(target, brxns, moldata, Gdict, disjoint=False)
     rxns.extend(crx)
-    
-    
-    
     return rxns
+
+def molecule_search_by_name(name, dfnames=None, moldata=None):
+    # Given a name, find it in 'dfnames' (read from 'label_meanings.tsv')
+    #   and/or in 'moldata' (read by read_all_molec_yamls())
+    # Return a list [df_matches, yaml_matches]
+    retval = [None, None]
+    if dfnames is not None:
+        subdf = dfnames[(dfnames.Label == name) | (dfnames.Name == name)]
+        if len(subdf):
+            retval[0] = subdf
+    if moldata is not None:
+        for k, v in moldata.items():
+            if name in v['Identifiers']['names'].values():
+                retval[1] = v['Identifiers']['names']
+                break
+    return retval
+
+def molecule_search_by_formula(formula, moldata):
+    # Given a formula string like 'hcooh' and 
+    #    'moldata' (read by read_all_molec_yamls()),
+    # Return a list [yaml_matches]
+    matches = []
+    # convert the formula to Hill
+    atlist = chem.atlist_from_formula(formula)
+    if atlist is None:
+        return []
+    hill = chem.formula(atlist, Hill=True)
+    print(f'\tsearching Hill formula {hill}')
+    for k, v in moldata.items():
+        if (v['Identifiers']['Hill'] == hill):
+            matches.append(v['Identifiers']['names'])
+    return matches
 
 def cull_too_similar_reactions(target, rxns, moldata, Gdict, disjoint=False):
     # eliminate very similar reactions
@@ -244,7 +273,7 @@ def cull_too_similar_reactions(target, rxns, moldata, Gdict, disjoint=False):
 def reaction_imbalance(Glist, coeffs, tol=1.e-6):
     # given a list of Geometry() and of numerical multipliers,
     # return a dict of net changes in atom (element) number
-    # imbalances less than 'ztol' will be set to zero
+    # imbalances less than 'tol' will be set to zero
     # remove zero entries before returning, so that a balanced
     #   reaction will return a null dict
     counts = {}
@@ -255,10 +284,13 @@ def reaction_imbalance(Glist, coeffs, tol=1.e-6):
     imbal = {k: v for k, v in counts.items() if abs(v) > tol}
     return imbal
 
-def check_reactions_balance(rxlist, Geoms, tol=1.e-6, verbose=True):
+def check_reactions_balance(rxlist, Geoms, tol=1.e-6, verbose=True,
+                            details=False):
     # report on whether the reactions in rxlist[] are balanced
     # chem.Geometry() objects in Geoms{} for all educts
+    # If details == True, also return a list of {elem: count} dicts
     oklist = []
+    imbalist = []
     if not isinstance(rxlist[0][0], list):
         rxns = [ rxlist ]
     else:
@@ -278,13 +310,17 @@ def check_reactions_balance(rxlist, Geoms, tol=1.e-6, verbose=True):
                     print(f'---- NO DATA for educt {educt} ----')
         if ok:
             rnet = reaction_imbalance(Glist, clist)
+            imbalist.append(rnet)
             if rnet:
                 ok = False
                 if verbose:
                     print('reaction: ', rxn)
                     print('\tNOT balanced:', rnet)
         oklist.append(ok)
-    return oklist
+    if details:
+        return oklist, imbalist
+    else:
+        return oklist
 
 def reaction_string(rxn):
     # Given a reaction (list of lists [educt, coeff]), return
