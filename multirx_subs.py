@@ -117,16 +117,26 @@ def read_all_molec_yamls(ydir=None):
     moldata = {}
     Gdict = {}
     for file in yamls:
-        fbase = os.path.basename(file)
-        molec = os.path.splitext(fbase)[0]
-        myml = read_molec_yaml(molec)
-        thermo_functions(myml, T=0, zpe_scale=0.98)
-        compute_E0(myml)
-        moldata[molec] = myml
-        G = chem.Geometry(myml['Geometry']['coordinates'])
-        # store the spin multiplicity
-        G.set_spinmult(myml['Spin_mult'])
-        Gdict[molec] = G
+        try:
+            fbase = os.path.basename(file)
+            molec = os.path.splitext(fbase)[0]
+            myml = read_molec_yaml(molec)
+            thermo_functions(myml, T=0, zpe_scale=0.98)
+            compute_E0(myml)
+            moldata[molec] = myml
+            G = chem.Geometry(myml['Geometry']['coordinates'])
+            # store the spin multiplicity
+            G.set_spinmult(myml['Spin_mult'])
+            Gdict[molec] = G
+            # convert functional group string to list of tuples
+            fungroups = moldata[molec].get('Functional_groups', {})
+            if fungroups:
+                fdict = {}
+                for grp, atstr in fungroups.items():
+                    fdict[grp] = list(eval(atstr))
+                moldata[molec]['Functional_groups'] = fdict            
+        except:
+            chem.print_err('', f'Error processing {file}', halt=False)
     return moldata, Gdict
 
 def read_educt_data(rxns):
@@ -173,45 +183,95 @@ def read_molec_and_geom(molec):
     mdata['natom'] = Geom.natom()    
     return mdata, Geom
 
-def generate_reactions(target, moldata, Gdict):
+def generate_reactions(target, moldata, Gdict, Benson=False, verbose=True):
     # generate reactions for computing thermochemistry of 'target' molecule
     # 'moldata' is from molecular YAML files
     # 'Gdict' is a dict of Geometry() objects
     rxns = []  # list of reactions; reaction is list of [educt, coeff] pairs
     G = Gdict[target]
+    if verbose:
+        print('Bond separation...', end='')
     rx = reaction_bond_separation(target, G)  # only one
     rxns.append(rx)
-    #rx = reaction_isomerization(target, Gdict)  # could be many
-    rx = reaction_decompose(target, Gdict)
-    crx = cull_too_similar_reactions(target, rx, moldata, Gdict, disjoint=True)
-    rxns.extend(crx)
+    if verbose:
+        print('Isomerization...', end='')
+    rx = reaction_isomerization(target, Gdict)  # could be many
+    if verbose:
+        print(f'({len(rx)})...', end='')
+    rxns.append(rx)
+    if verbose:
+        print('Hydration...', end='')
     rx = reaction_hydration(target, Gdict)  # only one
     rxns.append(rx)
+    if verbose:
+        print('Hydrofluorination...', end='')
     rx = reaction_hydrofluorination(target, Gdict)  # only one
     rxns.append(rx)
+    if verbose:
+        print('Hydrochlorination...', end='')
     rx = reaction_hydrochlorination(target, Gdict)  # only one
     rxns.append(rx)
+    if verbose:
+        print('Hydrogenation...', end='')
     rx = reaction_hydrogenation(target, Gdict)  # only one
     rxns.append(rx)
+    if verbose:
+        print('Oxygenation...', end='')
     rx = reaction_oxygenation(target, Gdict)  # only one
     rxns.append(rx)
+    if verbose:
+        print('To elements...', end='')
     rx = reaction_to_elements(target, Gdict)  # only one bad reaction
     rxns.append(rx)
-    
-    # bonds between Benson-like atoms
-    brxns = []
-    for detail in [2, 1, 0]:
-        # "best" reactions should be at higher detail
-        dfBbonds = Benson_bonds_table(target, Gdict, detail=detail, warn=False)
-        rx = solve_descriptor_reactions(dfBbonds, verbose=False)
-        brxns = discard_unbalanced_reactions(rx, Gdict, tol=1.e-3, verbose=True)
-        if len(brxns):
-            # found some reactions; stop at this detail
-            break
-    # brxns may be very similar to each other
-    crx = cull_too_similar_reactions(target, brxns, moldata, Gdict, disjoint=False)
+    if verbose:
+        print('Decomposition...', end='')
+    rx = reaction_decompose(target, Gdict)
+    crx = cull_too_similar_reactions(target, rx, moldata, Gdict, disjoint=True)
+    if verbose:
+        print(f'({len(crx)})...', end='')
     rxns.extend(crx)
+    if verbose:
+        print('Balancing functional groups...')
+    rx = reaction_functional_group_bal(target, moldata, Gdict, verbose=verbose)
+    rxns.extend(rx)
+    if verbose:
+        print(f'({len(rx)})...', end='')
+    if Benson:
+        # bonds between Benson-like atoms; solver can take hours!
+        brxns = []
+        for detail in [2, 1, 0]:
+            # "best" reactions should be at higher detail
+            if verbose:
+                if detail == 0:
+                    print(f'\nInitiating Benson[{detail}] bond solver (tens of minutes)...', end='')
+                else:
+                    print(f'\nBenson[{detail}] bond solver...', end='')
+            dfBbonds = Benson_bonds_table(target, Gdict, detail=detail, warn=False)
+            rx = solve_descriptor_reactions(dfBbonds, verbose=False)
+            brxns = discard_unbalanced_reactions(rx, Gdict, tol=1.e-3, verbose=True)
+            if len(brxns):
+                # found some reactions; stop at this detail
+                break
+        # brxns may be very similar to each other
+        crx = cull_too_similar_reactions(target, brxns, moldata, Gdict, disjoint=False)
+        rxns.extend(crx)
+        if verbose:
+            print(f'({len(crx)})', end='')
+    # remove any null reactions
+    rxns = [rx for rx in rxns if rx]
+    if verbose:
+        print(f'altogether {len(rxns)} reactions')
     return rxns
+
+def reaction_net_spin_charge(rx, moldata):
+    # 'rx' is list of [molec, coeff] pairs
+    # 'moldata' is dict of YAML data for all molecules
+    spin = 0  # 2*S
+    charge = 0
+    for [molec, coef] in rx:
+        spin += (moldata[molec]['Spin_mult'] - 1) * coef
+        charge += moldata[molec]['Charge'] * coef
+    return spin, charge
 
 def molecule_search_by_name(name, dfnames=None, moldata=None):
     # Given a name, find it in 'dfnames' (read from 'label_meanings.tsv')
@@ -228,6 +288,400 @@ def molecule_search_by_name(name, dfnames=None, moldata=None):
                 retval[1] = v['Identifiers']['names']
                 break
     return retval
+
+def balance_using_simple(baldict, simple, scompos, natom):
+    # Balance a reaction using only "simple" educts
+    # Do not use Gram-Schmidt 
+    # 'baldict' {element: coefficient} that must be negated to balance a reaction
+    #    "elements" can include '2S' (spin) and 'charge'
+    # 'simple' is list of "simple" molecules, sorted by number of atoms
+    # 'scompos' is list of dict of composition (incl. spin, charge) of the "simple"
+    # 'natom' is list of number of atoms in each simple molecule
+    # Allow up to two educts to be used
+    # Return a list of {molec: coeff} that negates 'baldict', sorted by 
+    #    decreasing desirability (supposedly)
+    balset = set(baldict.keys())
+    elems = set()
+    for comp in scompos:
+        elems = elems.union(comp.keys())
+    if not balset <= elems:
+        # the list of simple molecules is missing essential elements
+        chem.print_err('', f'elements {balset} are not spanned by {elems}')
+    # construct composition vectors
+    ordel = sorted(elems)
+    #print('>>>ordel =\t', ordel)
+    R = np.array([baldict.get(el, 0) for el in ordel])
+    R = -R  # want to match the negative
+    #print('>>>-R =\t\t', R)
+
+    answers = []
+    # Try one educt
+    vec = []  # list of numpy array
+    vn = []    # unit vectors 
+    for comp in scompos:
+        v = np.array([comp.get(el, 0) for el in ordel])
+        vec.append(v)
+        vn.append(chem.normalize(v))
+    tol = 1.e-6
+    for imol, x in enumerate(vn):
+        p = np.dot(R, x)
+        res = R - p * x
+        if np.linalg.norm(res) < tol:
+            # got an answer
+            s = np.sign(p) * np.linalg.norm(R) / np.linalg.norm(vec[imol])
+            answers.append({simple[imol]: s})
+    if len(answers) == 0:
+        # Try two educts
+        nsimp = len(simple)
+        for irow in range(nsimp):
+            for el1 in scompos[irow].keys():
+                if el1 not in baldict.keys():
+                    continue
+                # fix this one coefficient
+                ia = ordel.index(el1)
+                if R[ia] == 0:
+                    continue
+                a = R[ia] / vec[irow][ia]
+                res = R - a * vec[irow]
+                for icol in range(nsimp):
+                    if np.linalg.norm(vn[icol] - vn[irow]) < tol:
+                        # redundant (parallel) with first vector
+                        continue
+                    # is 'res' parallel to this vector?
+                    p = np.dot(res, vn[icol])
+                    res2 = res - p * vn[icol]
+                    if np.linalg.norm(res2) < tol:
+                        # got an answer
+                        b = np.sign(p) * np.linalg.norm(res) / np.linalg.norm(vec[icol])
+                        answers.append({simple[irow]: a, simple[icol]: b})
+    if len(answers) == 0:
+        # failed
+        return None
+    # remove any duplicates
+    ans = []
+    for d in answers:
+        if d not in ans:
+            ans.append(d)
+    if len(ans) == 1:
+        return ans
+    # find the "best" answer (lowest score)
+    score = [0] * len(ans)
+    for ians, a in enumerate(ans):
+        for educt in a.keys():
+            imol = simple.index(educt)
+            # disfavor reactions involving bare atoms
+            if natom[imol] == 1:
+                score[ians] += 3
+            # disfavor radicals (spin != 0)
+            compset = set(scompos[imol].keys())
+            if '2S' in compset:
+                score[ians] += 2
+            # disfavor reactions that introduce new elements
+            if not compset <= balset:
+                score[ians] += 1
+            # prefer fewer reactants
+            score[ians] += len(a)
+    #for s, r in zip(score, ans):
+    #    print(f'::: score = {s} for ans =', r)
+    idx = np.argsort(score)
+    ans = [ans[i] for i in idx]
+    return ans
+
+def reaction_functional_group_bal(target, moldata, Gdict, fgdetect=False, verbose=False,
+                                 thresh_num_rx=1e6, thresh_grp_bal=1000, max_depth=5):
+    # Generate reactions by balancing the rarest functional groups
+    # If 'fgdetect' is False, functional groups will only be detected if
+    #   they are missing from moldata[target] (as read from a YAML file).
+    # If 'fgdetect' is True, functional groups will be detected anew.
+    # thresh_num_rx  -- stop searching if number of possible reactions exceeds this
+    # thresh_grp_bal -- stop searching if number of functional-group-balanced reactions exceeds this
+    # max_depth      -- maximum number of functional groups to balance
+    fungroup = {}  # key = molecule, value = dict (key = fgrp, value = list of tuple)
+    fungroup_n = {}  # key = molec, value = dict (key = fgrp, value = count)
+    for molec, G in Gdict.items():
+        mdata = moldata[molec]
+        lname = mdata['Identifiers']['names']['local']
+        if fgdetect or ('Functional_groups' not in mdata.keys()):
+            fungroup[molec] = G.find_functional_group('all', spin=True)
+            mdata['Functional_groups'] = fungroup[molec]
+            if verbose:
+                print(f'{molec}  ({lname})')
+                for grp, atoms in fungroup[molec].items():
+                    print(f'    {grp:<15s}  {atoms}')
+        else:
+            fungroup[molec] = mdata['Functional_groups']
+        fungroup_n[molec] = {k: len(v) for k, v in mdata['Functional_groups'].items()}
+    # Get global frequency of all functional groups
+    fg_count = {}  # key = functional group, value = global count
+    for molec, fgd in fungroup_n.items():
+        for fg, n in fgd.items():
+            try:
+                fg_count[fg] += n
+            except KeyError:
+                fg_count[fg] = n
+    # sort by increasing frequency
+    fg_count = {k: v for k, v in sorted(fg_count.items(), key=lambda item: item[1])}
+    if verbose:
+        print('Functional groups in dataset, by count:')
+        print(fg_count)
+        print(f'Functional groups in target ({target}):')
+        for grp, atoms in fungroup[target].items():
+            print(f'    {grp:<15s}  {atoms}')
+
+    def fgrp_rxn_counts(rxn):
+        # Given a reaction (list of [molec, coeff] pairs),
+        #   return a dict of functional groups
+        #   key = f-group, value = net count
+        nonlocal fungroup_n
+        fgcount = {}  # key = f-group, value = count
+        for [mol, coeff] in rxn:
+            gd = fungroup_n[mol]  # key = fgrp, value = count
+            for fg, n in gd.items():
+                try:
+                    fgcount[fg] += n * coeff
+                except KeyError:
+                    fgcount[fg] = n * coeff
+        return fgcount
+    def fgrp_are_balanced(rxn):
+        # return True or False
+        fgcount = fgrp_rxn_counts(rxn)
+        bal = True
+        for fg, n in fgcount.items():
+            if n != 0:
+                bal = False
+        return bal
+    def balance_rarest_fgrp(rxn):
+        # Given a reaction (list of [molec, coeff] pairs) that is 
+        #    unbalanced in functional groups, return a list of extended
+        #    reactions that balance the rarest functional group
+        nonlocal fg_count
+        fgnet = fgrp_rxn_counts(rxn)  # key = f-group, value = net count
+        for fg in fg_count.keys():
+            # fg_count is ordered by increasing frequency in the dataset
+            net = fgnet.get(fg, 0)
+            if net:
+                break
+        else:
+            # all functional groups are balanced; just return the input
+            #print(f'***Functional groups are balanced: {rxn}')
+            return [rxn]
+        # fg is the rarest unbalanced functional group
+        #print(f'Eliminating functional group {fg} with coeff = {net}')
+        rxlist = []
+        educts = [pr[0] for pr in rxn]
+        for molec, dfg in fungroup_n.items():
+            # do not repeat any existing educt
+            if molec in educts:
+                continue
+            if fg in dfg.keys():
+                # it's a novel educt with the desired functional group
+                # But does it include functional groups that are rarer than 'fg'?
+                for grp in dfg.keys():
+                    if fg_count[grp] < fg_count[fg]:
+                        # it does; do not use it
+                        continue
+                # OK, add this educt
+                n = dfg[fg]
+                coef = -net / n
+                rx = rxn.copy()
+                rx.append([molec, coef])
+                rxlist.append(rx)
+        return rxlist
+
+    rxns = [ [[target, -1]] ]
+    if verbose:
+        print('Generating reactions that are balanced by functional group (only)')
+    for ifun in range(max_depth):
+        if verbose:
+            print(f'search depth = {ifun+1}')
+        old_rxns = rxns
+        rxns = []
+        for rx in old_rxns:
+            rxl = balance_rarest_fgrp(rx)
+            rxns += rxl
+        nbal = sum([fgrp_are_balanced(rx) for rx in rxns])
+        if verbose:
+            print(f'\t{len(rxns)} total reactions of which {nbal} are fg-balanced')
+        if (nbal > thresh_grp_bal) or (len(rxns) > thresh_num_rx):
+            # a threshold is exceeded
+            if verbose:
+                print('Threshold exceeded--done')
+            break
+    # Discard fg-imbalanced reactions
+    rxns = [rx for rx in rxns if fgrp_are_balanced(rx)]
+    
+    # Get experimental EoF uncertainties, for use in culling reactions
+    #   also spin multiplicities, for the same purpose
+    #   also whether has WebBook thermo (same purpose)
+    uexp = {}
+    spinmult = {}
+    WBthermo = {}
+    for molec, mdata in moldata.items():
+        u = 10  # use this if no uncertainty is available
+        wb = 0
+        if 'Refdata' in mdata.keys():
+            for source, thermex in mdata['Refdata'].items():
+                if 'EoF0' in thermex.keys():
+                    try:
+                        ux = thermex['unc']
+                        if ux == -999:
+                            # defined quantity with zero uncertainty
+                            ux = 0
+                    except KeyError:
+                        pass
+                    try:
+                        k = thermex['k_cover']
+                    except:
+                        k = 2  # usual for thermo data
+                    u = min(u, ux/k)
+                if source == 'WebBook':
+                    wb = 1
+        uexp[molec] = u
+        spinmult[molec] = mdata['Spin_mult']
+        WBthermo[molec] = wb
+
+    if verbose:
+        print('Aggressive culling so that no co-reactant appears more than once')
+    # score each reaction; lower is better
+    scores = []
+    for rx in rxns:
+        s = 0  # base score
+        # penalty for free radicals
+        smult = 0
+        # penalty for lacking thermochem data in WebBook (maybe "weird" molecule)
+        wb = 0
+        for [educt, coeff] in rx:
+            smult += max(1, abs(coeff)) * (spinmult[educt] - 1) ** 2
+            if educt != target:
+                wb += (1 - WBthermo[educt]) * max(1, abs(coeff))
+        s += smult
+        s += wb * wb
+        # penalty for uncertainty in exptl thermochem
+        uvec = np.array([uexp[mol] * coef for [mol, coef] in rx[1:]])
+        uex = np.sqrt(np.dot(uvec, uvec))
+        s += uex
+        # penalty for lots of educts
+        s += (len(rx) - 2) ** 2    
+        # penalty for bare atoms
+        nat = 0
+        for [educt, coeff] in rx:
+            if Gdict[educt].natom() == 1:
+                nat += abs(coeff)
+        s == nat * nat
+        scores.append(s)
+    # which reactions to keep?
+    ikeep = []  # indices of reactions to keep
+    eused = []  # list of educts used
+    idx = np.argsort(scores)  # by increasing score
+    for irx in idx:
+        neweduct = True
+        rx = rxns[irx]
+        for [educt, coef] in rx[1:]:  # skipping the target
+            if educt in eused:
+                neweduct = False
+        if neweduct:
+            # no repeated educts; add this reaction
+            ikeep.append(irx)
+            for [educt, coef] in rxns[irx][1:]:  # skipping the target
+                eused.append(educt)
+    if verbose:
+        print(len(ikeep), 'reactions left')
+
+    # Complete the reaction balancing using simple species (which may repeat among reactions)
+    simple = []  # list of "simple" molecules
+    scompos = []  # list of elemental composition dict
+    natom = []  # number of atoms in each molecule
+    exclude = ['o3']  # don't use these molecules
+    for molec in moldata.keys():
+        if molec == target:
+            continue
+        if molec in exclude:
+            continue
+        if (WBthermo[molec] != 1) and (uexp[molec] != 0):
+            continue
+        # precisely known thermochemistry
+        if uexp[molec] > 0.1:  # kJ/mol
+            continue
+        # no more than three elements
+        stoich = Gdict[molec].stoichiometry(asdict=True)
+        nelem = len(stoich)
+        if nelem > 3:
+            continue
+        # Add spin and charge to the dict, if nonzero
+        ss = moldata[molec]['Spin_mult'] - 1
+        if ss:
+            stoich['2S'] = ss
+        q = moldata[molec]['Charge']
+        if q:
+            stoich['charge'] = q
+        simple.append(molec)
+        scompos.append(stoich)
+        natom.append(Gdict[molec].natom())
+    # sort the "simple" molecules by number of atoms
+    idx = np.argsort(natom)
+    natom = [natom[i] for i in idx]
+    simple = [simple[i] for i in idx]
+    scompos = [scompos[i] for i in idx]
+
+    for i in ikeep.copy():
+        retval = check_reactions_balance(rxns[i], Gdict, verbose=False, details=True)
+        if retval[0][0] == False:
+            # reaction needs balancing
+            #print(rxns[i])
+            unbal = retval[1][0]  # dict with key = elem, value = coeff
+            # add data about spin and charge
+            sp, q = reaction_net_spin_charge(rxns[i], moldata)
+            if sp:
+                unbal['2S'] = sp
+            if q:
+                unbal['charge'] = q
+            #print('\t>>>>>>>>', unbal)
+            # look for a "simple" molecule that contains only these elements
+            small = balance_using_simple(unbal, simple, scompos, natom)
+            #for d in small:
+            #    print('\t<<', d)
+            if small is None:
+                chem.print_err('', f'Failed to balance reaction {rxns[i]}', halt=False)
+                # remove it from the list
+                ikeep.remove(i)
+                continue
+            if len(small) == 1:
+                answer = small[0]
+            elif len(small) > 1:
+                # choose one solution; prefer any that use existing reactants
+                rxset = set([r[0] for r in rxns[i]])
+                solsets = [set(soln.keys()) for soln in small]
+                dupl = []  # count of existing reactants used
+                for solset in solsets:
+                    dupl.append(len(rxset.intersection(solset)))
+                idx = np.argwhere(dupl).flatten()
+                #print(':::idx =', list(idx))
+                if len(idx) == 1:
+                    # choose this one
+                    answer = small[idx[0]]
+                elif len(idx) > 1:
+                    # choose the most overlap
+                    i = np.argmax(dupl)
+                    answer = small[i]
+                else:
+                    # len(idx) = 0; just choose the first one
+                    answer = small[0]
+            # add these educts to the reaction
+            #print('\t-----answer =', answer)
+            for r, c in answer.items():
+                for ie, [re, ce] in enumerate(rxns[i].copy()):
+                    if r == re:
+                        # adjust coefficient of existing reactant
+                        rxns[i][ie] = [re, ce + c]
+                        break
+                else:
+                    # a new reactant
+                    rxns[i].append([r, c])
+            retval = check_reactions_balance(rxns[i], Gdict, verbose=False, details=False)
+            #print('\tafter balancing:', retval)
+    # return balanced reactions
+    reactions = [rxns[i] for i in ikeep]
+    return reactions
 
 def molecule_search_by_formula(formula, moldata):
     # Given a formula string like 'hcooh' and 
@@ -1678,7 +2132,7 @@ def solve_descriptor_reactions_par(dfdescrip, maxeduct=None, nproc=4, verbose=Tr
         rxns.extend(results)
     return rxns
 
-def discard_unbalanced_reactions(rxlist, Geoms, tol=1.e-6, verbose=True):
+def discard_unbalanced_reactions(rxlist, Geoms, tol=1.e-6, verbose=False):
     # Given a list of reactions and Geometry() object,
     # return a new list of reactions that contains only 
     # balanced reactions. 
