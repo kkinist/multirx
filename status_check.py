@@ -146,7 +146,7 @@ for gjf in gjfs:
                 subprocess.run(['./make_f12_input.py', 'tempfile.out', '.'])
                 if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
                     print('\t\tbut it looks OK')
-                    curbuf.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
+                    curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
                 else:
                     # it is different
                     nprob['sp_in'] += 1
