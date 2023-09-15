@@ -28,6 +28,7 @@ import pandas as pd
 import numpy as np
 import glob
 
+import multirx_subs as mrx
 sys.path.insert(0, '/home/irikura/bin')
 import molpro_subs as mpr
 import chem_subs as chem
@@ -39,65 +40,23 @@ molec = sys.argv[1]
 
 # Import reference data
 atct_version = '1p122r'
-atct = pd.read_csv(f'./refdata/ATcT_{atct_version}_gases.tsv', sep='\t')
-webbook = pd.read_csv(r'./refdata/gas-enthalpies_webbook.tsv', sep='\t')
-soc = pd.read_excel(r'./refdata/spin_orbit_correction.xlsx', skiprows=1)
-dfnames = pd.read_csv(r'./refdata/label_meanings.tsv', sep='\t').fillna('')
-reflocal = f'./refdata/ref_thermo.yml'
-feleca = f'./refdata/elec_states_atoms.tsv'  # tab-delimited
-felecm = f'./refdata/elec_states_molecules.tsv'  # tab-delimited
-foverride = f'./refdata/override.yml'  # to override everything else
+atct = pd.read_csv(os.sep.join([mrx.REFDAT, f'ATcT_{atct_version}_gases.tsv']), sep='\t')
+webbook = pd.read_csv(os.sep.join([mrx.REFDAT, 'gas-enthalpies_webbook.tsv']), sep='\t')
+soc = pd.read_excel(os.sep.join([mrx.REFDAT, 'spin_orbit_correction.xlsx']), skiprows=1)
+dfnames = pd.read_csv(os.sep.join([mrx.REFDAT, 'label_meanings.tsv']), sep='\t').fillna('')
+reflocal = os.sep.join([mrx.REFDAT, 'ref_thermo.yml'])
+feleca = os.sep.join([mrx.REFDAT, 'elec_states_atoms.tsv'])  # tab-delimited
+felecm = os.sep.join([mrx.REFDAT, 'elec_states_molecules.tsv'])  # tab-delimited
+foverride = os.sep.join([mrx.REFDAT, 'override.yml'])  # to override everything else
 
-
-def gau_geom_freq_energy(FGAU):
-    # arg is a file handle
-    # return a dict with coordinates, frequencies, optimized SCF energy, and metadata
-    # also return the line number of the last (freq calc) "Optimized" announcement
-    # include electronic state label
-    cmd = str(gau.read_command(FGAU).at[0, 'Command']).split('#', 1)[1].strip()
-    comment = str(gau.read_comments(FGAU).at[0, 'Comment'])
-    retval = {'command': cmd, 'comment': comment}
-    rev = gau.read_version(FGAU)
-    vers = 'Gaussian{:s} {:s}'.format(rev[0], rev[2])
-    retval['software'] = vers    
-    # the calculation is supposed to be geom + freq (analytical)
-    #lineno = chem.find_line_number(FGAU, 'Stationary point found')[1] # fails if freq part not "converged"
-    lineno = chem.find_line_number(FGAU, 'Thermochemistry')[0]
-    dfscf = gau.read_scfe(FGAU)
-    dfcrd = gau.read_std_orient(FGAU)
-    dfscf = dfscf[dfscf.line < lineno].sort_values('line')
-    scfE = float(dfscf['Energy'].iloc[-1])  # last energy before the "Optimized" announcement
-    retval['E_scf'] = scfE
-    # choose the last geometry listed before the "Optimized" announcement in the freq calc
-    dfcrd = dfcrd[dfcrd.line < lineno].sort_values('line')
-    crd = dfcrd['Coordinates'].iloc[-1]
-    unit = str(dfcrd['Unit'].iloc[-1])
-    coords = []
-    for i, row in crd.iterrows():
-        c = [chem.elz(row.Z, 'symbol')] + list(row[['x', 'y', 'z']])
-        coords.append(c)
-    retval['coordinates'] = coords
-    retval['basis_functions'] = gau.read_nbfn(FGAU)[0][0]
-    # remove trailing "s" from name of unit
-    if unit[-1] == 's':
-        unit = unit[:-1]
-    retval['unit'] = unit
-    if len(coords) > 1:
-        # harmonic vibrational frequencies
-        retval['Frequencies'] = gau.read_freqs(FGAU)[-1][2]['Freq'].values.tolist()
-        # number of imaginary frequencies in the geometry block
-        retval['nimag'] = int(np.sum(np.array(retval['Frequencies']) < 0))
-    estate = gau.read_electronic_state(FGAU)
-    retval['e-state'] = estate
-    return retval, lineno
 
 try:
     local_name = dfnames[dfnames.Label == molec].values[0][1]
 except:
-    print('*** Error: "{:s}" is missing from file refdata/label_meanings.tsv'.format(molec))
+    print('*** Error: "{:s}" is missing from file {mrx.REFDAT}0/label_meanings.tsv'.format(molec))
     sys.exit(1)
 # check names list for duplicates
-dup1 = dfnames.duplicated(subset='Label', keep=False)  # now giving KeyError if 'Label' is the index
+dup1 = dfnames.duplicated(subset='Label', keep=False)
 dup2 = dfnames.duplicated(subset='Name', keep=False)
 if dup1.any() or dup2.any():
     print('** Duplication in label_meanings.tsv **')
@@ -113,16 +72,16 @@ soc['Formula'] = soc['Species'].apply(lambda x: chem.formula(chem.formula_to_ato
 webbook['Hill'] = webbook['Formula'].apply(lambda x: chem.formula(chem.formula_to_atomlist(x), Hill=True))
 
 # get charge and spin multiplicity from Gaussian geom/freq file
-fgau = r'./geomfreq/{:s}.out'.format(molec)
-fpro = r'./energysp/{:s}.pro'.format(molec)
+fgau = os.sep.join([mrx.GDIR, f'{molec}.out'])
+fpro = os.sep.join([mrx.EDIR, f'{molec}.pro'])
 FGAU = open(fgau, 'r')
 df = gau.read_charge_mult(FGAU)
 charge = df['Charge'].iloc[-1]
 mult = df['Mult'].iloc[-1]
-doc = {'Charge': int(charge)}   # initialize the main dict
+doc = {'Charge': int(charge)}   # initialize the main dict, 'doc'
 doc['Spin_mult'] = int(mult)
 
-geom, lineno = gau_geom_freq_energy(FGAU)
+geom, lineno = gau.gau_geom_freq_energy(FGAU)
 doc['Geometry'] = geom
 natom = len(geom['coordinates'])
 if natom > 1:
@@ -192,10 +151,12 @@ def newcas(scas):
     #   extract a (possibly abbreviated) CASRN
     cas = scas.replace('C', '').replace('*0', '')
     return cas
+
 def simplify_formula(formula):
     # given an ATcT 'Formula', remove parentheses and convert to lower case
     simpl = formula.replace('(', '').replace(')', '').lower()
     return simpl
+    
 def name_matches(name1):
     # compare a chemical name for a match with 'molec' or 'local_name'
     global molec, local_name
@@ -218,15 +179,15 @@ def name_matches(name1):
                 return False
             return True
     return False
+    
 def CASRN_matches(caslike):
     # compare with identifier['CASRN'], which may contain more than one number
     global identifier
     for casrn in re.split('[,\s]+', identifier['CASRN']):
         # retain only numerals
-        cas = re.sub('[^0-9]', '', casrn)
-        q = re.sub('[^0-9]', '', caslike)
-        # ATcT may have an extra digit
-        if cas in q:
+        ccas = mrx.compress_CASRN(casrn)
+        q = mrx.compress_CASRN(caslike)
+        if ccas == q:
             # it matches
             return True
     return False
@@ -501,7 +462,7 @@ for itor, ftor in enumerate(ftors):
         if mult != tmult:
             print(f'*** Error: TS calculation has spin multiplicity {tmult} but optimized geometry has {mult}')
             continue
-        rotor, lineno = gau_geom_freq_energy(FGAU)
+        rotor, lineno = gau.gau_geom_freq_energy(FGAU)
         # compare the first 'word' in the command with that in the geometry optimization
         w0 = geom['command'].split()[0].lower()
         w1 = rotor['command'].split()[0].lower()
