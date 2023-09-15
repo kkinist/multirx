@@ -17,6 +17,55 @@ Frequencies:
 - 1853.5538
 - 3482.7357
 - 3702.8794
+Functional_groups:
+  2S:
+  - 0
+  NH2:
+  - !!python/tuple
+    - 1
+    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AwAAAAAAAAA=
+    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BAAAAAAAAAA=
+  amide:
+  - !!python/tuple
+    - 1
+    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    - *id002
+    - *id003
+  carbonyl:
+  - !!python/tuple
+    - 0
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AgAAAAAAAAA=
+  primary amide:
+  - !!python/tuple
+    - 1
+    - *id004
+    - *id002
+    - *id003
 Geometry:
   E_scf: -169.315897623
   basis_functions: 118
@@ -74,3 +123,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
+natom: 5
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -169.02326766900325
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 84.67984
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

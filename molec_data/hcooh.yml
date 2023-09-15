@@ -17,6 +17,46 @@ Frequencies:
 - 1815.2481
 - 3054.1702
 - 3728.715
+Functional_groups:
+  carbonyl:
+  - !!python/tuple
+    - 0
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AgAAAAAAAAA=
+  carboxylic acid:
+  - !!python/tuple
+    - 0
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AgAAAAAAAAA=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AQAAAAAAAAA=
+    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BAAAAAAAAAA=
+  hydroxyl:
+  - !!python/tuple
+    - 1
+    - *id002
 Geometry:
   E_scf: -189.84935502
   basis_functions: 118
@@ -83,3 +123,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
+natom: 5
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -189.55052136621376
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 86.66532
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

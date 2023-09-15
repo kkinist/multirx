@@ -17,6 +17,46 @@ Frequencies:
 - 3449.6948
 - 3530.4975
 - 3822.6289
+Functional_groups:
+  NH2:
+  - !!python/tuple
+    - 0
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AwAAAAAAAAA=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BAAAAAAAAAA=
+  hydroxyl:
+  - !!python/tuple
+    - 1
+    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AgAAAAAAAAA=
+  hydroxylamine:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    - 1
+    - *id002
 Geometry:
   E_scf: -131.781604549
   basis_functions: 102
@@ -74,3 +114,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
+natom: 5
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -131.55822809648583
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 103.5664
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

@@ -20,6 +20,42 @@ Frequencies:
 - 3078.0428
 - 3172.6664
 - 3811.2496
+Functional_groups:
+  alcohol:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AAAAAAAAAAA=
+    - 1
+    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BQAAAAAAAAA=
+  chloro:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
+    - 2
+  hydroxyl:
+  - !!python/tuple
+    - 1
+    - *id002
 Geometry:
   E_scf: -575.420970709
   basis_functions: 136
@@ -81,3 +117,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
+natom: 6
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -574.7326261731607
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 111.27998
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

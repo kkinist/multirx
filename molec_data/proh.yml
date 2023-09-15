@@ -38,6 +38,57 @@ Frequencies:
 - 3087.4201
 - 3111.3506
 - 3842.7724
+Functional_groups:
+  C-C:
+  - !!python/tuple
+    - 0
+    - 1
+  - !!python/tuple
+    - 1
+    - 2
+  alcohol:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AgAAAAAAAAA=
+    - 3
+    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        CwAAAAAAAAA=
+  hydroxyl:
+  - !!python/tuple
+    - 3
+    - *id002
+  methyl:
+  - !!python/tuple
+    - 0
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BAAAAAAAAAA=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BQAAAAAAAAA=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BgAAAAAAAAA=
 Geometry:
   E_scf: -194.442069953
   basis_functions: 232
@@ -132,3 +183,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
+natom: 12
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -194.0103743728168
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 278.35332
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

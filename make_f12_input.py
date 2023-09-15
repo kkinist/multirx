@@ -29,14 +29,17 @@ fpro = outdir + '/' + froot.replace('.out', '.in')
 
 print('fgau = {:s}, fpro = {:s}'.format(fgau, fpro))
 # read from Gaussian output file
+natom = gau.natom(fgau)
 with open(fgau, 'r') as GAU:
-    ok = gau.opt_success(GAU)
-    if not ok:
-        chem.print_err('', 'Geometry optimization failed!')
-    nimag = gau.get_nimag(GAU)
-    print('nimag = ', nimag)
-    if nimag != 0:
-        chem.print_err('', 'Geometry is not an energy minimum!')
+    if natom > 1:
+        # not an atom
+        ok = gau.opt_success(GAU)
+        if not ok:
+            chem.print_err('', 'Geometry optimization failed!')
+        nimag = gau.get_nimag(GAU)
+        print('nimag = ', nimag)
+        if nimag != 0:
+            chem.print_err('', 'Geometry is not an energy minimum!')
     # extract comment line
     dfcomment = gau.read_comments(GAU)
     comment = dfcomment.Comment.tolist()[-1]
@@ -55,6 +58,7 @@ with open(fgau, 'r') as GAU:
 # how much memory to request in MOLPRO?
 if memgb is None:
     memgb = 1 + (nbf // bfchunk)
+    print(f'>>>nbf = {nbf}, bfchunk = {bfchunk}, memgb = {memgb}')
 
 # write MOLPRO input file
 with open(fpro, 'w') as MPRO:

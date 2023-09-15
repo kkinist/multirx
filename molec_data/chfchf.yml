@@ -20,6 +20,37 @@ Frequencies:
 - 1760.2079
 - 3217.8414
 - 3240.2827
+Functional_groups:
+  C=C:
+  - !!python/tuple
+    - 0
+    - 1
+  fluoro:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AAAAAAAAAAA=
+    - 2
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AQAAAAAAAAA=
+    - 3
 Geometry:
   E_scf: -277.175920513
   basis_functions: 148
@@ -55,34 +86,15 @@ Geometry:
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 75-38-7*0
-  CASRN: '75387'
+  CASRN: 1630-77-9
   Hill: C2H2F2
   IUPAC: (Z)-1,2-difluoroethene
   InChI: 1S/C2H2F2/c3-1-2-4/h1-2H/b2-1-
-  WebBook: C75387
   formula: C2H2F2
   local_label: chfchf
   names:
-    ATcT: 1,1-Difluoroethene
-    WebBook: Ethene, 1,1-difluoro-
     local: cis-1,2-difluoroethylene
-Refdata:
-  ATcT:
-    ATcT_version: 1.122r
-    EoF0: -343.58
-    EoF298: -350.64
-    k_cover: 2.0
-    unc: 0.77
-    unit: kJ/mol
-  WebBook:
-    EoF298: -343.9248
-    comment: 'Ccb # Reanalyzed by 1970COX/PIL1-636B, Original value = -79.6$(2.4)
-      kcal/mol'
-    k_cover: 2.0
-    source: 1962KOL/MAR1118-1120
-    unc: 10.0416
-    unit: kJ/mol
+Refdata: {}
 Rotational:
   A: 21.3015737
   B: 5.8537473
@@ -91,3 +103,22 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
+natom: 6
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -276.7772428990311
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 95.12859999999999
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0

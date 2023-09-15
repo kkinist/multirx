@@ -38,6 +38,49 @@ Frequencies:
 - 3108.1082
 - 3119.238
 - 3128.1592
+Functional_groups:
+  C-C:
+  - !!python/tuple
+    - 1
+    - 2
+  - !!python/tuple
+    - 2
+    - 4
+  - !!python/tuple
+    - 4
+    - 5
+  carbonyl:
+  - !!python/tuple
+    - 1
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - i8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        AAAAAAAAAAA=
+  ester:
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        BQAAAAAAAAA=
+    - 3
+    - 1
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        AAAAAAAAAAA=
 Geometry:
   E_scf: -306.620649569
   basis_functions: 264
@@ -131,3 +174,22 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
+natom: 12
+thermo:
+  Cp:
+    unit: J/K/mol
+    value: 0
+  E0:
+    unit: hartree
+    value: -306.04109320632904
+  S:
+    unit: J/K/mol
+    value: 0
+  T: 0
+  VZPE:
+    unit: kJ/mol
+    value: 252.76846
+  ZPE_scale: 0.98
+  ddH:
+    unit: kJ/mol
+    value: 0
