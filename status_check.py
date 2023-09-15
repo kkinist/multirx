@@ -30,6 +30,12 @@ def restore_old(fpro):
     else:
         return False
 
+def invoke_molpro(curbuf, inpro, outpro, xmlpro):
+    # add an 'echo' statement and a molpro command to the file buffer 'curbuf'
+    curbuf.append(f'echo "Running molpro on {inpro}"')
+    curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro}  \t# output file is missing')
+    return curbuf
+
 #--------------------------------------
 
 # sub-directory names
@@ -62,7 +68,8 @@ curbuf = []
 for gjf in gjfs:
     mtime = os.path.getmtime(gjf)
     fout = gjf.replace('.gjf', '.out')
-    nbf = None
+    nbf = 9999
+    spinmult = 1
     if os.path.isfile(fout):
         # check the modification time of the output file
         otime = os.path.getmtime(fout)
@@ -85,11 +92,17 @@ for gjf in gjfs:
                 else:
                     print(f'\t** Warning: geometry optimization failed for {fout}')
         nbf = gau.read_nbfn(fout)[0][0]
+        with open(fout, 'r') as F:
+            dfcm = gau.read_charge_mult(F)
+            spin_mult = dfcm.Mult.values[0]
+        if spin_mult > 1:
+            nbf *= 4  # open-shell will take longer 
     else:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
         curbuf.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is missing')
+        nbf = 9999
     nbfG[gjf] = nbf
 if not nprob['geomfreq']:
     print()
@@ -111,7 +124,7 @@ for gjf in gjfs:
     else:
         print(f'\t{inpro} is lacking a predecessor geometry output')
         nprob['sp_in'] += 1
-        curbuf.append(f'./make_f12_input.py {fout} {EDIR}   \t# depends upon prior geometry optimization')
+        #curbuf.append(f'./make_f12_input.py {fout} {EDIR}   \t# depends upon prior geometry optimization')
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     if os.path.isfile(inpro):
         otime = os.path.getmtime(inpro)  # time of SP input file
@@ -155,7 +168,7 @@ else:
 # Can be an expensive calculation
 # Collect stats on time vs bfns
 nprob['sp_out'] = 0
-curbuf = []
+listpro = [] # list of lists [inpro, outpro, xmlpro]
 sortidx = []  # predictor of execution time
 bfnl = []; cpul = []; walll = []; ztotl = []; gbfnl = []
 print('Checking output files for single-point (SP) energy')
@@ -173,14 +186,16 @@ for gjf in gjfs:
         if not otime:
             print(f'\t{outpro} does not exist')
             nprob['sp_out'] += 1
-            curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro}  \t# output file is missing')
+            listpro.append( [inpro, outpro, xmlpro] )
+            #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
             sortidx.append(nbfG[gjf])
         else:
             # output does exist
             if otime < mtime:
                 print(f'\t{outpro} is older than its input')
                 nprob['sp_out'] += 1
-                curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro} \t# output is older than input')
+                listpro.append( [inpro, outpro, xmlpro] )
+                #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
                 sortidx.append(nbfG[gjf])
             else:
                 # files externally look OK; is there a final energy?
@@ -199,18 +214,25 @@ for gjf in gjfs:
                 if not energy:
                     print(f'\t{outpro} is lacking a final energy')
                     nprob['sp_out'] += 1
-                    curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro} \t# output lacked a final energy')
+                    listpro.append( [inpro, outpro, xmlpro] )
+                    #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
                     sortidx.append(nbfG[gjf])
     else:
         print(f'\tno input file for {outpro}')
         nprob['sp_out'] += 1
-        curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro}  \t# depends upon prior input creation')
+        listpro.append( [inpro, outpro, xmlpro] )
+        #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
         sortidx.append(nbfG[gjf])
 if not nprob['sp_out']:
     print()
 else:
     # sort the commands by expected increasing order of execution time
-    curbuf = [curbuf[i] for i in np.argsort(sortidx)]
+    curbuf = []
+    for i in np.argsort(sortidx):
+        if sortidx[i] != 9999:
+            # 9999 is dummy value representing 'no value'
+            curbuf = invoke_molpro(curbuf, *listpro[i])
+    #curbuf = [curbuf[i] for i in np.argsort(sortidx)]
     fixbuf += curbuf + ['']
 
 if False:
@@ -237,15 +259,19 @@ print('Checking summary YAML files')
 for gjf in gjfs:
     outpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.pro')
     fyml = gjf.replace(GDIR, DATA).replace('.gjf', '.yml')
+    molname = fyml.split(os.sep)[-1].replace('.yml', '')
     if os.path.isfile(outpro):
         # SP energy file exists
         mtime = os.path.getmtime(outpro)
         if os.path.isfile(fyml):
             otime = os.path.getmtime(fyml)
+            if otime < mtime:
+                print(f'\t{fyml} is older than its data')
+                nprob['yaml'] += 1
+                curbuf.append(f'./molec_yaml.py {molname}  \t# file is older than its data')
         else:
             print(f'\t{fyml} does not exist')
             nprob['yaml'] += 1
-            molname = fyml.split(os.sep)[-1].replace('.yml', '')
             curbuf.append(f'./molec_yaml.py {molname}  \t# data file was missing')
     else:
         print(f'\tno SP energy {outpro}')
@@ -281,7 +307,7 @@ if noname:
         print(f'\t{molec}')
 nodata = glossary - set(molecs_gjf)
 if nodata:
-    print('Some molecular defined molecules are missing data:')
+    print('Some defined molecules are missing data:')
     for molec in nodata:
         print(f'\t{molec}')
 

@@ -20,6 +20,8 @@ import chem_subs as chem
 
 MDAT = 'molec_data'  # name of directory with molecular YAML files
 REFDAT = 'refdata'   # name of directory with reference data
+EDIR = 'energysp'    # directory with single-point CCSD(T)-F12 energy files
+GDIR = 'geomfreq'    # directory with geom/freq files
 
 # elements with gas-phase molecules to use for thermochemistry
 ELEMENT_MOLECULE = {'H': 'H2', 'O': 'O2', 'N': 'N2', 'F': 'F2', 'P': 'P4', 
@@ -105,6 +107,10 @@ def read_molec_yaml(molec):
         if 'False.yml' in f:
             print("\tNitric oxide requires quotes ('no') or the YAML parser will call it 'False'")
         data = None
+    # Functional group dict value must be converted from str to list of tuple
+    fdict = data.get('Functional_groups', {})
+    for fgrp, datstr in fdict.items():
+        data['Functional_groups'][fgrp] = list(eval(datstr))
     return data
 
 def read_all_molec_yamls(ydir=None):
@@ -194,12 +200,6 @@ def generate_reactions(target, moldata, Gdict, Benson=False, verbose=True):
     rx = reaction_bond_separation(target, G)  # only one
     rxns.append(rx)
     if verbose:
-        print('Isomerization...', end='')
-    rx = reaction_isomerization(target, Gdict)  # could be many
-    if verbose:
-        print(f'({len(rx)})...', end='')
-    rxns.append(rx)
-    if verbose:
         print('Hydration...', end='')
     rx = reaction_hydration(target, Gdict)  # only one
     rxns.append(rx)
@@ -224,15 +224,21 @@ def generate_reactions(target, moldata, Gdict, Benson=False, verbose=True):
     rx = reaction_to_elements(target, Gdict)  # only one bad reaction
     rxns.append(rx)
     if verbose:
+        print('Isomerization...', end='')
+    rx = reaction_isomerization(target, Gdict)  # list of reactions
+    if verbose:
+        print(f'({len(rx)})...', end='')
+    rxns.extend(rx)
+    if verbose:
         print('Decomposition...', end='')
-    rx = reaction_decompose(target, Gdict)
+    rx = reaction_decompose(target, Gdict)  # list of reactions
     crx = cull_too_similar_reactions(target, rx, moldata, Gdict, disjoint=True)
     if verbose:
         print(f'({len(crx)})...', end='')
     rxns.extend(crx)
     if verbose:
-        print('Balancing functional groups...')
-    rx = reaction_functional_group_bal(target, moldata, Gdict, verbose=verbose)
+        print('Balancing functional groups...', end='')
+    rx = reaction_functional_group_bal(target, moldata, Gdict, verbose=False)
     rxns.extend(rx)
     if verbose:
         print(f'({len(rx)})...', end='')
@@ -799,11 +805,11 @@ def reaction_string(rxn):
     s = ' = '.join([lhs, rhs])
     return s
         
-def build_reactions_DF(rxns, moldata, target):
+def build_reactions_DF(rxns, moldata, target, verbose=False):
     # given a list of reactions, return a DataFrame
     # with computed and exptl thermo (T=0) for analysis
     exptl = select_expt(moldata, T=0)  # selected exptl data
-    okrx = rxn_with_expt(rxns, target, exptl)   # useable reactions
+    okrx = rxn_with_expt(rxns, target, exptl, verbose=verbose)   # useable reactions
     eq6sum, uexp = eq6_sums(okrx, target, exptl)  # exptl sums needed to compute EoF
     calcH, calcS = eq5_sums(okrx, target, moldata)  # slow step
     eof = [s5 - s6 for s5, s6 in zip(calcH, eq6sum)]
@@ -2219,7 +2225,7 @@ def Benson_bonds_table(target, Gdict, detail=2, warn=True):
         df.loc[len(df)] = row
     return df
 
-def rxn_with_expt(rxin, target, exptl):
+def rxn_with_expt(rxin, target, exptl, verbose=False):
     '''
     Return a list of those reactions for which
       exptl thermo data are available.
@@ -2232,6 +2238,7 @@ def rxn_with_expt(rxin, target, exptl):
     rxns = []
     for rx in rxin:
         ok = True
+        badmolec = []
         for pair in rx:
             molec = pair[0]
             try:
@@ -2239,8 +2246,12 @@ def rxn_with_expt(rxin, target, exptl):
                 unc = exptl[molec]['unc']
             except KeyError:
                 ok = False
+                badmolec.append(molec)
         if ok:
             rxns.append(rx)
+        else:
+            if verbose:
+                print(f'Lacking exptl data for {badmolec} in reaction {rx}')
     return rxns
 
 def MCexp(exptl):
@@ -2414,3 +2425,14 @@ def read_reference_state_data(element):
     fpath = os.sep.join([REFDAT, fname])
     df = pd.read_csv(fpath, sep='\t', comment='#')
     return df
+
+def compress_CASRN(strcas):
+    # Return a string of digits (only), extracted from input string
+    # Actual CASRN also contains hyphens
+    # ATcT identifier has trailing '*0' or similar
+    s = strcas.split('*')[0]
+    ccas = ''
+    for c in s:
+        if c in '0123456789':
+            ccas += c
+    return ccas

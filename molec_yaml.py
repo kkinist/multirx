@@ -148,7 +148,7 @@ if natom > 1:
 atlist = [x[0] for x in geom['coordinates']]
 formula = chem.formula(atlist)
 print('formula:', formula)
-hill = chem.formula(atlist, Hill=True)  # Hill convention
+hill = chem.formula(atlist, Hill=True)[0]  # Hill convention
 
 
 # collect identifiers
@@ -475,6 +475,16 @@ energy['software'] = 'Molpro Version ' + mpr.molpro_version(fpro)
 doc['Energy'] = energy
 doc['Electronic'] = elec
 
+# Detect functional groups
+G = chem.Geometry(geom['coordinates'])
+G.spinmult = doc['Spin_mult']
+fungroups = G.find_functional_group('all', spin=True)
+doc['Functional_groups'] = {}
+# yaml cannot handle tuples, so convert to string
+#    [can convert back using eval()]
+for grp, atoms in fungroups.items():
+    print(f'    {grp:<15s}  {atoms}')
+    doc['Functional_groups'][grp] = str(atoms)  # convert list of tuples to string
 
 # Look for computations of torsional barriers
 ftors = glob.glob(f'./rotors/{molec}_*TS_*.out')
