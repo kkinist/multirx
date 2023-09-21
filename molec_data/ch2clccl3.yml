@@ -6,6 +6,7 @@ Energy:
   HF: -1915.001322760316
   basis: CC-PVTZ-F12
   basis_functions: 390
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 106.1408
@@ -27,48 +28,8 @@ Frequencies:
 - 3104.3844
 - 3169.8601
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 5
+  C-C: '[(0, 1)]'
+  chloro: '[(1, 2), (0, 3), (0, 4), (0, 5)]'
 Geometry:
   E_scf: -1918.37941383
   basis_functions: 224
@@ -109,12 +70,13 @@ Geometry:
     - -0.890162
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 630-20-6*0
   CASRN: 630-20-6
-  Hill: C2H2Cl4
+  Hill: C
   IUPAC: 1,1,1,2-TETRACHLOROETHANE
   InChI: 1S/C2H2Cl4/c3-1-2(4,5)6/h1H2
   WebBook: C630206
@@ -148,22 +110,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -1916.3177815323988
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 98.26362
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

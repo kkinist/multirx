@@ -6,6 +6,7 @@ Energy:
   HF: -133.129561567153
   basis: CC-PVTZ-F12
   basis_functions: 249
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 354.9515
@@ -27,49 +28,10 @@ Frequencies:
 - 3565.3251
 - 3669.8864
 Functional_groups:
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  NH2:
-  - !!python/tuple
-    - 2
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BgAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-  amine:
-  - !!python/tuple
-    - 2
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - *id002
-    - *id003
-  primary amine:
-  - !!python/tuple
-    - 2
-    - *id004
-    - *id002
-    - *id003
+  C=C: '[(0, 1)]'
+  NH2: '[(2, 6, 7)]'
+  amine: '[(2, 1, 6, 7)]'
+  primary amine: '[(2, 1, 6, 7)]'
 Geometry:
   E_scf: -134.011577166
   basis_functions: 160
@@ -110,11 +72,12 @@ Geometry:
     - 0.321218
   e-state: 1A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 593-67-9
-  Hill: C2H5N
+  Hill: C
   IUPAC: Ethenamine
   InChI: 1S/C2H5N/c1-2-3/h2H,1,3H2
   formula: C2H5N
@@ -130,22 +93,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -133.70280881232765
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 176.86746
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

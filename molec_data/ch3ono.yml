@@ -6,6 +6,7 @@ Energy:
   HF: -243.77703928071
   basis: CC-PVTZ-F12
   basis_functions: 266
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 176.2346
@@ -24,45 +25,8 @@ Frequencies:
 - 3117.4181
 - 3165.3386
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-  nitrite:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 5
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
+  methyl: '[(0, 2, 3, 4)]'
+  nitrite: '[(1, 5, 6)]'
 Geometry:
   E_scf: -245.114084696
   basis_functions: 162
@@ -99,12 +63,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 624-91-9*0
-  CASRN: '624919'
-  Hill: CH3NO2
+  CASRN: 624-91-9
+  Hill: C
   IUPAC: Methyl nitrite
   InChI: 1S/CH3NO2/c1-4-2-3/h1H3
   WebBook: C624919
@@ -137,22 +102,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -244.71726176574478
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 123.9847
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

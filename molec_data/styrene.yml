@@ -6,6 +6,7 @@ Energy:
   HF: -307.706143040311
   basis: CC-PVTZ-F12
   basis_functions: 568
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 39.4544
@@ -51,50 +52,9 @@ Frequencies:
 - 3196.0932
 - 3228.9894
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 6
-  C=C:
-  - !!python/tuple
-    - 6
-    - 7
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
+  C-C: '[(0, 6)]'
+  C=C: '[(6, 7)]'
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
 Geometry:
   E_scf: -309.768711938
   basis_functions: 352
@@ -167,12 +127,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 100-42-5*0
-  CASRN: '100425'
-  Hill: C8H8
+  CASRN: 100-42-5
+  Hill: C
   IUPAC: Ethenylbenzene
   InChI: 1S/C8H8/c1-2-8-6-4-3-5-7-8/h2-7H,1H2
   WebBook: C100425
@@ -205,22 +166,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 16
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -309.0466733150861
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 342.65602
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

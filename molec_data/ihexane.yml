@@ -6,6 +6,7 @@ Energy:
   HF: -235.461197227568
   basis: CC-PVTZ-F12
   basis_functions: 570
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 73.2756
@@ -63,78 +64,8 @@ Frequencies:
 - 3086.9448
 - 3089.0467
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 0
-    - 10
-  - !!python/tuple
-    - 10
-    - 13
-  - !!python/tuple
-    - 13
-    - 16
-  methyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-  - !!python/tuple
-    - 16
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        EQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        EgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        EwAAAAAAAAA=
+  C-C: '[(0, 1), (0, 2), (0, 10), (10, 13), (13, 16)]'
+  methyl: '[(1, 4, 5, 6), (2, 7, 8, 9), (16, 17, 18, 19)]'
 Geometry:
   E_scf: -237.180121419
   basis_functions: 376
@@ -223,18 +154,37 @@ Geometry:
     - 0.880462
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: ''
-  Hill: C6H14
+  ATcT: 107-83-5*0
+  CASRN: 107-83-5
+  Hill: C
   IUPAC: 2-Methylpentane
   InChI: 1S/C6H14/c1-4-5-6(2)3/h6H,4-5H2,1-3H3
+  WebBook: C107835
   formula: C6H14
   local_label: ihexane
   names:
+    ATcT: iso-Hexane
+    WebBook: Pentane, 2-methyl-
     local: 2-methylpentane
-Refdata: {}
+Refdata:
+  ATcT:
+    ATcT_version: 1.122r
+    EoF0: -134.63
+    EoF298: -173.88
+    k_cover: 2.0
+    unc: 0.84
+    unit: kJ/mol
+  WebBook:
+    EoF298: -174.30544
+    comment: Ccb
+    k_cover: 2.0
+    source: 1945PRO/ROS263-267
+    unc: 1.046
+    unit: kJ/mol
 Rotational:
   A: 5.8486015
   B: 1.8291289
@@ -243,22 +193,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 20
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -236.54138898265876
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 483.88382
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

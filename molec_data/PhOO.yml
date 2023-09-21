@@ -19,6 +19,7 @@ Energy:
   HF: -379.865318325679
   basis: CC-PVTZ-F12
   basis_functions: 514
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 86.3194
@@ -55,44 +56,9 @@ Frequencies:
 - 3205.3758
 - 3231.1526
 Functional_groups:
-  2S:
-  - 0
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 2
-    - 3
-  - !!python/tuple
-    - 4
-    - 5
-  peroxide:
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BwAAAAAAAAA=
-  - !!python/tuple
-    - 7
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
+  2S: '[0]'
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
+  peroxide: '[(6, 7), (7, 6)]'
 Geometry:
   E_scf: -382.110552588
   basis_functions: 310
@@ -153,12 +119,13 @@ Geometry:
     - 0.0
   e-state: 2A"
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 91422-02-5*0
   CASRN: 91422-02-5
-  Hill: C6H5O2
+  Hill: C
   IUPAC: Conversion failed
   formula: C6H5O2
   local_label: PhOO
@@ -181,22 +148,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -381.37892714513447
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 246.63464
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

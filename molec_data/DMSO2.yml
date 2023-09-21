@@ -6,6 +6,7 @@ Energy:
   HF: -626.587920250154
   basis: CC-PVTZ-F12
   basis_functions: 382
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 172.0215
@@ -36,67 +37,8 @@ Frequencies:
 - 3161.4531
 - 3165.8734
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-  - !!python/tuple
-    - 4
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-  sulfone:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
+  methyl: '[(3, 5, 7, 8), (4, 6, 9, 10)]'
+  sulfone: '[(0, 3, 4, 1, 2)]'
 Geometry:
   E_scf: -628.581385388
   basis_functions: 238
@@ -149,11 +91,12 @@ Geometry:
     - -1.524637
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 67-71-0
-  Hill: C2H6O2S
+  Hill: C
   IUPAC: Methylsulfonylmethane
   InChI: 1S/C2H6O2S/c1-5(2,3)4/h1-2H3
   WebBook: C67710
@@ -185,22 +128,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 11
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -627.7066853324526
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 218.55078
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

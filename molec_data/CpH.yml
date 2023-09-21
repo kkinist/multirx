@@ -6,6 +6,7 @@ Energy:
   HF: -192.869978825071
   basis: CC-PVTZ-F12
   basis_functions: 373
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 351.6216
@@ -36,23 +37,8 @@ Frequencies:
 - 3222.7266
 - 3228.868
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 6
-    - 8
-  - !!python/tuple
-    - 7
-    - 8
-  - !!python/tuple
-    - 9
-    - 10
-  C=C:
-  - !!python/tuple
-    - 6
-    - 9
-  - !!python/tuple
-    - 7
-    - 10
+  C-C: '[(6, 8), (7, 8), (9, 10)]'
+  C=C: '[(6, 9), (7, 10)]'
 Geometry:
   E_scf: -194.179743603
   basis_functions: 234
@@ -105,12 +91,13 @@ Geometry:
     - -0.987693
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 542-92-7*0
-  CASRN: '542927'
-  Hill: C5H6
+  CASRN: 542-92-7
+  Hill: C
   IUPAC: Conversion failed
   InChI: 1S/C5H6/c1-2-4-5-3-1/h1-4H,5H2
   WebBook: C542927
@@ -143,22 +130,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 11
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -193.7196751884266
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 237.62354000000002
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,6 +6,7 @@ Energy:
   HF: -230.79389556787
   basis: CC-PVTZ-F12
   basis_functions: 426
+  nirreps: 8
   software: Molpro Version 2021.3
 Frequencies:
 - 413.2265
@@ -39,42 +40,7 @@ Frequencies:
 - 3187.6838
 - 3197.5171
 Functional_groups:
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
 Geometry:
   E_scf: -232.339846625
   basis_functions: 264
@@ -131,12 +97,13 @@ Geometry:
     - 0.0
   e-state: 1A1G
   nimag: 0
+  nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 71-43-2*0
-  CASRN: '71432'
-  Hill: C6H6
+  CASRN: 71-43-2
+  Hill: C
   IUPAC: BENZENE
   InChI: 1S/C6H6/c1-2-4-6-5-3-1/h1-6H
   WebBook: C71432
@@ -171,22 +138,3 @@ Rotational:
   symmetry_number: 12
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -231.7955902617305
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 258.54066
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

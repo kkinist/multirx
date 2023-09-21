@@ -6,6 +6,7 @@ Energy:
   HF: -435.848211816684
   basis: CC-PVTZ-F12
   basis_functions: 265
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 428.0803
@@ -18,44 +19,7 @@ Frequencies:
 - 1246.7602
 - 1246.7602
 Functional_groups:
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
+  fluoro: '[(0, 1), (0, 2), (0, 3), (0, 4)]'
 Geometry:
   E_scf: -437.68166952
   basis_functions: 150
@@ -84,27 +48,28 @@ Geometry:
     - -0.765608
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 75-73-0*0
-  CASRN: '75730'
-  Hill: CF4
+  ATcT: 7440-44-0*0
+  CASRN: 75-73-0
+  Hill: C
   IUPAC: Tetrafluoromethane
   WebBook: C75730
   formula: CF4
   local_label: cf4
   names:
-    ATcT: Tetrafluoromethane
+    ATcT: Carbon
     WebBook: Tetrafluoromethane
     local: carbon tetrafluoride
 Refdata:
   ATcT:
     ATcT_version: 1.122r
-    EoF0: -927.5
-    EoF298: -933.47
+    EoF0: 711.398
+    EoF298: 716.883
     k_cover: 2.0
-    unc: 0.25
+    unc: 0.045
     unit: kJ/mol
   WebBook:
     EoF298: -933.2
@@ -121,22 +86,3 @@ Rotational:
   symmetry_number: 12
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -437.17936174044655
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 43.1494
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

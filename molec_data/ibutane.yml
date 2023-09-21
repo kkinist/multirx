@@ -6,6 +6,7 @@ Energy:
   HF: -157.365157967503
   basis: CC-PVTZ-F12
   basis_functions: 392
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 213.7496
@@ -45,72 +46,8 @@ Frequencies:
 - 3086.7815
 - 3086.7815
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 0
-    - 3
-  - !!python/tuple
-    - 0
-    - 4
-  methyl:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
-  - !!python/tuple
-    - 4
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DQAAAAAAAAA=
+  C-C: '[(0, 2), (0, 3), (0, 4)]'
+  methyl: '[(2, 5, 8, 9), (3, 6, 10, 11), (4, 7, 12, 13)]'
 Geometry:
   E_scf: -158.525641934
   basis_functions: 260
@@ -175,12 +112,13 @@ Geometry:
     - 0.264143
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-28-5*0
   CASRN: 75-28-5
-  Hill: C4H10
+  Hill: C
   IUPAC: 2-Methylpropane
   InChI: 1S/C4H10/c1-4(2)3/h4H,1-3H3
   WebBook: C75285
@@ -213,22 +151,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 14
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -158.08960517671522
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 337.0661
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

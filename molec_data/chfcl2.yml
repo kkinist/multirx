@@ -6,6 +6,7 @@ Energy:
   HF: -1056.982543347
   basis: CC-PVTZ-F12
   basis_functions: 248
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 271.3096
@@ -18,39 +19,8 @@ Frequencies:
 - 1332.999
 - 3151.0356
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
+  chloro: '[(0, 3), (0, 4)]'
+  fluoro: '[(0, 2)]'
 Geometry:
   E_scf: -1059.07392649
   basis_functions: 142
@@ -79,12 +49,13 @@ Geometry:
     - -1.473045
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-43-4*0
-  CASRN: '75434'
-  Hill: CHCl2F
+  CASRN: 75-43-4
+  Hill: C
   IUPAC: dichloro-fluoromethane
   InChI: 1S/CHCl2F/c2-1(3)4/h1H
   WebBook: C75434
@@ -117,22 +88,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -1057.9300127731492
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 54.998580000000004
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

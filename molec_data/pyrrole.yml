@@ -6,6 +6,7 @@ Energy:
   HF: -208.898310123379
   basis: CC-PVTZ-F12
   basis_functions: 355
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 484.4207
@@ -33,51 +34,10 @@ Frequencies:
 - 3270.0561
 - 3674.4882
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 2
-    - 4
-  - !!python/tuple
-    - 3
-    - 5
-  C=C:
-  - !!python/tuple
-    - 4
-    - 5
-  amine:
-  - !!python/tuple
-    - 0
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-  secondary amine:
-  - !!python/tuple
-    - 0
-    - *id002
-    - *id003
-    - *id004
+  C-C: '[(4, 5)]'
+  C=C: '[(4, 5)]'
+  amine: '[(0, 2, 3, 1)]'
+  secondary amine: '[(0, 2, 3, 1)]'
 Geometry:
   E_scf: -210.256216687
   basis_functions: 220
@@ -126,11 +86,12 @@ Geometry:
     - -1.841665
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: '109977'
-  Hill: C4H5N
+  CASRN: 109-97-7
+  Hill: C
   IUPAC: 1H-Pyrrole
   InChI: 1S/C4H5N/c1-2-4-5-3-1/h1-5H
   WebBook: C109977
@@ -162,22 +123,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 10
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -209.79575894315582
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 212.1651
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

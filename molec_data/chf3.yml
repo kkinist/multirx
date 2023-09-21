@@ -6,6 +6,7 @@ Energy:
   HF: -336.932649690108
   basis: CC-PVTZ-F12
   basis_functions: 230
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 500.9764
@@ -18,38 +19,7 @@ Frequencies:
 - 1389.641
 - 3123.3996
 Functional_groups:
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
+  fluoro: '[(0, 2), (0, 3), (0, 4)]'
 Geometry:
   E_scf: -338.390772963
   basis_functions: 134
@@ -78,12 +48,13 @@ Geometry:
     - -0.128329
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-46-7*0
-  CASRN: '75467'
-  Hill: CHF3
+  CASRN: 75-46-7
+  Hill: C
   IUPAC: Fluoroform
   WebBook: C75467
   formula: CHF3
@@ -115,22 +86,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -337.97864687818486
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 64.47126
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

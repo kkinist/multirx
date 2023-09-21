@@ -6,6 +6,7 @@ Energy:
   HF: -173.344716339884
   basis: CC-PVTZ-F12
   basis_functions: 374
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 255.3117
@@ -42,83 +43,9 @@ Frequencies:
 - 3098.5455
 - 3098.5455
 Functional_groups:
-  amine:
-  - !!python/tuple
-    - 0
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DAAAAAAAAAA=
-  tertiary amine:
-  - !!python/tuple
-    - 0
-    - *id002
-    - *id003
-    - *id004
+  amine: '[(0, 1, 2, 3)]'
+  methyl: '[(1, 4, 7, 8), (2, 5, 9, 10), (3, 6, 11, 12)]'
+  tertiary amine: '[(0, 1, 2, 3)]'
 Geometry:
   E_scf: -174.548277404
   basis_functions: 246
@@ -179,12 +106,13 @@ Geometry:
     - 0.330795
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-50-3*0
   CASRN: 75-50-3
-  Hill: C3H9N
+  Hill: C
   IUPAC: N,N-dimethylmethanamine
   InChI: 1S/C3H9N/c1-4(2)3/h1-3H3
   WebBook: C75503
@@ -217,22 +145,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -174.11440792265222
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 308.09828000000005
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

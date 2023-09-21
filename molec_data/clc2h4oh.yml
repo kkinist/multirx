@@ -6,6 +6,7 @@ Energy:
   HF: -613.096202539776
   basis: CC-PVTZ-F12
   basis_functions: 311
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 117.1035
@@ -30,45 +31,10 @@ Frequencies:
 - 3156.6925
 - 3843.6024
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  alcohol:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 2
-  hydroxyl:
-  - !!python/tuple
-    - 3
-    - *id002
+  C-C: '[(0, 1)]'
+  alcohol: '[(0, 3, 8)]'
+  chloro: '[(1, 2)]'
+  hydroxyl: '[(3, 8)]'
 Geometry:
   E_scf: -614.746293984
   basis_functions: 194
@@ -113,12 +79,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 107-07-3*0
   CASRN: 107-07-3
-  Hill: C2H5ClO
+  Hill: C
   InChI: 1S/C2H5ClO/c3-1-2-4/h4H,1-2H2
   formula: C2H5ClO
   local_label: clc2h4oh
@@ -141,22 +108,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 9
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -613.9574977364277
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 183.30017999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

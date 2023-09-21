@@ -6,6 +6,7 @@ Energy:
   HF: -212.848938728173
   basis: CC-PVTZ-F12
   basis_functions: 177
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 663.9919
@@ -15,33 +16,8 @@ Frequencies:
 - 1886.6201
 - 3086.5056
 Functional_groups:
-  carbonyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
+  carbonyl: '[(0, 1)]'
+  fluoro: '[(0, 2)]'
 Geometry:
   E_scf: -213.865084262
   basis_functions: 104
@@ -66,12 +42,13 @@ Geometry:
     - -0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 1493-02-3*0
-  CASRN: '1493023'
-  Hill: CHFO
+  CASRN: 1493-02-3
+  Hill: C
   IUPAC: FORMYL FLUORIDE
   InChI: 1S/CHFO/c2-1-3/h1H
   WebBook: C1493023
@@ -104,22 +81,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -213.56956625261287
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 53.31298
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

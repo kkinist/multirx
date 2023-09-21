@@ -6,6 +6,7 @@ Energy:
   HF: -374.750949668908
   basis: CC-PVTZ-F12
   basis_functions: 283
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 235.1735
@@ -21,42 +22,8 @@ Frequencies:
 - 1823.8632
 - 3251.2908
 Functional_groups:
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 4
+  C=C: '[(0, 1)]'
+  fluoro: '[(0, 2), (0, 3), (1, 4)]'
 Geometry:
   E_scf: -376.452643045
   basis_functions: 164
@@ -89,12 +56,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 359-11-5*0
-  CASRN: '359115'
-  Hill: C2HF3
+  CASRN: 359-11-5
+  Hill: C
   IUPAC: 1,1,2-trifluoroethene
   InChI: 1S/C2HF3/c3-1-2(4)5/h1H
   WebBook: C359115
@@ -127,22 +95,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -375.9595024797917
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 75.23068
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

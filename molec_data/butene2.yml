@@ -6,6 +6,7 @@ Energy:
   HF: -156.177301477963
   basis: CC-PVTZ-F12
   basis_functions: 356
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 176.0865
@@ -39,59 +40,9 @@ Frequencies:
 - 3111.7667
 - 3121.4893
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 1
-    - 3
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  methyl:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
+  C-C: '[(0, 2), (1, 3)]'
+  C=C: '[(0, 1)]'
+  methyl: '[(2, 6, 8, 9), (3, 7, 10, 11)]'
 Geometry:
   E_scf: -157.294204122
   basis_functions: 232
@@ -148,11 +99,12 @@ Geometry:
     - -0.876252
   e-state: 1AG
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 107-01-7
-  Hill: C4H8
+  Hill: C
   IUPAC: Conversion failed
   InChI: 1S/C4H8/c1-3-4-2/h3-4H,1-2H3
   formula: C4H8
@@ -168,22 +120,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -156.88085308031498
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 276.6148
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

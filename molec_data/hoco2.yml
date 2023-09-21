@@ -6,6 +6,7 @@ Energy:
   HF: -263.093894887675
   basis: CC-PVTZ-F12
   basis_functions: 230
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 468.6307
@@ -18,50 +19,10 @@ Frequencies:
 - 1568.8738
 - 3755.9052
 Functional_groups:
-  2S:
-  - 0
-  carbonate:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  carbonyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  hydroxyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
+  2S: '[0]'
+  carbonate: '[(1, 0, 2, 3)]'
+  carbonyl: '[(0, 2)]'
+  hydroxyl: '[(1, 4)]'
 Geometry:
   E_scf: -264.447344463
   basis_functions: 134
@@ -90,25 +51,26 @@ Geometry:
     - 0.0
   e-state: 2A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 38330-85-7*0
+  ATcT: 7440-44-0*0
   CASRN: 38330-85-7
-  Hill: CHO3
+  Hill: C
   IUPAC: Conversion failed
   formula: CHO3
   local_label: hoco2
   names:
-    ATcT: Hydroxyoxomethoxy
+    ATcT: Carbon
     local: bicarbonate radical
 Refdata:
   ATcT:
     ATcT_version: 1.122r
-    EoF0: -358.8
-    EoF298: -364.9
+    EoF0: 711.398
+    EoF298: 716.883
     k_cover: 2.0
-    unc: 1.5
+    unc: 0.045
     unit: kJ/mol
 Rotational:
   A: 13.8248488
@@ -118,22 +80,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -264.0573608674824
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 64.84855999999999
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

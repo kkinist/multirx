@@ -6,100 +6,50 @@ Energy:
   HF: -156.727979315745
   basis: CC-PVTZ-F12
   basis_functions: 374
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 122.6701
-- 227.9756
-- 252.4866
-- 360.5341
-- 374.6794
-- 412.5834
-- 547.7413
-- 810.6228
-- 905.7952
-- 947.2526
-- 967.1271
-- 981.9753
-- 1090.0467
-- 1179.9025
-- 1204.9937
-- 1316.9857
-- 1326.3315
-- 1398.4483
-- 1413.6554
-- 1466.8172
-- 1487.7784
-- 1491.3243
-- 1501.7902
-- 1509.3354
-- 2896.829
-- 3022.908
-- 3026.8929
-- 3085.6147
-- 3089.4825
-- 3090.0984
-- 3092.3802
-- 3136.2398
-- 3235.9369
+- 122.3086
+- 227.974
+- 252.4899
+- 360.5363
+- 374.6812
+- 412.6118
+- 547.748
+- 810.6235
+- 905.8001
+- 947.2548
+- 967.1315
+- 981.9828
+- 1090.0523
+- 1179.9044
+- 1204.9943
+- 1316.9877
+- 1326.3341
+- 1398.4488
+- 1413.6589
+- 1466.8196
+- 1487.7846
+- 1491.3215
+- 1501.7932
+- 1509.3393
+- 2896.8333
+- 3022.9065
+- 3026.8959
+- 3085.6105
+- 3089.4841
+- 3090.1068
+- 3092.3853
+- 3136.2428
+- 3235.9396
 Functional_groups:
-  2S:
-  - 0
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 0
-    - 5
-  - !!python/tuple
-    - 0
-    - 6
-  methyl:
-  - !!python/tuple
-    - 5
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DAAAAAAAAAA=
+  2S: '[0]'
+  C-C: '[(0, 1), (0, 5), (0, 6)]'
+  methyl: '[(5, 7, 8, 9), (6, 10, 11, 12)]'
 Geometry:
   E_scf: -157.853218977
   basis_functions: 246
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: iso-butyl, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -156,12 +106,13 @@ Geometry:
     - 2.16698
   e-state: 2A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 4630-45-9*0
   CASRN: 4630-45-9
-  Hill: C4H9
+  Hill: C
   IUPAC: Conversion failed
   WebBook: C4630459
   formula: C4H9
@@ -193,22 +144,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -157.43015860193188
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 298.80199999999996
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

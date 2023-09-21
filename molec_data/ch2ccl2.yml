@@ -6,6 +6,7 @@ Energy:
   HF: -995.944337977169
   basis: CC-PVTZ-F12
   basis_functions: 266
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 297.6199
@@ -21,36 +22,8 @@ Frequencies:
 - 3173.4012
 - 3267.1968
 Functional_groups:
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 4
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 5
+  C=C: '[(0, 1)]'
+  chloro: '[(1, 4), (1, 5)]'
 Geometry:
   E_scf: -997.892119513
   basis_functions: 156
@@ -83,12 +56,13 @@ Geometry:
     - -0.517791
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-35-4*0
   CASRN: 75-35-4
-  Hill: C2H2Cl2
+  Hill: C
   IUPAC: 1,1-Dichloroethene
   InChI: 1S/C2H2Cl2/c1-2(3)4/h1H2
   WebBook: C75354
@@ -122,22 +96,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -996.7668193994385
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 86.32133999999999
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -1,187 +1,119 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -232.171082841911
-  CCSD-F12b: -232.129607427906
-  HF: -231.097776712355
+  CCSD(T)-F12b: -232.171082934183
+  CCSD-F12b: -232.129607698246
+  HF: -231.097777397868
   basis: CC-PVTZ-F12
   basis_functions: 409
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 22.52
-- 96.1753
-- 200.6121
-- 247.3468
-- 402.0004
-- 474.4133
-- 589.7659
-- 754.949
-- 760.0989
-- 939.4395
-- 954.3309
-- 1000.3311
-- 1106.7898
-- 1134.0891
-- 1187.6212
-- 1285.4843
-- 1370.5708
-- 1387.7252
-- 1419.412
-- 1452.3707
-- 1467.0163
-- 1477.8029
-- 1492.8867
-- 1500.4695
-- 1781.5615
-- 3012.518
-- 3034.3635
-- 3035.4649
-- 3046.7736
-- 3088.9874
-- 3109.305
-- 3116.4954
-- 3142.3655
+- 21.9992
+- 96.152
+- 200.5866
+- 247.3414
+- 402.0068
+- 474.403
+- 589.7638
+- 754.9576
+- 760.0831
+- 939.4358
+- 954.3252
+- 1000.338
+- 1106.7836
+- 1134.0958
+- 1187.6232
+- 1285.4866
+- 1370.5651
+- 1387.7256
+- 1419.4115
+- 1452.369
+- 1467.0203
+- 1477.8066
+- 1492.8906
+- 1500.4624
+- 1781.5973
+- 3012.539
+- 3034.3862
+- 3035.4878
+- 3046.7819
+- 3089.0131
+- 3109.3073
+- 3116.5187
+- 3142.3526
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 1
-    - 2
-  - !!python/tuple
-    - 2
-    - 3
-  carbonyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-  ketone:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
+  C-C: '[(0, 1), (1, 2), (2, 3)]'
+  carbonyl: '[(1, 4)]'
+  ketone: '[(0, 1, 4, 2)]'
+  methyl: '[(0, 5, 6, 7), (3, 8, 9, 10)]'
 Geometry:
-  E_scf: -232.569505362
+  E_scf: -232.569505375
   basis_functions: 262
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: 2-butanone, B3LYP/pcseg-2
   coordinates:
   - - C
-    - 1.883253
-    - -0.506823
-    - 0.015115
+    - 1.883246
+    - -0.506824
+    - 0.015032
   - - C
     - 0.528417
-    - 0.170488
-    - -0.00891
+    - 0.170491
+    - -0.008854
   - - C
-    - -0.683409
-    - -0.747401
-    - -0.026564
+    - -0.683413
+    - -0.747407
+    - -0.026408
   - - C
     - -2.020335
-    - -0.020912
-    - 0.021638
+    - -0.020904
+    - 0.021509
   - - O
-    - 0.422043
-    - 1.375079
-    - -0.010006
+    - 0.422053
+    - 1.375077
+    - -0.009948
   - - H
-    - 2.672232
-    - 0.235396
-    - -0.0709
+    - 2.672248
+    - 0.235454
+    - -0.070296
   - - H
-    - 2.005144
-    - -1.05716
-    - 0.950857
+    - 2.004954
+    - -1.057894
+    - 0.950359
   - - H
-    - 1.967448
-    - -1.234373
-    - -0.794152
+    - 1.967596
+    - -1.233727
+    - -0.794801
   - - H
-    - -2.844739
-    - -0.733574
-    - 0.000306
+    - -2.84475
+    - -0.733538
+    - -0.00028
   - - H
-    - -2.10781
-    - 0.578217
-    - 0.926976
+    - -2.108125
+    - 0.577998
+    - 0.926967
   - - H
-    - -2.128307
-    - 0.655678
-    - -0.824648
+    - -2.127979
+    - 0.655898
+    - -0.824646
   - - H
-    - -0.605841
-    - -1.369149
-    - -0.925058
+    - -0.605767
+    - -1.369386
+    - -0.924733
   - - H
-    - -0.582027
-    - -1.44778
-    - 0.808999
+    - -0.582089
+    - -1.447558
+    - 0.809349
   e-state: 1A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 78-93-3*0
-  CASRN: '78933'
-  Hill: C4H8O
+  CASRN: 78-93-3
+  Hill: C
   IUPAC: butan-2-one
   InChI: 1S/C4H8O/c1-3-4(2)5/h3H2,1-2H3
   WebBook: C78933
@@ -207,29 +139,10 @@ Refdata:
     unc: 0.8368000000000001
     unit: kJ/mol
 Rotational:
-  A: 9.5860655
-  B: 3.5818805
-  C: 2.7388209
+  A: 9.5861162
+  B: 3.5818925
+  C: 2.7388237
   point_group: C1
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -232.06147959699985
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 287.76328
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

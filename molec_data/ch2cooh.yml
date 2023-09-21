@@ -6,119 +6,73 @@ Energy:
   HF: -227.285600897348
   basis: CC-PVTZ-F12
   basis_functions: 266
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 307.6486
-- 425.4898
-- 544.2713
-- 581.2381
-- 644.4909
-- 781.2572
-- 911.6596
-- 992.4079
-- 1191.4167
-- 1356.0198
-- 1465.1127
-- 1688.6853
-- 3176.5122
-- 3296.8002
-- 3764.3734
+- 307.89
+- 425.4893
+- 544.2942
+- 581.2382
+- 644.5228
+- 781.252
+- 911.6599
+- 992.4082
+- 1191.4145
+- 1356.0224
+- 1465.1128
+- 1688.6877
+- 3176.5112
+- 3296.8015
+- 3764.3735
 Functional_groups:
-  2S:
-  - 0
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  alcohol:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 3
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-  carbonyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  carboxylic acid:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - *id002
-  hydroxyl:
-  - !!python/tuple
-    - 3
-    - *id002
+  2S: '[0]'
+  C=C: '[(0, 1)]'
+  alcohol: '[(1, 3, 4)]'
+  carbonyl: '[(1, 2)]'
+  hydroxyl: '[(3, 4)]'
 Geometry:
   E_scf: -228.524634534
   basis_functions: 162
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: carboxymethyl, B3LYP/pcseg-2
   coordinates:
   - - C
     - 1.331853
     - -0.438529
-    - 0.0
+    - -0.0
   - - C
     - -0.0
     - 0.110986
-    - -0.0
+    - 0.0
   - - O
     - -0.26116
     - 1.297891
-    - -0.0
+    - 0.0
   - - O
     - -0.967855
     - -0.846524
-    - -0.0
+    - 0.0
   - - H
     - -1.818218
     - -0.38691
-    - -0.0
+    - 0.0
   - - H
     - 2.164095
     - 0.245676
-    - 0.0
+    - -0.0
   - - H
     - 1.495127
     - -1.504444
-    - 0.0
+    - -0.0
   e-state: 2A"
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 2887-46-9*0
   CASRN: 2887-46-9
-  Hill: C2H3O2
+  Hill: C
   IUPAC: Conversion failed
   formula: C2H3O2
   local_label: ch2cooh
@@ -141,22 +95,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -228.13416658707638
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 123.8426
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,6 +6,7 @@ Energy:
   HF: -133.120391310774
   basis: CC-PVTZ-F12
   basis_functions: 249
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 219.0836
@@ -27,34 +28,7 @@ Frequencies:
 - 3085.9164
 - 3129.1266
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
+  methyl: '[(0, 1, 2, 3)]'
 Geometry:
   E_scf: -133.999842787
   basis_functions: 160
@@ -95,11 +69,12 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 1761-67-7
-  Hill: C2H5N
+  Hill: C
   IUPAC: N-methylmethanimine
   InChI: 1S/C2H5N/c1-3-2/h1H2,2H3
   WebBook: C1761677
@@ -124,22 +99,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -133.6937321768138
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 174.72616
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

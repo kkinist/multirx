@@ -6,6 +6,7 @@ Energy:
   HF: -230.660095476791
   basis: CC-PVTZ-F12
   basis_functions: 426
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 133.8732
@@ -39,51 +40,9 @@ Frequencies:
 - 3471.618
 - 3472.5445
 Functional_groups:
-  C#C:
-  - !!python/tuple
-    - 1
-    - 3
-  - !!python/tuple
-    - 2
-    - 4
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 0
-    - 5
-  methyl:
-  - !!python/tuple
-    - 5
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
+  C#C: '[(1, 3), (2, 4)]'
+  C-C: '[(0, 1), (0, 2), (0, 5)]'
+  methyl: '[(5, 9, 10, 11)]'
 Geometry:
   E_scf: -232.198389182
   basis_functions: 264
@@ -140,12 +99,13 @@ Geometry:
     - -0.887223
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 57242-04-3*0
   CASRN: 57242-04-3
-  Hill: C6H6
+  Hill: C
   IUPAC: 3-methylpenta-1,4-diyne
   InChI: 1S/C6H6/c1-4-6(3)5-2/h1-2,6H,3H3
   formula: C6H6
@@ -169,22 +129,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -231.66470788196747
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 241.29461999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

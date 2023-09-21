@@ -6,6 +6,7 @@ Energy:
   HF: -40.215790426199
   basis: CC-PVTZ-F12
   basis_functions: 125
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 1340.4023
@@ -18,34 +19,7 @@ Frequencies:
 - 3134.8652
 - 3134.8652
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
+  methyl: '[(0, 1, 2, 3)]'
 Geometry:
   E_scf: -40.5395720801
   basis_functions: 86
@@ -74,12 +48,13 @@ Geometry:
     - -0.62831
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 74-82-8*0
-  CASRN: '74828'
-  Hill: CH4
+  CASRN: 74-82-8
+  Hill: C
   IUPAC: methane
   InChI: 1S/CH4/h1H4
   WebBook: C74828
@@ -112,22 +87,3 @@ Rotational:
   symmetry_number: 12
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -40.410669933111706
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 114.70802
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

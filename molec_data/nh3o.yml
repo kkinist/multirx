@@ -6,6 +6,7 @@ Energy:
   HF: -131.013211227239
   basis: CC-PVTZ-F12
   basis_functions: 160
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 946.4018
@@ -18,26 +19,7 @@ Frequencies:
 - 3216.6962
 - 3216.6966
 Functional_groups:
-  nitrosyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
+  nitrosyl: '[(0, 1)]'
 Geometry:
   E_scf: -131.742786311
   basis_functions: 102
@@ -66,12 +48,13 @@ Geometry:
     - -0.940012
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 38544-48-8*0
   CASRN: 38544-48-8
-  Hill: H3NO
+  Hill: H
   IUPAC: oxidoazanium
   InChI: 1S/H3NO/c1-2/h1H3
   formula: H3NO
@@ -95,22 +78,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -131.51858772454582
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 103.88392
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

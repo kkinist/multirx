@@ -23,6 +23,7 @@ Energy:
   HF: -146.704097281893
   basis: CC-PVTZ-F12
   basis_functions: 159
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 449.5767
@@ -30,29 +31,8 @@ Frequencies:
 - 1274.8505
 - 1553.2079
 Functional_groups:
-  2S:
-  - 0
-  - 0
-  nitrile:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
+  2S: '[0, 0]'
+  nitrile: '[(0, 2)]'
 Geometry:
   E_scf: -147.548147121
   basis_functions: 90
@@ -73,12 +53,13 @@ Geometry:
     - -1.223949
   e-state: 3SGG
   nimag: 0
+  nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 2669-76-3*0
   CASRN: 2669-76-3
-  Hill: CN2
+  Hill: C
   IUPAC: 2-sulfanyl-N-[(7S)-1,2,3,10-tetramethoxy-9-oxo-6,7-dihydro-5H-benzo[d]heptalen-7-yl]acetamide
   WebBook: C2669763
   formula: CN2
@@ -108,22 +89,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 3
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -147.2959855531902
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 21.84812
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

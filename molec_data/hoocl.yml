@@ -6,6 +6,7 @@ Energy:
   HF: -609.718369006313
   basis: CC-PVTZ-F12
   basis_functions: 186
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 369.7426
@@ -15,46 +16,9 @@ Frequencies:
 - 1410.2144
 - 3704.8985
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 2
-  hydroxyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  peroxide:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
+  chloro: '[(1, 2)]'
+  hydroxyl: '[(0, 3)]'
+  peroxide: '[(0, 1), (1, 0)]'
 Geometry:
   E_scf: -611.197695669
   basis_functions: 108
@@ -79,26 +43,18 @@ Geometry:
     - 0.794068
   e-state: 1A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 67952-07-2*0
   CASRN: 67952-07-2
-  Hill: ClHO2
+  Hill: C
   IUPAC: chlorous acid
   formula: HClO2
   local_label: hoocl
   names:
-    ATcT: Peroxyhypochlorous acid
     local: chlorine hydroperoxide
-Refdata:
-  ATcT:
-    ATcT_version: 1.122r
-    EoF0: 3.95
-    EoF298: -1.32
-    k_cover: 2.0
-    unc: 0.95
-    unit: kJ/mol
+Refdata: {}
 Rotational:
   A: 50.5405971
   B: 6.0281287
@@ -107,22 +63,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -610.513985980118
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 43.54728
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,39 +6,15 @@ Energy:
   HF: -588.781748670671
   basis: CC-PVTZ-F12
   basis_functions: 168
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 334.2116
 - 612.5904
 - 1911.5936
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-  nitrosyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
+  chloro: '[(1, 0)]'
+  nitrosyl: '[(1, 2)]'
 Geometry:
   E_scf: -590.183198867
   basis_functions: 94
@@ -59,12 +35,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 2696-92-6*0
-  CASRN: '2696926'
-  Hill: ClNO
+  CASRN: 2696-92-6
+  Hill: C
   IUPAC: NITROSYL CHLORIDE
   InChI: 1S/ClNO/c1-2-3
   WebBook: C2696926
@@ -97,22 +74,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -589.5228654896467
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 16.75506
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

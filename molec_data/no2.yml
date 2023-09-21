@@ -6,38 +6,15 @@ Energy:
   HF: -204.117710421242
   basis: CC-PVTZ-F12
   basis_functions: 159
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 766.9814
 - 1391.1639
 - 1692.3623
 Functional_groups:
-  2S:
-  - 0
-  nitro:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
+  2S: '[0]'
+  nitro: '[(0, 1, 2)]'
 Geometry:
   E_scf: -205.164135527
   basis_functions: 90
@@ -58,12 +35,13 @@ Geometry:
     - -0.140504
   e-state: 2A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 10102-44-0*0
-  CASRN: '10102440'
-  Hill: NO2
+  CASRN: 10102-44-0
+  Hill: N
   IUPAC: nitronium
   WebBook: C10102440
   formula: NO2
@@ -95,22 +73,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 2
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -204.87835340132565
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 22.57038
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,6 +6,7 @@ Energy:
   HF: -418.500442762441
   basis: CC-PVTZ-F12
   basis_functions: 585
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 61.7385
@@ -48,72 +49,11 @@ Frequencies:
 - 3215.0007
 - 3762.2834
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 6
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  carbonyl:
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-  carboxylic acid:
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DgAAAAAAAAA=
-  hydroxyl:
-  - !!python/tuple
-    - 8
-    - *id002
+  C-C: '[(0, 6)]'
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
+  carbonyl: '[(6, 7)]'
+  carboxylic acid: '[(6, 7, 8, 14)]'
+  hydroxyl: '[(8, 14)]'
 Geometry:
   E_scf: -420.996783606
   basis_functions: 354
@@ -182,12 +122,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 65-85-0*0
   CASRN: 65-85-0
-  Hill: C7H6O2
+  Hill: C
   IUPAC: benzoic acid
   InChI: 1S/C7H6O2/c8-7(9)6-4-2-1-3-5-6/h1-5H,(H,8,9)
   formula: C7H6O2
@@ -218,22 +159,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 15
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -420.1838434791857
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 297.10562
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

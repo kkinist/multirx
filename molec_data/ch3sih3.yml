@@ -6,6 +6,7 @@ Energy:
   HF: -330.331812181905
   basis: CC-PVTZ-F12
   basis_functions: 223
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 197.7342
@@ -27,34 +28,7 @@ Frequencies:
 - 3107.9654
 - 3107.9655
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
+  methyl: '[(0, 2, 3, 4)]'
 Geometry:
   E_scf: -331.269329559
   basis_functions: 148
@@ -95,12 +69,13 @@ Geometry:
     - 1.158312
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 992-94-9*0
   CASRN: 992-94-9
-  Hill: CH6Si
+  Hill: C
   IUPAC: Methylsilane
   InChI: 1S/CH6Si/c1-2/h1-2H3
   formula: CH6Si
@@ -124,22 +99,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -330.66518546236426
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 156.6726
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

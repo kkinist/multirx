@@ -68,7 +68,8 @@ curbuf = []
 for gjf in gjfs:
     mtime = os.path.getmtime(gjf)
     fout = gjf.replace('.gjf', '.out')
-    nbf = None
+    nbf = 9999
+    spinmult = 1
     if os.path.isfile(fout):
         # check the modification time of the output file
         otime = os.path.getmtime(fout)
@@ -91,12 +92,17 @@ for gjf in gjfs:
                 else:
                     print(f'\t** Warning: geometry optimization failed for {fout}')
         nbf = gau.read_nbfn(fout)[0][0]
+        with open(fout, 'r') as F:
+            dfcm = gau.read_charge_mult(F)
+            spin_mult = dfcm.Mult.values[0]
+        if spin_mult > 1:
+            nbf *= 4  # open-shell will take longer 
     else:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
         curbuf.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is missing')
-        nbf = None
+        nbf = 9999
     nbfG[gjf] = nbf
 if not nprob['geomfreq']:
     print()
@@ -118,7 +124,7 @@ for gjf in gjfs:
     else:
         print(f'\t{inpro} is lacking a predecessor geometry output')
         nprob['sp_in'] += 1
-        curbuf.append(f'./make_f12_input.py {fout} {EDIR}   \t# depends upon prior geometry optimization')
+        #curbuf.append(f'./make_f12_input.py {fout} {EDIR}   \t# depends upon prior geometry optimization')
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     if os.path.isfile(inpro):
         otime = os.path.getmtime(inpro)  # time of SP input file
@@ -137,7 +143,7 @@ for gjf in gjfs:
             if Natoms[gjf] > 1:
                 # But is it OK anyway? Create a new one and compare
                 subprocess.run(['cp', fout, 'tempfile.out'])
-                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.'])
+                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
                 if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
                     print('\t\tbut it looks OK')
                     curbuf.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
@@ -145,7 +151,7 @@ for gjf in gjfs:
                     # it is different
                     nprob['sp_in'] += 1
                     curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
-                subprocess.run(['rm', 'tempfile.*'])
+                subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
             else:
                 # atomic calculation is cheap
                 nprob['sp_in'] += 1
@@ -223,7 +229,8 @@ else:
     # sort the commands by expected increasing order of execution time
     curbuf = []
     for i in np.argsort(sortidx):
-        if nbfG is not None:
+        if sortidx[i] != 9999:
+            # 9999 is dummy value representing 'no value'
             curbuf = invoke_molpro(curbuf, *listpro[i])
     #curbuf = [curbuf[i] for i in np.argsort(sortidx)]
     fixbuf += curbuf + ['']

@@ -6,6 +6,7 @@ Energy:
   HF: -454.674420906414
   basis: CC-PVTZ-F12
   basis_functions: 532
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 34.7964
@@ -45,78 +46,10 @@ Frequencies:
 - 3749.489
 - 3749.8495
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 1
-    - 3
-  carbonyl:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  carboxylic acid:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DAAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DQAAAAAAAAA=
-  hydroxyl:
-  - !!python/tuple
-    - 6
-    - *id002
-  - !!python/tuple
-    - 7
-    - *id003
+  C-C: '[(0, 1), (0, 2), (1, 3)]'
+  carbonyl: '[(2, 4), (3, 5)]'
+  carboxylic acid: '[(2, 4, 6, 12), (3, 5, 7, 13)]'
+  hydroxyl: '[(6, 12), (7, 13)]'
 Geometry:
   E_scf: -457.172413376
   basis_functions: 324
@@ -181,26 +114,27 @@ Geometry:
     - -0.912875
   e-state: 1A
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: '553902'
-  Hill: C4H6O4
+  ATcT: 110-15-6*0
+  CASRN: 110-15-6
+  Hill: C
   IUPAC: butanedioic acid
   InChI: 1S/C4H6O4/c5-3(6)1-2-4(7)8/h1-2H2,(H,5,6)(H,7,8)
-  WebBook: C553902
   formula: C4H6O4
   local_label: succinicA
   names:
-    WebBook: Ethanedioic acid, dimethyl ester
+    ATcT: Succinic acid
     local: butanedioic acid
 Refdata:
-  WebBook:
-    EoF298: -709.2716800000001
-    comment: 'Ccb # See 1975ANT/CAR99-103'
+  ATcT:
+    ATcT_version: 1.122r
+    EoF0: -802.5
+    EoF298: -824.7
     k_cover: 2.0
-    source: 1976ANT/CAR1009-1010
-    unc: 0.5439200000000001
+    unc: 3.0
     unit: kJ/mol
 Rotational:
   A: 4.3568101
@@ -210,22 +144,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 14
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -456.40063710043046
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 272.09602
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

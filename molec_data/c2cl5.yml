@@ -6,6 +6,7 @@ Energy:
   HF: -2373.293118062912
   basis: CC-PVTZ-F12
   basis_functions: 416
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 37.6164
@@ -24,56 +25,9 @@ Frequencies:
 - 946.4641
 - 1112.5382
 Functional_groups:
-  2S:
-  - 0
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 5
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 6
+  2S: '[0]'
+  C-C: '[(0, 1)]'
+  chloro: '[(0, 2), (0, 3), (0, 4), (1, 5), (1, 6)]'
 Geometry:
   E_scf: -2377.34210763
   basis_functions: 230
@@ -110,12 +64,13 @@ Geometry:
     - -1.451565
   e-state: 2A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7094-17-9*0
   CASRN: 7094-17-9
-  Hill: C2Cl5
+  Hill: C
   IUPAC: Conversion failed
   formula: C2Cl5
   local_label: c2cl5
@@ -138,22 +93,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -2374.8341128933334
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 39.514579999999995
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

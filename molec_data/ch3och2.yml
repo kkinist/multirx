@@ -6,6 +6,7 @@ Energy:
   HF: -153.505639896126
   basis: CC-PVTZ-F12
   basis_functions: 249
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 159.0149
@@ -27,47 +28,9 @@ Frequencies:
 - 3135.6533
 - 3267.4948
 Functional_groups:
-  2S:
-  - 0
-  ether:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
+  2S: '[0]'
+  ether: '[(1, 0, 2)]'
+  methyl: '[(1, 3, 4, 5)]'
 Geometry:
   E_scf: -154.43398365
   basis_functions: 160
@@ -108,12 +71,13 @@ Geometry:
     - -0.200027
   e-state: 2A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 16520-04-0*0
   CASRN: 16520-04-0
-  Hill: C2H5O
+  Hill: C
   IUPAC: Conversion failed
   formula: C2H5O
   local_label: ch3och2
@@ -136,22 +100,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -154.11362478349656
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 168.45808
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

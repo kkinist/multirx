@@ -19,6 +19,7 @@ Energy:
   HF: -77.351428100683
   basis: CC-PVTZ-F12
   basis_functions: 160
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 521.8203
@@ -31,40 +32,9 @@ Frequencies:
 - 2968.6478
 - 3000.9308
 Functional_groups:
-  2S:
-  - 0
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
+  2S: '[0]'
+  C-C: '[(0, 1)]'
+  methyl: '[(0, 2, 3, 4)]'
 Geometry:
   E_scf: -77.8602911227
   basis_functions: 102
@@ -93,12 +63,13 @@ Geometry:
     - -0.908139
   e-state: 2A"
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 67624-57-1*0
   CASRN: 67624-57-1
-  Hill: C2H3
+  Hill: C
   IUPAC: Conversion failed
   formula: C2H3
   local_label: ch3c
@@ -121,22 +92,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -77.66812369574806
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 90.07866
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

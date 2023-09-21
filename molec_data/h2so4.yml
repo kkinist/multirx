@@ -6,6 +6,7 @@ Energy:
   HF: -698.299440802039
   basis: CC-PVTZ-F12
   basis_functions: 310
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 249.6804
@@ -24,32 +25,7 @@ Frequencies:
 - 3763.3367
 - 3767.5396
 Functional_groups:
-  hydroxyl:
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BgAAAAAAAAA=
-  - !!python/tuple
-    - 4
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
+  hydroxyl: '[(3, 6), (4, 5)]'
 Geometry:
   E_scf: -700.445117547
   basis_functions: 182
@@ -86,11 +62,12 @@ Geometry:
     - -1.127192
   e-state: 1A
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 7664-93-9
-  Hill: H2O4S
+  Hill: H
   IUPAC: Sulfuric acid
   InChI: 1S/H2O4S/c1-5(2,3)4/h(H2,1,2,3,4)
   WebBook: C7664939
@@ -115,22 +92,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -699.5896543611136
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 100.2687
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

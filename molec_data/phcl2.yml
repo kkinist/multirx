@@ -6,6 +6,7 @@ Energy:
   HF: -1148.671701394291
   basis: CC-PVTZ-F12
   basis_functions: 514
+  nirreps: 8
   software: Molpro Version 2021.3
 Frequencies:
 - 101.4506
@@ -39,55 +40,8 @@ Frequencies:
 - 3213.8004
 - 3215.3189
 Functional_groups:
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 6
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 7
+  benzene ring: '[(0, 2, 5, 1, 4, 3)]'
+  chloro: '[(0, 6), (1, 7)]'
 Geometry:
   E_scf: -1151.60789751
   basis_functions: 304
@@ -144,16 +98,19 @@ Geometry:
     - -1.239339
   e-state: 1AG
   nimag: 0
+  nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: ''
-  Hill: C6H4Cl2
+  CASRN: 106-46-7
+  Hill: C
   IUPAC: 1,4-Dichlorobenzene
   InChI: 1S/C6H4Cl2/c7-5-1-2-6(8)4-3-5/h1-4H
+  WebBook: C106467
   formula: C6H4Cl2
   local_label: phcl2
   names:
+    WebBook: Benzene, 1,4-dichloro-
     local: 1,4-diclorobenzene
 Refdata:
   Local:
@@ -163,6 +120,13 @@ Refdata:
     source: Dorofeeva 1999, JCED 44, 516; Irikura 2020, JPCA 124, 8088
     unc: 0.75
     unit: kJ/mol
+  WebBook:
+    EoF298: 24.6
+    comment: Ccr
+    k_cover: 2.0
+    source: 1984PLA/SIM1630-1632
+    unc: .nan
+    unit: kJ/mol
 Rotational:
   A: 5.7124034
   B: 0.6660022
@@ -171,22 +135,3 @@ Rotational:
   symmetry_number: 4
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -1150.1489374152784
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 209.16531999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

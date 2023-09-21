@@ -19,23 +19,20 @@ Energy:
   HF: -76.167173845505
   basis: CC-PVTZ-F12
   basis_functions: 124
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 344.6842
-- 344.6842
-- 2095.143
-- 3453.0315
+- 351.534
+- 351.534
+- 2095.1431
+- 3453.0318
 Functional_groups:
-  2S:
-  - 0
-  C#C:
-  - !!python/tuple
-    - 0
-    - 1
+  2S: '[0]'
+  C#C: '[(0, 1)]'
 Geometry:
   E_scf: -76.6399524089
   basis_functions: 74
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: ethynyl, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -52,12 +49,13 @@ Geometry:
     - -1.535111
   e-state: 2SG
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 2122-48-7*0
-  CASRN: '2122487'
-  Hill: C2H
+  CASRN: 2122-48-7
+  Hill: C
   IUPAC: Conversion failed
   WebBook: C2122487
   formula: C2H
@@ -81,28 +79,14 @@ Refdata:
     source: 1998CHA1-1951
     unc: .nan
     unit: kJ/mol
+  spin_orbit:
+    source: Le et al., JMS 2018
+    unc: -1.0
+    unit: cm-1
+    value: 0.0
 Rotational:
   A: 44.7116376
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -76.4806321253976
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 36.562819999999995
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

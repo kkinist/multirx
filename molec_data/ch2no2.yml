@@ -6,63 +6,40 @@ Energy:
   HF: -243.135054172091
   basis: CC-PVTZ-F12
   basis_functions: 248
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 97.0313
-- 478.2891
-- 595.7664
-- 679.6313
-- 726.5762
-- 1009.4321
-- 1084.4942
-- 1315.9055
-- 1424.4272
-- 1478.292
-- 3182.7793
-- 3341.7388
+- 98.4719
+- 478.2939
+- 595.7343
+- 679.636
+- 726.569
+- 1009.4358
+- 1084.494
+- 1315.8948
+- 1424.4257
+- 1478.3042
+- 3182.7732
+- 3341.7333
 Functional_groups:
-  2S:
-  - 0
-  nitro:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
+  2S: '[0]'
+  nitro: '[(0, 2, 3)]'
 Geometry:
   E_scf: -244.448661622
   basis_functions: 148
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: nitromethyl, B3LYP/pcseg-2
   coordinates:
   - - N
-    - -0.0
+    - 0.0
     - 0.0
     - 0.102657
   - - C
-    - 0.0
     - -0.0
+    - 0.0
     - -1.30595
   - - O
-    - -0.0
+    - 0.0
     - 1.095437
     - 0.668769
   - - O
@@ -79,12 +56,13 @@ Geometry:
     - -1.791605
   e-state: 2B1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 16787-85-2*0
   CASRN: 16787-85-2
-  Hill: CH2NO2
+  Hill: C
   formula: CH2NO2
   local_label: ch2no2
   names:
@@ -106,22 +84,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 2
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -244.06046903141342
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 90.35404
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

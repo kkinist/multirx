@@ -6,6 +6,7 @@ Energy:
   HF: -483.419965543216
   basis: CC-PVTZ-F12
   basis_functions: 454
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 128.3605
@@ -48,69 +49,8 @@ Frequencies:
 - 3103.2976
 - 3897.8658
 Functional_groups:
-  hydroxyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        DgAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-  - !!python/tuple
-    - 4
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DQAAAAAAAAA=
+  hydroxyl: '[(1, 14)]'
+  methyl: '[(2, 5, 6, 7), (3, 8, 9, 10), (4, 11, 12, 13)]'
 Geometry:
   E_scf: -485.274511052
   basis_functions: 294
@@ -179,12 +119,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 1066-40-6*0
   CASRN: 1066-40-6
-  Hill: C3H10OSi
+  Hill: C
   IUPAC: hydroxy-trimethylsilane
   InChI: 1S/C3H10OSi/c1-5(2,3)4/h4H,1-3H3
   formula: C3H10OSi
@@ -208,22 +149,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 15
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -484.3729495875101
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 319.26048000000003
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

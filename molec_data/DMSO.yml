@@ -6,6 +6,7 @@ Energy:
   HF: -551.674835167591
   basis: CC-PVTZ-F12
   basis_functions: 329
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 179.622
@@ -33,63 +34,8 @@ Frequencies:
 - 3145.436
 - 3145.9689
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-  sulfoxide:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
+  methyl: '[(2, 4, 6, 8), (3, 5, 7, 9)]'
+  sulfoxide: '[(0, 2, 3, 1)]'
 Geometry:
   E_scf: -553.316737682
   basis_functions: 208
@@ -138,11 +84,12 @@ Geometry:
     - -1.260246
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 67-68-5
-  Hill: C2H6OS
+  Hill: C
   IUPAC: Methylsulfinylmethane
   InChI: 1S/C2H6OS/c1-4(2)3/h1-2H3
   WebBook: C67685
@@ -174,22 +121,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 10
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -552.5281687840229
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 203.28728
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

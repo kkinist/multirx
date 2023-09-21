@@ -6,6 +6,7 @@ Energy:
   HF: -224.09756817542
   basis: CC-PVTZ-F12
   basis_functions: 284
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 363.9015
@@ -27,75 +28,10 @@ Frequencies:
 - 3693.7175
 - 3694.3761
 Functional_groups:
-  NH2:
-  - !!python/tuple
-    - 2
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  - !!python/tuple
-    - 3
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - &id005 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-  amide:
-  - !!python/tuple
-    - 2
-    - &id006 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - *id002
-    - *id003
-  - !!python/tuple
-    - 3
-    - &id007 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - *id004
-    - *id005
-  carbonyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-  primary amide:
-  - !!python/tuple
-    - 2
-    - *id006
-    - *id002
-    - *id003
-  - !!python/tuple
-    - 3
-    - *id007
-    - *id004
-    - *id005
+  NH2: '[(2, 4, 5), (3, 6, 7)]'
+  amide: '[(2, 0, 4, 5), (3, 0, 6, 7)]'
+  carbonyl: '[(0, 1)]'
+  primary amide: '[(2, 0, 4, 5), (3, 0, 6, 7)]'
 Geometry:
   E_scf: -225.375045297
   basis_functions: 176
@@ -136,12 +72,13 @@ Geometry:
     - -1.53282
   e-state: 1A
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 57-13-6*0
-  CASRN: '57136'
-  Hill: CH4N2O
+  CASRN: 57-13-6
+  Hill: C
   IUPAC: UREA
   InChI: 1S/CH4N2O/c2-1(3)4/h(H4,2,3,4)
   WebBook: C57136
@@ -174,22 +111,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -224.9729036266189
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 163.27388
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

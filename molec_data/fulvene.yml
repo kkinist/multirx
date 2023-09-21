@@ -6,6 +6,7 @@ Energy:
   HF: -230.737603972394
   basis: CC-PVTZ-F12
   basis_functions: 426
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 209.3362
@@ -39,26 +40,8 @@ Frequencies:
 - 3231.0058
 - 3236.6395
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 2
-  - !!python/tuple
-    - 0
-    - 3
-  - !!python/tuple
-    - 4
-    - 5
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 2
-    - 4
-  - !!python/tuple
-    - 3
-    - 5
+  C-C: '[(0, 2), (0, 3), (4, 5)]'
+  C=C: '[(0, 1), (2, 4), (3, 5)]'
 Geometry:
   E_scf: -232.283423048
   basis_functions: 264
@@ -115,12 +98,13 @@ Geometry:
     - -2.290063
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 497-20-1*0
-  CASRN: '497201'
-  Hill: C6H6
+  CASRN: 497-20-1
+  Hill: C
   IUPAC: fulvene
   InChI: 1S/C6H6/c1-6-4-2-3-5-6/h2-5H,1H2
   WebBook: C497201
@@ -153,22 +137,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -231.74555470807147
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 251.6983
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,6 +6,7 @@ Energy:
   HF: -188.856057709309
   basis: CC-PVTZ-F12
   basis_functions: 195
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 629.2858
@@ -18,45 +19,9 @@ Frequencies:
 - 3054.1702
 - 3728.715
 Functional_groups:
-  carbonyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-  carboxylic acid:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-  hydroxyl:
-  - !!python/tuple
-    - 1
-    - *id002
+  carbonyl: '[(0, 2)]'
+  carboxylic acid: '[(0, 2, 1, 4)]'
+  hydroxyl: '[(1, 4)]'
 Geometry:
   E_scf: -189.84935502
   basis_functions: 118
@@ -85,12 +50,13 @@ Geometry:
     - -0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 64-18-6*0
-  CASRN: '64186'
-  Hill: CH2O2
+  CASRN: 64-18-6
+  Hill: C
   IUPAC: formic acid
   InChI: 1S/CH2O2/c2-1-3/h1H,(H,2,3)
   WebBook: C64186
@@ -123,22 +89,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -189.55052136621376
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 86.66532
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

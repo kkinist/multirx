@@ -6,131 +6,86 @@ Energy:
   HF: -133.67435708066
   basis: CC-PVTZ-F12
   basis_functions: 267
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
-- 194.0328
-- 325.2957
-- 388.9993
-- 585.6242
-- 619.0328
-- 959.2481
-- 1042.2268
-- 1138.0641
-- 1249.0325
-- 1298.1654
-- 1450.8148
-- 1472.3143
-- 1483.1289
-- 1500.3968
-- 1535.8537
-- 2972.1197
-- 3060.6291
-- 3108.0316
-- 3145.8029
-- 3257.2016
-- 3588.2297
+- 194.5767
+- 325.4214
+- 389.098
+- 585.4471
+- 618.718
+- 959.4482
+- 1042.3363
+- 1138.1694
+- 1249.1457
+- 1298.1833
+- 1450.8893
+- 1472.4015
+- 1483.1738
+- 1500.4214
+- 1535.9359
+- 2971.5545
+- 3060.276
+- 3107.6453
+- 3145.7133
+- 3257.2158
+- 3588.3113
 Functional_groups:
-  2S:
-  - 0
-  amine:
-  - !!python/tuple
-    - 0
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-  secondary amine:
-  - !!python/tuple
-    - 0
-    - *id002
-    - *id003
-    - *id004
+  2S: '[0]'
+  amine: '[(0, 1, 2, 3)]'
+  methyl: '[(1, 4, 5, 6)]'
+  secondary amine: '[(0, 1, 2, 3)]'
 Geometry:
-  E_scf: -134.570603607
+  E_scf: -134.570603545
   basis_functions: 174
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: methylamino methyl, B3LYP/pcseg-2
   coordinates:
   - - N
-    - 0.093491
-    - 0.468287
-    - -0.124542
+    - 0.093447
+    - 0.468188
+    - -0.124419
   - - C
-    - -1.190428
-    - -0.185837
-    - 0.030859
+    - -1.190405
+    - -0.185777
+    - 0.030835
   - - C
-    - 1.255726
-    - -0.250496
-    - 0.079928
+    - 1.255806
+    - -0.250483
+    - 0.079915
   - - H
-    - 0.117736
-    - 1.419625
-    - 0.205512
+    - 0.117712
+    - 1.419703
+    - 0.205112
   - - H
-    - -1.384456
-    - -0.508786
-    - 1.061375
+    - -1.385542
+    - -0.507225
+    - 1.061678
   - - H
-    - -1.98676
-    - 0.48777
-    - -0.281846
+    - -1.98665
+    - 0.487145
+    - -0.283698
   - - H
-    - -1.224903
-    - -1.067882
-    - -0.609855
+    - -1.224165
+    - -1.068914
+    - -0.608472
   - - H
-    - 2.184699
-    - 0.297594
-    - 0.050879
+    - 2.184634
+    - 0.297853
+    - 0.050858
   - - H
-    - 1.247461
-    - -1.288332
-    - -0.21899
+    - 1.24748
+    - -1.288316
+    - -0.219044
   e-state: 2A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 31277-24-4*0
   CASRN: 31277-24-4
-  Hill: C2H6N
+  Hill: C
   IUPAC: Conversion failed
   formula: C2H6N
   local_label: ch3nhch2
@@ -146,29 +101,10 @@ Refdata:
     unc: 0.95
     unit: kJ/mol
 Rotational:
-  A: 43.3584565
-  B: 9.7581977
-  C: 8.4861811
+  A: 43.3655479
+  B: 9.7578874
+  C: 8.4860666
   point_group: C1
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 9
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -134.24754625002174
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 201.49192000000002
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

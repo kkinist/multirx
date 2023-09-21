@@ -6,6 +6,7 @@ Energy:
   HF: -994.713320820364
   basis: CC-PVTZ-F12
   basis_functions: 230
+  nirreps: 8
   software: Molpro Version 2021.3
 Frequencies:
 - 177.8189
@@ -16,36 +17,8 @@ Frequencies:
 - 993.6622
 - 2317.4047
 Functional_groups:
-  C#C:
-  - !!python/tuple
-    - 0
-    - 1
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 3
+  C#C: '[(0, 1)]'
+  chloro: '[(0, 2), (1, 3)]'
 Geometry:
   E_scf: -996.617850968
   basis_functions: 128
@@ -70,20 +43,19 @@ Geometry:
     - -2.238174
   e-state: 1SGG
   nimag: 0
+  nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7572-29-4*0
-  CASRN: '7572294'
-  Hill: C2Cl2
+  CASRN: 1605-72-7
+  Hill: C
   IUPAC: Conversion failed
   InChI: 1S/C2Cl2/c3-1-2-4
-  WebBook: C7572294
   formula: C2Cl2
   local_label: c2cl2
   names:
     ATcT: Dichloroacetylene
-    WebBook: Ethyne, dichloro-
     local: dichloroacetylene
 Refdata:
   ATcT:
@@ -93,35 +65,9 @@ Refdata:
     k_cover: 2.0
     unc: 0.94
     unit: kJ/mol
-  WebBook:
-    EoF298: 209.62
-    comment: 'Review # Data last reviewed in December, 1968'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
 Rotational:
   A: 1.4078836
   point_group: D*H
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -995.5168899110743
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 28.62874
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

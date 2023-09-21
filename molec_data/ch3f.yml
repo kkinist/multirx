@@ -6,6 +6,7 @@ Energy:
   HF: -139.105949207882
   basis: CC-PVTZ-F12
   basis_functions: 160
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 1047.8733
@@ -18,41 +19,8 @@ Frequencies:
 - 3111.789
 - 3111.7892
 Functional_groups:
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
+  fluoro: '[(0, 1)]'
+  methyl: '[(0, 2, 3, 4)]'
 Geometry:
   E_scf: -139.807860175
   basis_functions: 102
@@ -81,12 +49,13 @@ Geometry:
     - -0.987419
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 593-53-3*0
-  CASRN: '593533'
-  Hill: CH3F
+  CASRN: 593-53-3
+  Hill: C
   IUPAC: Fluoromethane
   WebBook: C593533
   formula: CH3F
@@ -118,22 +87,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -139.58231065393764
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 100.59994
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

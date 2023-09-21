@@ -6,6 +6,7 @@ Energy:
   HF: -230.689362497825
   basis: CC-PVTZ-F12
   basis_functions: 426
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 150.1124
@@ -39,24 +40,9 @@ Frequencies:
 - 3248.1997
 - 3470.7524
 Functional_groups:
-  C#C:
-  - !!python/tuple
-    - 2
-    - 3
-  C-C:
-  - !!python/tuple
-    - 1
-    - 2
-  - !!python/tuple
-    - 1
-    - 4
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 4
-    - 5
+  C#C: '[(2, 3)]'
+  C-C: '[(1, 2), (1, 4)]'
+  C=C: '[(0, 1), (4, 5)]'
 Geometry:
   E_scf: -232.233475001
   basis_functions: 264
@@ -113,18 +99,28 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: ''
-  Hill: C6H6
+  ATcT: 6929-96-0*0
+  CASRN: 6929-96-0
+  Hill: C
   IUPAC: 3-methylidenepent-1-en-4-yne
   InChI: 1S/C6H6/c1-4-6(3)5-2/h1,5H,2-3H2
   formula: C6H6
   local_label: butadienyl2CCH
   names:
+    ATcT: 3-Methylene-1-penten-4-yne
     local: butadien-2-yl acetylene
-Refdata: {}
+Refdata:
+  ATcT:
+    ATcT_version: 1.122r
+    EoF0: 362.5
+    EoF298: 350.1
+    k_cover: 2.0
+    unc: 2.2
+    unit: kJ/mol
 Rotational:
   A: 4.788306
   B: 3.5324829
@@ -133,22 +129,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 12
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -231.69485459219575
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 243.20562
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

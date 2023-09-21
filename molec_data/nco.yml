@@ -6,6 +6,7 @@ Energy:
   HF: -167.191604413893
   basis: CC-PVTZ-F12
   basis_functions: 159
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 510.3096
@@ -13,35 +14,9 @@ Frequencies:
 - 1297.4771
 - 1982.8536
 Functional_groups:
-  2S:
-  - 0
-  carbonyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-  nitrile:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
+  2S: '[0]'
+  carbonyl: '[(1, 2)]'
+  nitrile: '[(1, 0)]'
 Geometry:
   E_scf: -168.072841976
   basis_functions: 90
@@ -62,12 +37,13 @@ Geometry:
     - 1.134564
   e-state: '?'
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 22400-26-6*0
   CASRN: 22400-26-6
-  Hill: CNO
+  Hill: C
   IUPAC: 2-[4-[2-[[3-[[2-[4-(1-hydroxy-2-methyl-1-oxopropan-2-yl)oxyphenyl]acetyl]amino]phenyl]amino]-2-oxoethyl]phenoxy]-2-methylpropanoic
     acid
   formula: CNO
@@ -89,22 +65,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -167.8072967985802
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 25.69952
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

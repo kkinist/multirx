@@ -6,6 +6,7 @@ Energy:
   HF: -483.051171563056
   basis: CC-PVTZ-F12
   basis_functions: 371
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 43.8934
@@ -24,48 +25,7 @@ Frequencies:
 - 1768.0207
 - 1811.155
 Functional_groups:
-  nitrate:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
+  nitrate: '[(0, 1, 3, 5), (0, 2, 4, 6)]'
 Geometry:
   E_scf: -485.537911039
   basis_functions: 210
@@ -102,12 +62,13 @@ Geometry:
     - -1.034425
   e-state: 1A
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 10102-03-1*0
-  CASRN: '10102031'
-  Hill: N2O5
+  CASRN: 10102-03-1
+  Hill: N
   IUPAC: nitro nitrate
   WebBook: C10102031
   formula: N2O5
@@ -139,22 +100,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -484.87052489329994
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 68.8107
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

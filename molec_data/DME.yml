@@ -6,6 +6,7 @@ Energy:
   HF: -154.13739397406
   basis: CC-PVTZ-F12
   basis_functions: 267
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 210.1869
@@ -30,59 +31,8 @@ Frequencies:
 - 3114.5417
 - 3115.8297
 Functional_groups:
-  ether:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
+  ether: '[(1, 0, 2)]'
+  methyl: '[(1, 3, 5, 6), (2, 4, 7, 8)]'
 Geometry:
   E_scf: -155.096339712
   basis_functions: 174
@@ -127,12 +77,13 @@ Geometry:
     - -0.833537
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 115-10-6*0
-  CASRN: '115106'
-  Hill: C2H6O
+  CASRN: 115-10-6
+  Hill: C
   IUPAC: Methoxymethane
   InChI: 1S/C2H6O/c1-3-2/h1-2H3
   WebBook: C115106
@@ -165,22 +116,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 9
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -154.76445868378536
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 204.33391999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

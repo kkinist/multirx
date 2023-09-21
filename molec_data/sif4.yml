@@ -6,6 +6,7 @@ Energy:
   HF: -687.202077089733
   basis: CC-PVTZ-F12
   basis_functions: 274
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 258.7857
@@ -18,44 +19,7 @@ Frequencies:
 - 1019.9053
 - 1019.9053
 Functional_groups:
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
+  fluoro: '[(0, 1), (0, 2), (0, 3), (0, 4)]'
 Geometry:
   E_scf: -689.361495219
   basis_functions: 154
@@ -84,12 +48,13 @@ Geometry:
     - -0.903868
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7783-61-1*0
-  CASRN: '7783611'
-  Hill: F4Si
+  CASRN: 7783-61-1
+  Hill: F
   IUPAC: Tetrafluorosilane
   InChI: 1S/F4Si/c1-5(2,3)4
   WebBook: C7783611
@@ -122,22 +87,3 @@ Rotational:
   symmetry_number: 12
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -688.4920979351737
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 32.29786
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

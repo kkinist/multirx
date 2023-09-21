@@ -6,6 +6,7 @@ Energy:
   HF: -689.076341195473
   basis: CC-PVTZ-F12
   basis_functions: 452
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 181.2606
@@ -36,51 +37,9 @@ Frequencies:
 - 3188.758
 - 3199.1248
 Functional_groups:
-  2S:
-  - 0
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - 10
+  2S: '[0]'
+  benzene ring: '[(0, 2, 6, 9, 7, 3)]'
+  chloro: '[(9, 10)]'
 Geometry:
   E_scf: -691.282730323
   basis_functions: 270
@@ -133,17 +92,27 @@ Geometry:
     - 0.0
   e-state: 2A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: ''
-  Hill: C6H4Cl
+  ATcT: 3474-42-8*0
+  CASRN: 3474-42-8
+  Hill: C
   IUPAC: Conversion failed
   formula: C6H4Cl
   local_label: oC6H4Cl
   names:
+    ATcT: o-Chlorophenyl
     local: 2-chlorophenyl
-Refdata: {}
+Refdata:
+  ATcT:
+    ATcT_version: 1.122r
+    EoF0: 327.4
+    EoF298: 316.6
+    k_cover: 2.0
+    unc: 1.6
+    unit: kJ/mol
 Rotational:
   A: 6.1271941
   B: 1.5550516
@@ -152,22 +121,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 11
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -690.2928390149572
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 200.25124
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

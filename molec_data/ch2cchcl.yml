@@ -6,6 +6,7 @@ Energy:
   HF: -574.848838744578
   basis: CC-PVTZ-F12
   basis_functions: 275
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 184.2164
@@ -24,33 +25,8 @@ Frequencies:
 - 3193.1496
 - 3202.8835
 Functional_groups:
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  - !!python/tuple
-    - 0
-    - 2
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-    - 6
+  C=C: '[(0, 1), (0, 2)]'
+  chloro: '[(2, 6)]'
 Geometry:
   E_scf: -576.341113097
   basis_functions: 166
@@ -87,12 +63,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 3223-70-9*0
   CASRN: 3223-70-9
-  Hill: C3H3Cl
+  Hill: C
   IUPAC: 1-chloropropa-1,2-diene
   InChI: 1S/C3H3Cl/c1-2-3-4/h3H,1H2
   formula: C3H3Cl
@@ -116,22 +93,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 7
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -575.5934358799415
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 120.5988
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

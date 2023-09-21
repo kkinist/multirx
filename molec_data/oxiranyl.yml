@@ -6,6 +6,7 @@ Energy:
   HF: -152.293352799095
   basis: CC-PVTZ-F12
   basis_functions: 213
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 775.7794
@@ -21,36 +22,9 @@ Frequencies:
 - 3139.3506
 - 3189.69
 Functional_groups:
-  2S:
-  - 0
-  C-C:
-  - !!python/tuple
-    - 0
-    - 1
-  ether:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
+  2S: '[0]'
+  C-C: '[(0, 1)]'
+  ether: '[(0, 2, 1)]'
 Geometry:
   E_scf: -153.18057827
   basis_functions: 132
@@ -83,12 +57,13 @@ Geometry:
     - 0.976157
   e-state: 2A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 31586-84-2*0
   CASRN: 31586-84-2
-  Hill: C2H3O
+  Hill: C
   InChI: 1S/C2H4O/c1-2-3-1/h1-2H2
   formula: C2H3O
   local_label: oxiranyl
@@ -111,22 +86,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -152.88855985019538
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 112.82445999999999
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

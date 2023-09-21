@@ -6,6 +6,7 @@ Energy:
   HF: -348.363825447204
   basis: CC-PVTZ-F12
   basis_functions: 212
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 224.9991
@@ -15,32 +16,7 @@ Frequencies:
 - 735.9621
 - 1189.7898
 Functional_groups:
-  peroxide:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
-  - !!python/tuple
-    - 2
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
+  peroxide: '[(1, 2), (2, 1)]'
 Geometry:
   E_scf: -349.972918736
   basis_functions: 120
@@ -65,12 +41,13 @@ Geometry:
     - -0.486688
   e-state: 1A
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7783-44-0*0
   CASRN: 7783-44-0
-  Hill: F2O2
+  Hill: F
   IUPAC: Conversion failed
   formula: F2O2
   local_label: foof
@@ -93,22 +70,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -349.55510544112883
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 22.764419999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

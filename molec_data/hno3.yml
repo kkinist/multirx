@@ -6,6 +6,7 @@ Energy:
   HF: -279.579902455711
   basis: CC-PVTZ-F12
   basis_functions: 230
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 479.9786
@@ -18,49 +19,9 @@ Frequencies:
 - 1751.0224
 - 3725.801
 Functional_groups:
-  hydroxyl:
-  - !!python/tuple
-    - 1
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        BAAAAAAAAAA=
-  hydroxylamine:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-    - *id002
-  nitrate:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
+  hydroxyl: '[(1, 4)]'
+  hydroxylamine: '[(0, 1, 4)]'
+  nitrate: '[(1, 0, 2, 3)]'
 Geometry:
   E_scf: -281.012271724
   basis_functions: 134
@@ -89,12 +50,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7697-37-2*0
-  CASRN: '7697372'
-  Hill: HNO3
+  CASRN: 7697-37-2
+  Hill: H
   IUPAC: Nitric acid
   WebBook: C7697372
   formula: HNO3
@@ -126,22 +88,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -280.6164900148819
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 67.69448
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

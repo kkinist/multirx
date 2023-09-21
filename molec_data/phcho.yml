@@ -6,6 +6,7 @@ Energy:
   HF: -343.570268807689
   basis: CC-PVTZ-F12
   basis_functions: 532
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 114.9683
@@ -45,68 +46,10 @@ Frequencies:
 - 3195.1475
 - 3201.393
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 6
-  aldehyde:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  carbonyl:
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
+  C-C: '[(0, 6)]'
+  aldehyde: '[(0, 6, 7, 8)]'
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
+  carbonyl: '[(6, 7)]'
 Geometry:
   E_scf: -345.709280062
   basis_functions: 324
@@ -171,12 +114,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 100-52-7*0
-  CASRN: '100527'
-  Hill: C7H6O
+  CASRN: 100-52-7
+  Hill: C
   IUPAC: BENZALDEHYDE
   InChI: 1S/C7H6O/c8-6-7-4-2-1-3-5-7/h1-6H
   WebBook: C100527
@@ -209,22 +153,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 14
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -344.9921141841378
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 282.14689999999996
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

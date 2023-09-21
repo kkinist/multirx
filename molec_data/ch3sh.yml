@@ -6,6 +6,7 @@ Energy:
   HF: -437.764757031354
   basis: CC-PVTZ-F12
   basis_functions: 187
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 232.0318
@@ -21,34 +22,7 @@ Frequencies:
 - 3137.9264
 - 3141.1416
 Functional_groups:
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
+  methyl: '[(0, 3, 4, 5)]'
 Geometry:
   E_scf: -438.761145141
   basis_functions: 120
@@ -81,11 +55,12 @@ Geometry:
     - -0.892173
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: '74931'
-  Hill: CH4S
+  CASRN: 74-93-1
+  Hill: C
   IUPAC: METHANETHIOL
   InChI: 1S/CH4S/c1-2/h2H,1H3
   WebBook: C74931
@@ -117,22 +92,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -438.1670999882414
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 117.93908
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -6,37 +6,13 @@ Energy:
   HF: -558.915364050786
   basis: CC-PVTZ-F12
   basis_functions: 115
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 784.1997
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - 0
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
+  chloro: '[(1, 0)]'
+  fluoro: '[(0, 1)]'
 Geometry:
   E_scf: -560.041184412
   basis_functions: 64
@@ -53,12 +29,13 @@ Geometry:
     - -1.07538
   e-state: 1SG
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 7790-89-8*0
-  CASRN: '7790898'
-  Hill: ClF
+  CASRN: 7790-89-8
+  Hill: C
   WebBook: C7790898
   formula: ClF
   local_label: clf
@@ -87,22 +64,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -559.4589615792106
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 4.59718
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

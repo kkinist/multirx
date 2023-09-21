@@ -6,6 +6,7 @@ Energy:
   HF: -1416.389001077441
   basis: CC-PVTZ-F12
   basis_functions: 239
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 270.3502
@@ -15,40 +16,8 @@ Frequencies:
 - 867.7611
 - 867.7685
 Functional_groups:
-  2S:
-  - 0
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
+  2S: '[0]'
+  chloro: '[(0, 1), (0, 2), (0, 3)]'
 Geometry:
   E_scf: -1418.76508691
   basis_functions: 132
@@ -73,12 +42,13 @@ Geometry:
     - -0.031341
   e-state: 2A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 3170-80-7*0
-  CASRN: '3170807'
-  Hill: CCl3
+  CASRN: 3170-80-7
+  Hill: C
   IUPAC: Conversion failed
   WebBook: C3170807
   formula: CCl3
@@ -110,22 +80,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 2
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -1417.2679405349206
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 18.0565
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

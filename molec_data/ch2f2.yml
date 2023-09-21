@@ -6,6 +6,7 @@ Energy:
   HF: -238.014096701425
   basis: CC-PVTZ-F12
   basis_functions: 195
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 523.9208
@@ -18,32 +19,7 @@ Frequencies:
 - 3055.9887
 - 3126.4418
 Functional_groups:
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
+  fluoro: '[(0, 3), (0, 4)]'
 Geometry:
   E_scf: -239.094814429
   basis_functions: 118
@@ -72,12 +48,13 @@ Geometry:
     - -0.290852
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-10-5*0
-  CASRN: '75105'
-  Hill: CH2F2
+  CASRN: 75-10-5
+  Hill: C
   IUPAC: DIFLUOROMETHANE
   WebBook: C75105
   formula: CH2F2
@@ -109,22 +86,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -238.7746175555722
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 83.95954
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

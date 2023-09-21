@@ -6,6 +6,7 @@ Energy:
   HF: -459.242527483363
   basis: CC-PVTZ-F12
   basis_functions: 780
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 159.1778
@@ -63,75 +64,9 @@ Frequencies:
 - 3208.9784
 - 3228.1272
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 1
-    - 4
-  - !!python/tuple
-    - 2
-    - 6
-  C=C:
-  - !!python/tuple
-    - 4
-    - 6
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
+  C-C: '[(1, 4), (2, 6)]'
+  C=C: '[(4, 6)]'
+  benzene ring: '[(0, 1, 5, 10, 9, 3), (0, 2, 7, 11, 8, 3)]'
 Geometry:
   E_scf: -462.25365816
   basis_functions: 472
@@ -220,11 +155,12 @@ Geometry:
     - 1.588953
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  CASRN: '208968'
-  Hill: C12H8
+  CASRN: 208-96-8
+  Hill: C
   IUPAC: Acenaphthylene
   InChI: 1S/C12H8/c1-3-9-4-2-6-11-8-7-10(5-1)12(9)11/h1-8H
   WebBook: C208968
@@ -259,22 +195,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 20
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -461.23090630087796
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 409.49005999999997
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

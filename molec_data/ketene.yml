@@ -6,6 +6,7 @@ Energy:
   HF: -151.795762552088
   basis: CC-PVTZ-F12
   basis_functions: 195
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
 - 443.3198
@@ -18,30 +19,8 @@ Frequencies:
 - 3183.3152
 - 3276.1939
 Functional_groups:
-  C=C:
-  - !!python/tuple
-    - 0
-    - 1
-  carbonyl:
-  - !!python/tuple
-    - 1
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AgAAAAAAAAA=
+  C=C: '[(0, 1)]'
+  carbonyl: '[(1, 2)]'
 Geometry:
   E_scf: -152.669469013
   basis_functions: 118
@@ -70,12 +49,13 @@ Geometry:
     - -1.738575
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 463-51-4*0
-  CASRN: '463514'
-  Hill: C2H2O
+  CASRN: 463-51-4
+  Hill: C
   IUPAC: Ethenone
   InChI: 1S/C2H2O/c1-2-3/h1H2
   WebBook: C463514
@@ -108,22 +88,3 @@ Rotational:
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -152.38859146294638
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 81.15576
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

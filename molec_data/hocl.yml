@@ -6,39 +6,15 @@ Energy:
   HF: -534.930851938122
   basis: CC-PVTZ-F12
   basis_functions: 133
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 739.1708
 - 1259.4377
 - 3777.1644
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  hydroxyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
+  chloro: '[(0, 2)]'
+  hydroxyl: '[(0, 1)]'
 Geometry:
   E_scf: -536.033235486
   basis_functions: 78
@@ -59,28 +35,20 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7790-92-3*0
-  CASRN: '7790923'
-  Hill: ClHO
+  CASRN: 7790-92-3
+  Hill: C
   IUPAC: HYPOCHLOROUS ACID
   WebBook: C7790923
   formula: HClO
   local_label: hocl
   names:
-    ATcT: Hypochlorous acid
     WebBook: Hypochlorous acid
     local: hypochlorous acid
 Refdata:
-  ATcT:
-    ATcT_version: 1.122r
-    EoF0: -73.866
-    EoF298: -76.805
-    k_cover: 2.0
-    unc: 0.027
-    unit: kJ/mol
   WebBook:
     EoF298: -74.48
     comment: 'Review # Data last reviewed in March, 1979'
@@ -96,22 +64,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -535.4501311606714
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 33.85606
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

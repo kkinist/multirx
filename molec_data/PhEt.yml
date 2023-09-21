@@ -6,6 +6,7 @@ Energy:
   HF: -308.895103747963
   basis: CC-PVTZ-F12
   basis_functions: 604
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 39.6235
@@ -57,64 +58,9 @@ Frequencies:
 - 3179.975
 - 3192.5656
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 0
-    - 6
-  - !!python/tuple
-    - 6
-    - 7
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 7
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        DwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        EAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        EQAAAAAAAAA=
+  C-C: '[(0, 6), (6, 7)]'
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
+  methyl: '[(7, 15, 16, 17)]'
 Geometry:
   E_scf: -311.000353911
   basis_functions: 380
@@ -195,12 +141,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 100-41-4*0
-  CASRN: '100414'
-  Hill: C8H10
+  CASRN: 100-41-4
+  Hill: C
   IUPAC: Ethylbenzene
   InChI: 1S/C8H10/c1-2-8-6-4-3-5-7-8/h3-7H,2H2,1H3
   WebBook: C100414
@@ -233,22 +180,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 18
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -310.25423513500283
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 402.48404
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

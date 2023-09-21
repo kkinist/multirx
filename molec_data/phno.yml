@@ -6,6 +6,7 @@ Energy:
   HF: -359.489262408386
   basis: CC-PVTZ-F12
   basis_functions: 514
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 107.6202
@@ -42,49 +43,8 @@ Frequencies:
 - 3201.2198
 - 3206.3309
 Functional_groups:
-  benzene ring:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BAAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BQAAAAAAAAA=
-  nitrosyl:
-  - !!python/tuple
-    - 6
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        BwAAAAAAAAA=
+  benzene ring: '[(0, 1, 2, 3, 4, 5)]'
+  nitrosyl: '[(6, 7)]'
 Geometry:
   E_scf: -361.680653377
   basis_functions: 310
@@ -145,12 +105,13 @@ Geometry:
     - 0.0
   e-state: 1A'
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 586-96-9*0
-  CASRN: '586969'
-  Hill: C6H5NO
+  CASRN: 586-96-9
+  Hill: C
   IUPAC: Nitrosobenzene
   InChI: 1S/C6H5NO/c8-7-6-4-2-1-3-5-6/h1-5H
   WebBook: C586969
@@ -183,22 +144,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -360.9688438001166
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 249.8951
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

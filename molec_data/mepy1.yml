@@ -6,6 +6,7 @@ Energy:
   HF: -247.941616830371
   basis: CC-PVTZ-F12
   basis_functions: 444
+  nirreps: 1
   software: Molpro Version 2021.3
 Frequencies:
 - 79.5393
@@ -42,66 +43,11 @@ Frequencies:
 - 3256.0356
 - 3263.9865
 Functional_groups:
-  C-C:
-  - !!python/tuple
-    - 4
-    - 6
-  C=C:
-  - !!python/tuple
-    - 4
-    - 10
-  - !!python/tuple
-    - 6
-    - 8
-  amine:
-  - !!python/tuple
-    - 12
-    - &id002 !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - &id003 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CAAAAAAAAAA=
-    - &id004 !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        CgAAAAAAAAA=
-  methyl:
-  - !!python/tuple
-    - 0
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AQAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AgAAAAAAAAA=
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AwAAAAAAAAA=
-  tertiary amine:
-  - !!python/tuple
-    - 12
-    - *id002
-    - *id003
-    - *id004
+  C-C: '[(4, 6)]'
+  C=C: '[(4, 10), (6, 8)]'
+  amine: '[(12, 0, 8, 10)]'
+  methyl: '[(0, 1, 2, 3)]'
+  tertiary amine: '[(12, 0, 8, 10)]'
 Geometry:
   E_scf: -249.579199288
   basis_functions: 278
@@ -162,11 +108,12 @@ Geometry:
     - -0.036774
   e-state: 1A
   nimag: 0
+  nirreps: 1
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 96-54-8
-  Hill: C5H7N
+  Hill: C
   IUPAC: 1-Methylpyrrole
   InChI: 1S/C5H7N/c1-6-4-2-3-5-6/h2-5H,1H3
   WebBook: C96548
@@ -198,22 +145,3 @@ Rotational:
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 13
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -249.016854172813
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 283.27291999999994
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

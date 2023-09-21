@@ -6,6 +6,7 @@ Energy:
   HF: -1515.906549295596
   basis: CC-PVTZ-F12
   basis_functions: 292
+  nirreps: 2
   software: Molpro Version 2021.3
 Frequencies:
 - 240.0157
@@ -18,45 +19,8 @@ Frequencies:
 - 799.6738
 - 1075.6244
 Functional_groups:
-  chloro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - &id001 !!python/object/apply:numpy.dtype
-        args:
-        - i8
-        - false
-        - true
-        state: !!python/tuple
-        - 3
-        - <
-        - null
-        - null
-        - null
-        - -1
-        - -1
-        - 0
-      - !!binary |
-        AAAAAAAAAAA=
-    - 2
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 3
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 4
-  fluoro:
-  - !!python/tuple
-    - !!python/object/apply:numpy.core.multiarray.scalar
-      - *id001
-      - !!binary |
-        AAAAAAAAAAA=
-    - 1
+  chloro: '[(0, 2), (0, 3), (0, 4)]'
+  fluoro: '[(0, 1)]'
 Geometry:
   E_scf: -1518.69524728
   basis_functions: 162
@@ -85,12 +49,13 @@ Geometry:
     - -0.310192
   e-state: 1A1
   nimag: 0
+  nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 75-69-4*0
-  CASRN: '75694'
-  Hill: CCl3F
+  CASRN: 75-69-4
+  Hill: C
   IUPAC: trichloro-fluoromethane
   InChI: 1S/CCl3F/c2-1(3,4)5
   WebBook: C75694
@@ -123,22 +88,3 @@ Rotational:
   symmetry_number: 3
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -1517.096123936604
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 28.17598
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0
