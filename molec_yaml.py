@@ -49,11 +49,10 @@ feleca = os.sep.join([mrx.REFDAT, 'elec_states_atoms.tsv'])  # tab-delimited
 felecm = os.sep.join([mrx.REFDAT, 'elec_states_molecules.tsv'])  # tab-delimited
 foverride = os.sep.join([mrx.REFDAT, 'override.yml'])  # to override everything else
 
-
 try:
     local_name = dfnames[dfnames.Label == molec].values[0][1]
 except:
-    print('*** Error: "{:s}" is missing from file {mrx.REFDAT}0/label_meanings.tsv'.format(molec))
+    print(f'*** Error: "{molec}" is missing from {mrx.REFDAT}/label_meanings.tsv')
     sys.exit(1)
 # check names list for duplicates
 dup1 = dfnames.duplicated(subset='Label', keep=False)
@@ -110,7 +109,7 @@ if natom > 1:
 atlist = [x[0] for x in geom['coordinates']]
 formula = chem.formula(atlist)
 print('formula:', formula)
-hill = chem.formula(atlist, Hill=True)[0]  # Hill convention
+hill = chem.formula(atlist, Hill=True)  # Hill convention
 
 
 # collect identifiers
