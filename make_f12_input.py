@@ -11,9 +11,13 @@ import gaussian_subs as gau
 import chem_subs as chem
 ##
 if len(sys.argv) < 3:
-    sys.exit('\tUsage: make_f12_input.py <gaussian output file> <output directory> [mem in GB]')
+    sys.exit('\tUsage: make_f12_input.py <gaussian output file> <output directory> [mem in GB] [-q]')
 fgau = sys.argv[1]
 outdir = sys.argv[2]
+silent = False
+for arg in sys.argv:
+    if arg == '-q':
+        silent = True
 # memory in GB
 try:
     memgb = int(sys.argv[3])
@@ -27,16 +31,21 @@ except:
 froot = os.path.basename(fgau)
 fpro = outdir + '/' + froot.replace('.out', '.in')
 
-print('fgau = {:s}, fpro = {:s}'.format(fgau, fpro))
+if not silent:
+    print('fgau = {:s}, fpro = {:s}'.format(fgau, fpro))
 # read from Gaussian output file
+natom = gau.natom(fgau)
 with open(fgau, 'r') as GAU:
-    ok = gau.opt_success(GAU)
-    if not ok:
-        chem.print_err('', 'Geometry optimization failed!')
-    nimag = gau.get_nimag(GAU)
-    print('nimag = ', nimag)
-    if nimag != 0:
-        chem.print_err('', 'Geometry is not an energy minimum!')
+    if natom > 1:
+        # not an atom
+        ok = gau.opt_success(GAU)
+        if not ok:
+            chem.print_err('', 'Geometry optimization failed!')
+        nimag = gau.get_nimag(GAU)
+        if not silent:
+            print('nimag = ', nimag)
+        if nimag != 0:
+            chem.print_err('', 'Geometry is not an energy minimum!')
     # extract comment line
     dfcomment = gau.read_comments(GAU)
     comment = dfcomment.Comment.tolist()[-1]
@@ -55,6 +64,7 @@ with open(fgau, 'r') as GAU:
 # how much memory to request in MOLPRO?
 if memgb is None:
     memgb = 1 + (nbf // bfchunk)
+    #print(f'>>>nbf = {nbf}, bfchunk = {bfchunk}, memgb = {memgb}')
 
 # write MOLPRO input file
 with open(fpro, 'w') as MPRO:

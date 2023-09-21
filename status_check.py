@@ -143,7 +143,7 @@ for gjf in gjfs:
             if Natoms[gjf] > 1:
                 # But is it OK anyway? Create a new one and compare
                 subprocess.run(['cp', fout, 'tempfile.out'])
-                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.'])
+                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
                 if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
                     print('\t\tbut it looks OK')
                     curbuf.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
@@ -151,7 +151,7 @@ for gjf in gjfs:
                     # it is different
                     nprob['sp_in'] += 1
                     curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
-                subprocess.run(['rm', 'tempfile.*'])
+                subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
             else:
                 # atomic calculation is cheap
                 nprob['sp_in'] += 1

@@ -14,23 +14,27 @@ Electronic:
     - WebBook
     - WebBook
 Energy:
-  CCSD(T)-F12b: -275.461000251056
+  CCSD(T)-F12b: -275.461000251057
   CCSD-F12b: -275.428685329527
-  HF: -274.557592146446
+  HF: -274.557592146447
   basis: CC-PVTZ-F12
   basis_functions: 212
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
-- 318.2861
-- 506.2668
-- 574.5505
-- 935.7508
-- 1256.8185
-- 1708.5945
+- 317.9514
+- 506.268
+- 574.546
+- 935.7524
+- 1256.8133
+- 1708.6032
+Functional_groups:
+  C=C: '[(0, 1)]'
+  fluoro: '[(0, 2), (0, 3)]'
 Geometry:
   E_scf: -275.815143792
   basis_functions: 120
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: difluorovinylidene, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -42,7 +46,7 @@ Geometry:
     - -0.0
     - 1.504106
   - - F
-    - -0.0
+    - 0.0
     - 1.101771
     - -0.556155
   - - F
@@ -51,12 +55,13 @@ Geometry:
     - -0.556155
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 41895-33-4*0
   CASRN: 41895-33-4
-  Hill: C2F2
+  Hill: C
   IUPAC: Conversion failed
   formula: C2F2
   local_label: ccf2

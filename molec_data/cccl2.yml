@@ -1,32 +1,36 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -995.45441500338
-  CCSD-F12b: -995.4171050453
-  HF: -994.653409578822
+  CCSD(T)-F12b: -995.454415003382
+  CCSD-F12b: -995.417105045302
+  HF: -994.653409578824
   basis: CC-PVTZ-F12
   basis_functions: 230
+  nirreps: 4
   software: Molpro Version 2021.3
 Frequencies:
-- 103.409
-- 263.5282
-- 412.1713
-- 584.0311
-- 843.6911
-- 1652.4602
+- 102.8978
+- 263.5392
+- 412.1517
+- 584.0248
+- 843.676
+- 1652.4631
+Functional_groups:
+  C=C: '[(0, 1)]'
+  chloro: '[(0, 2), (0, 3)]'
 Geometry:
   E_scf: -996.541902137
   basis_functions: 128
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: dichlorovinylidene, B3LYP/pcseg-2
   coordinates:
   - - C
     - -0.0
-    - -0.0
+    - 0.0
     - 0.445316
   - - C
     - -0.0
-    - -0.0
+    - 0.0
     - 1.762732
   - - Cl
     - 0.0
@@ -38,12 +42,13 @@ Geometry:
     - -0.389656
   e-state: 1A1
   nimag: 0
+  nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   ATcT: 20394-25-6*0
   CASRN: 20394-25-6
-  Hill: C2Cl2
+  Hill: C
   IUPAC: Conversion failed
   formula: C2Cl2
   local_label: cccl2

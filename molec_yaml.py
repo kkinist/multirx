@@ -82,6 +82,9 @@ doc = {'Charge': int(charge)}   # initialize the main dict, 'doc'
 doc['Spin_mult'] = int(mult)
 
 geom, lineno = gau.gau_geom_freq_energy(FGAU)
+# number of computational irreps
+nirreps = gau.read_compgroup(FGAU)['ops'].iloc[-1]  # last comp group
+geom['nirreps'] = int(nirreps)
 doc['Geometry'] = geom
 natom = len(geom['coordinates'])
 if natom > 1:
@@ -421,6 +424,7 @@ with open(fpro, 'r') as FPRO:
         if rx_nbf.search(line):
             w = line.split()
             nbf = int(w[3])
+            nirr = (len(w) - 5) // 2  # number of irreps
         if rx_hf.search(line):
             w = line.split()
             ehf = float(w[-1])
@@ -433,6 +437,7 @@ with open(fpro, 'r') as FPRO:
 energy = {'CCSD(T)-F12b': ecc, 'basis_functions': nbf, 'HF': ehf,
     'CCSD-F12b': eccsd, 'basis': bs}
 energy['software'] = 'Molpro Version ' + mpr.molpro_version(fpro)
+energy['nirreps'] = nirr
 doc['Energy'] = energy
 doc['Electronic'] = elec
 
