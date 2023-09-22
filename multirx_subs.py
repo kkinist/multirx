@@ -24,8 +24,9 @@ EDIR = 'energysp'    # directory with single-point CCSD(T)-F12 energy files
 GDIR = 'geomfreq'    # directory with geom/freq files
 
 # elements with gas-phase molecules to use for thermochemistry
+# for sulfur, choose S atom instead of S8 because it has a modern value
 ELEMENT_MOLECULE = {'H': 'H2', 'O': 'O2', 'N': 'N2', 'F': 'F2', 'P': 'P4', 
-                        'S': 'S8', 'Cl': 'Cl2', 'Br': 'Br2', 'I': 'I2'}
+                        'S': 'S', 'Cl': 'Cl2', 'Br': 'Br2', 'I': 'I2'}
 BOND_SEPARATION_PROTOTYPES = {
     (('C', 'C'), 1): 'c2h6', (('C', 'C'), 2): 'c2h4', (('C', 'C'), 3): 'c2h2', 
     (('C', 'N'), 1): 'ch3nh2', (('C', 'N'), 2): 'ch2nh',
@@ -134,13 +135,6 @@ def read_all_molec_yamls(ydir=None):
             # store the spin multiplicity
             G.set_spinmult(myml['Spin_mult'])
             Gdict[molec] = G
-            # convert functional group string to list of tuples
-            fungroups = moldata[molec].get('Functional_groups', {})
-            if fungroups:
-                fdict = {}
-                for grp, atstr in fungroups.items():
-                    fdict[grp] = list(eval(atstr))
-                moldata[molec]['Functional_groups'] = fdict            
         except:
             chem.print_err('', f'Error processing {file}', halt=False)
     return moldata, Gdict
@@ -747,7 +741,7 @@ def reaction_imbalance(Glist, coeffs, tol=1.e-6):
 def check_reactions_balance(rxlist, Geoms, tol=1.e-6, verbose=True,
                             details=False):
     # report on whether the reactions in rxlist[] are balanced
-    # chem.Geometry() objects in Geoms{} for all educts
+    # Geoms{} is dict with key = educt, value = chem.Geometry() object
     # If details == True, also return a list of {elem: count} dicts
     oklist = []
     imbalist = []
