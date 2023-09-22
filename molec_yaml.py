@@ -35,8 +35,95 @@ import chem_subs as chem
 import gaussian_subs as gau
 
 if len(sys.argv) < 2:
-    sys.exit('\tUsage: molec_yaml.py <molecule label>')
+    sys.exit('\tUsage: molec_yaml.py <molecule label> [-CIRconvert]')
 molec = sys.argv[1]
+useCIR = False  # flag to skip CIRconvert calls
+for arg in sys.argv:
+    if arg == '-CIRconvert':
+        useCIR = True
+
+#========================================
+def CASRN_matches(caslike):
+    # compare with identifier['CASRN'], which may contain more than one number
+    global identifier
+    q = mrx.compress_CASRN(caslike)
+    for casrn in re.split('[,\s]+', identifier['CASRN']):
+        # retain only numerals
+        ccas = mrx.compress_CASRN(casrn)
+        if ccas == q:
+            # it matches
+            return True
+    return False
+    
+def name_matches(name1):
+    # compare a chemical name for a match with 'molec' or 'local_name'
+    global molec, local_name
+    # neither string may be blank
+    a = name1.lower().replace('radical', '').strip()
+    for name2 in [molec, local_name]:
+        if not (bool(name1.strip()) & bool(name2.strip())):
+            print('>>> blank name')
+            return False
+        # ignore case
+        b = name2.lower().strip()
+        # True if either is a substring of the other, e.g.:
+        #   "acetoxy" matches "acetoxyl"
+        #   "trifluoromethyl" matches "trifluoromethyl radical"
+        #   "difluoroacetylene" matches "1,2-difluoroacetylene" 
+        if (a in b) or (b in a):
+            # check for "acetone enol" case
+            if ('enol' in a) ^ ('enol' in b):
+                # they are different
+                return False
+            return True
+    return False
+
+def fmult(label):
+    global PG
+    # 'gs' is spin mult and 'gx' is spatial mult (for linear case)
+    g = None
+    gx = 1
+    if '*' in PG:
+        # linear molecule
+        # label might have trailing omega following underscore
+        words = label.split('_')
+        if len(words) > 1:
+            try:
+                omega = float(words[-1])
+                if omega != 0:
+                    g = 1
+                else:
+                    g = 2
+            except ValueError:
+                # should be _g or _u for inversion parity
+                if 's' not in label.lower():
+                    # not a sigma state (pi, delta, etc.)
+                    gx = 2
+    if g is None:
+        # non-linear, or omega not specified
+        # I'm not handling degenerate irreps of symmetric tops!
+        # use (leading) spin multiplicity from state label (e.g., 2A1)
+        m = re.match(r'(\d+).+', label)
+        if m:
+            # read mandatory leading spin multiplicity
+            gs = int(m.group(1))
+            # multiply spatial * spin multiplicities
+            g = gs * gx
+    return g
+    
+def nrot(point_group):
+    # return order of rotational axis in name of point group (Schönflies)
+    m = re.search('(\d+)', point_group)
+    if m:
+        n = int(m.group(1))
+    elif '*' in point_group:
+        n = np.inf
+    else:
+        n = None
+    return n
+
+
+#========================================
 
 # Import reference data
 atct_version = '1p122r'
@@ -104,13 +191,11 @@ if natom > 1:
     rotat['symmetry_number'] = gau.read_symno(FGAU)
     doc['Rotational'] = rotat
 
-
 # create formula from list of atoms
 atlist = [x[0] for x in geom['coordinates']]
 formula = chem.formula(atlist)
 print('formula:', formula)
 hill = chem.formula(atlist, Hill=True)  # Hill convention
-
 
 # collect identifiers
 identifier = {
@@ -118,10 +203,10 @@ identifier = {
     'names': {'local': local_name},
     'formula': formula,
     'Hill': hill,
-    'CASRN': dfnames.loc[molec].CASRN  # user-provided, maybe
+    'CASRN': dfnames.loc[molec].CASRN  # required
 }
 # look for standard identifiers
-if natom > 2:
+if useCIR and (natom > 2):
     # don't trust CIRconvert for atoms and diatomics
     identifier['IUPAC'] = chem.CIRconvert(formula, 'iupac_name')
     if 'failed' in identifier['IUPAC']:
@@ -143,167 +228,103 @@ if natom > 2:
         # do not show multiple IUPAC names
         del identifier['IUPAC']
 doc['Identifiers'] = identifier
-# get reference thermochemical data
+
+# Find the molecule in the thermochemical databases
+#    Formula must match
+#    If CASRN does not match, the name must match (print warning)
+
+# Find all matching formulas (usually multiple)
 df_atct = atct[(atct.Hill == formula) | (atct.Formula == formula) | (atct.Hill == hill)]
 df_wb = webbook[(webbook.Formula == formula)]
-nDB = 2  # two thermo databases: ATcT and WebBook
 
-def newcas(scas):
-    # given a DB identifier that might encode a CASRN, 
-    #   extract a (possibly abbreviated) CASRN
-    cas = scas.replace('C', '').replace('*0', '')
-    return cas
+# replace NaNs with blank
+atct.ATcT_ID = atct.ATcT_ID.fillna('')
+webbook.CASRN = webbook.CASRN.fillna('')
 
-def simplify_formula(formula):
-    # given an ATcT 'Formula', remove parentheses and convert to lower case
-    simpl = formula.replace('(', '').replace(')', '').lower()
-    return simpl
-    
-def name_matches(name1):
-    # compare a chemical name for a match with 'molec' or 'local_name'
-    global molec, local_name
-    # neither string may be blank
-    for name2 in [molec, local_name]:
-        if not (bool(name1.strip()) & bool(name2.strip())):
-            print('>>> blank name')
-            return False
-        # ignore case
-        a = name1.lower().replace('radical', '').strip()
-        b = name2.lower().strip()
-        # True if either is a substring of the other, e.g.:
-        #   "acetoxy" matches "acetoxyl"
-        #   "trifluoromethyl" matches "trifluoromethyl radical"
-        #   "difluoroacetylene" matches "1,2-difluoroacetylene" 
-        if (a in b) or (b in a):
-            # check for "acetone enol" case
-            if ('enol' in a) ^ ('enol' in b):
-                # they are different
-                return False
-            return True
-    return False
-    
-def CASRN_matches(caslike):
-    # compare with identifier['CASRN'], which may contain more than one number
-    global identifier
-    for casrn in re.split('[,\s]+', identifier['CASRN']):
-        # retain only numerals
-        ccas = mrx.compress_CASRN(casrn)
-        q = mrx.compress_CASRN(caslike)
-        if ccas == q:
-            # it matches
-            return True
-    return False
-
-df_good = {}
-did_match = []  # list of DBs that already got a match
-for ndb in range(nDB):
-    # Get any data from stored WebBook and ATcT files
-    # Info (like ID number) in one DB might aid identification in the other,
-    #   so look at each DB more than once ('ndb' loop)
-    for source, prefix, df in zip(['WebBook', 'ATcT'], ['WB', 'ATcT'], [df_wb, df_atct]):
-        if source in did_match:
-            # done with this DB
-            continue
-        # 'df' has all formula matches
-        if source in identifier.keys():
-            # this DB already handled successfully in previous loop iteration
-            continue
-        if len(df) == 0:
-            # Avoid printing repeated info by checking 'ndb' value
-            if ndb == 0:
-                # first time checking this DB
-                print(f'\t"{formula}" not found in {source} list')
-            continue  # next data source
-        # at least one formula match, but formula alone is unreliable
-        if ndb == 0:
-            print(f'\t{len(df)} {source} match(es) for "{formula}"')
-            
-        # does the 'Species' match the 'local_name' ?
-        df2 = df[df.Species.map(name_matches)]
-        if len(df2) == 1:
-            print(f'\tSuccessful {source} match using "{df2.Species.iloc[0]}"')
-            df = df2
-            did_match.append(source)
-        else:
-            # zero or multiple matches with name
-            if len(df2) == 0:
-                # no matches with name
-                # further consideration for all formula matches
-                df2 = df
-            else:
-                # further consideration only for name/label matches
-                pass
-            # seek a match with an associated CASRN
-            idcol = f'{prefix}_ID'
-            df3 = df2[df2[idcol].map(CASRN_matches)]
-            if len(df3) == 1:
-                nom = df3['Species'].iloc[0]
-                print(f'\tSuccessful {source} match for "{nom}" using "{df3[idcol].iloc[0]}"')
-                df = df3
-                did_match.append(source)
-            elif len(df3) == 0:
-                # CASRN does not match
-                df = df3
-            else:
-                # multiple matches with formula and CASRN list
-                # ATcT 'Formula' is often structural (WB is not)
-                #   compare it with the molecule/file name
-                if source == 'ATcT':
-                    df = df3[df3['Formula'].map(simplify_formula) == molec.lower()]
-                    if len(df) == 1:
-                        print(f'\tSuccessful {source} Formula match using "{molec}"')
-                        did_match.append(source)
-                    else:
-                        # no possibilities left, or multiple
-                        if ndb == 0:
-                            print('\t\tmatch(es) rejectedA')
-                        continue
+# check ATcT data
+miscas = False
+if len(df_atct) > 1:
+    # match the CAS number
+    df = df_atct[df_atct.ATcT_ID.map(CASRN_matches)]
+    if len(df) == 0:
+        # CAS did not match; check names
+        df = df_atct[df_atct.Species.map(name_matches)]
         if len(df) == 1:
-            df_good[source] = df.copy()
-            identifier[source] = df[prefix+'_ID'].iloc[0]
-            identifier['names'][source] = df['Species'].iloc[0]
-            if not bool(identifier['names'][source].strip()):
-                chem.print_err('', f'name is blank for source {source}', halt=False)
-            if not identifier['CASRN']:
-                # CASRN is missing; try to get abbreviated CASRN from thermo DB
-                identifier['CASRN'] = newcas(identifier[source])
-        elif len(df) == 0:
-            if ndb == nDB-1:
-                print(f'\t    {source} match(es) rejected')
-# collect reference enthalpy of formation
+            miscas = True
+            print('\tATcT matched for Species name **but not for CASRN**')
+    df_atct = False
+    if len(df) == 1:
+        df_atct = df
+        identifier['ATcT'] = df.ATcT_ID.values[0]
+        nom = df.Species.values[0]
+        identifier['names']['ATcT'] = nom
+        if not miscas:
+            print(f'\tATcT match for {nom}')
+    elif len(df) == 0:
+        print('\tno match in ATcT')
+    elif len(df) > 1:
+        print('\tmultiple matches in ATcT:', df.Species.values)
+
+# check WebBook data
+miscas = False
+if len(df_wb) > 1:
+    # match the CAS number
+    df = df_wb[df_wb.CASRN.map(CASRN_matches)]
+    if len(df) == 0:
+        # CAS did not match; check names
+        df = df_wb[df_wb.Species.map(name_matches)]
+        if len(df) == 1:
+            miscas = True
+            print('\tWebBook matched for Species name **but not for CASRN**')
+    df_wb = False
+    if len(df) == 1:
+        df_wb = df
+        identifier['WebBook'] = df.WB_ID.values[0]
+        nom = df.Species.values[0]
+        identifier['names']['WebBook'] = nom
+        if not miscas:
+            print(f'\tWebBook match for {nom}')
+    elif len(df) == 0:
+        print('\tno match in WebBook')
+    elif len(df) > 1:
+        print('\tmultiple matches in WebBook:', df.Species.values)
+
+# collect database values for enthalpy of formation
 refdata = {}
-for source in ['ATcT', 'WebBook']:
+for df, source in zip([df_atct, df_wb], ['ATcT', 'WebBook']):
     # require a record of previous successful search
     if source not in identifier.keys():
         # no such record
         continue
-    df = df_good[source]
-    if len(df) == 1:
-        data = {}
-        try:
-            data['EoF0'] = float(df['EoF0'].iloc[0])
-        except:
-            if source != 'WebBook':
-                print(f'No EoF0 found in {source}')
-        try:
-            data['source'] = str(df['Squib'].iloc[0])
-        except:
-            # ATcT source cannot be further specified
-            pass
-        try:
-            data['comment'] = str(df['Method'].iloc[0])
-        except:
-            # ATcT method cannot be further specified
-            pass
-        data['EoF298'] = float(df['EoF298'].iloc[0])
-        data['unc'] = float(df['Unc'].iloc[0])
-        data['unit'] = 'kJ/mol'  # for both WebBook and ATcT
-        data['k_cover'] = 2.    # assume k=2 for both WebBook and ATcT
-        if source == 'ATcT':
-            data['ATcT_version'] = atct_version.replace('p', '.', 1)
-        refdata[source] = data
+    if len(df) != 1:
+        # this should not happen
+        continue
+    data = {}
+    try:
+        data['EoF0'] = float(df['EoF0'].iloc[0])
+    except:
+        if source != 'WebBook':
+            # WebBook does not have data at T=0
+            print(f'No EoF0 found in {source}')
+    try:
+        data['source'] = str(df['Squib'].iloc[0])
+    except:
+        # ATcT source cannot be further specified
+        pass
+    try:
+        data['comment'] = str(df['Method'].iloc[0])
+    except:
+        # ATcT method cannot be further specified
+        pass
+    data['EoF298'] = float(df['EoF298'].iloc[0])
+    data['unc'] = float(df['Unc'].iloc[0])
+    data['unit'] = 'kJ/mol'  # for both WebBook and ATcT
+    data['k_cover'] = 2.    # assume k=2 for both WebBook and ATcT
+    if source == 'ATcT':
+        data['ATcT_version'] = atct_version.replace('p', '.', 1)
+    refdata[source] = data
 
-# look for additional reference data for molecule
+# look for local reference data for molecule
 if os.path.isfile(reflocal):
     with open(reflocal, 'r') as YML:
         lref = yaml.safe_load(YML)
@@ -312,50 +333,6 @@ if os.path.isfile(reflocal):
             refdata['Local']['k_cover'] = 1.  # assume k=1 for local data
             print(f'\tReading local reference data from {reflocal}')
 
-def fmult(label):
-    global PG
-    # 'gs' is spin mult and 'gx' is spatial mult (for linear case)
-    g = None
-    gx = 1
-    if '*' in PG:
-        # linear molecule
-        # label might have trailing omega following underscore
-        words = label.split('_')
-        if len(words) > 1:
-            try:
-                omega = float(words[-1])
-                if omega != 0:
-                    g = 1
-                else:
-                    g = 2
-            except ValueError:
-                # should be _g or _u for inversion parity
-                if 's' not in label.lower():
-                    # not a sigma state (pi, delta, etc.)
-                    gx = 2
-    if g is None:
-        # non-linear, or omega not specified
-        # I'm not handling degenerate irreps of symmetric tops!
-        # use (leading) spin multiplicity from state label (e.g., 2A1)
-        m = re.match(r'(\d+).+', label)
-        if m:
-            # read mandatory leading spin multiplicity
-            gs = int(m.group(1))
-            # multiply spatial * spin multiplicities
-            g = gs * gx
-    return g
-    
-def nrot(point_group):
-    # return order of rotational axis in name of point group (Schönflies)
-    m = re.search('(\d+)', point_group)
-    if m:
-        n = int(m.group(1))
-    elif '*' in point_group:
-        n = np.inf
-    else:
-        n = None
-    return n
-    
 # look for data about electronic energy levels
 elec = {}
 efile = felecm
