@@ -83,20 +83,22 @@ nprob = {}
 #    usually not an expensive calculation
 # Name looks like <molec>.gjf for input and <molec>.out for output
 Natoms = {}  # number of atoms for each molecule; key is GJF name
-nbfG = {}   # CCSD(T) cost estimator, based upon number of basis functions in the geom opt
+ecost = {}   # CCSD(T) cost estimator: # of electrons, rhf/uhf, # abelian irreps
 nprob['geomfreq'] = 0
 gjfs = glob.glob(os.sep.join([GDIR, '*.gjf']))
 ngjf = len(gjfs)
 print(f'Checking {ngjf} geometry/frequency calculations')
+preps = []  # list of commands to prepare Gaussian input files
 curbufG = []
 badout = [] # list of defective output files
-dfocc = {}  # key = filename, value = DataFrame of occupation vectors
 nuclrep = {}  # key = filename, value = nuclear repulsion energy
+rohf = {}  # key = filename, value = ROHF/cc-pVTZ-F12 energy
 for gjf in gjfs:
     mtime = os.path.getmtime(gjf)
     fout = gjf.replace('.gjf', '.out')
-    fchk = gjf.replace('.gjf', '.chk')
-    nbf = 9999
+    fbase = os.path.basename(gjf)
+    fchk = fbase.replace('.gjf', '.chk')
+    Natoms[gjf] = 9999  # dummy value
     spinmult = 1
     if os.path.isfile(fout):
         # check the modification time of the output file
@@ -107,24 +109,26 @@ for gjf in gjfs:
             # input file is newer than output file
             nprob['geomfreq'] += 1
             print(f'\t{gjf} is newer than its output file')
-            curbufG.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is older than input')
+            curbufG.append(f'rungau {fbase} -nocheck   \t# output is older than input')
             curbufG.append(f'rm {fchk}')
-        if natom > 1:
-            with open(fout) as F:
-                # check that the geometry converged
-                geomOK = gau.opt_success(F)
-                if geomOK:
-                    # check that no frequencies are imaginary
-                    nimag = gau.get_nimag(F)
-                    if nimag != 0:
-                        s = f'\t** Warning: nimag = {nimag} for {fout}'
-                        s += '; consider option CPHF(Grid=OneStep)'
-                        print(s)
+        else:
+            # input file is older than output
+            if natom > 1:
+                with open(fout) as F:
+                    # check that the geometry converged
+                    geomOK = gau.opt_success(F)
+                    if geomOK:
+                        # check that no frequencies are imaginary
+                        nimag = gau.get_nimag(F)
+                        if nimag != 0:
+                            s = f'\t** Warning: nimag = {nimag} for {fout}'
+                            #s += '; consider option CPHF(Grid=OneStep)'
+                            print(s)
+                            badout.append(fout)
+                    else:
+                        print(f'\t** Warning: geometry optimization failed for {fout}')
                         badout.append(fout)
-                else:
-                    print(f'\t** Warning: geometry optimization failed for {fout}')
-                    badout.append(fout)
-        nbf = gau.read_nbfn(fout)[0][0]
+        #nbf = gau.read_nbfn(fout)[0][0]
         with open(fout, 'r') as F:
             dfcm = gau.read_charge_mult(F)
             spin_mult = dfcm.Mult.values[0]
@@ -135,18 +139,36 @@ for gjf in gjfs:
             gcoord = gcoord.Coordinates.tolist()[-1]
             G = chem.Geometry(gcoord, intype='DataFrame', units='angstrom')
             nuclrep[fout] = G.nuclear_repulsion()
-        if spin_mult > 1:
-            nbf *= 2  # open-shell will take longer
-        # get converged SCF occupation vectors
-        dfocc[fout] = gau.final_occup_vector(fout)
+            dfscf = gau.read_scfe(F)
+            subdf = dfscf[dfscf.Method == 'ROHF']
+            if len(subdf):
+                rohf[fout] = subdf.Energy.values[-1]
+                #print(f'\trohf = {rohf[fout]} for {fout}')
+            else:
+                # No ROHF results
+                nprob['geomfreq'] += 1
+                # Create new input file that includes ROHF step
+                molec = gjf.split(os.sep)[-1].replace('.gjf', '')
+                dfcomment = gau.read_comments(F)
+                comment = dfcomment.Comment.values[0]
+                w = comment.split(', B3')  # expect to see ", B3LYP"
+                descr = w[0]
+                preps.append(f'./rebuild_gjf.py {molec} {descr} {spinmult} \t# need ROHF')
+                curbufG.append(f'rungau {fbase} -nocheck \t# need ROHF')
+                curbufG.append(f'rm {fchk}')
+        compirreps = gau.read_Abelian_irreps(fout)
+        nirr = len(compirreps)
+        if nirr == 0:
+            print(f'\t>>>nirr = {nirr} for gjf = {fout}')
+            nirr = 1
+        openshell = (spin_mult > 1) + 1
+        ecost[gjf] = (Natoms[gjf] ** 2) * openshell / nirr
     else:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
-        curbufG.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is missing')
+        curbufG.append(f'rungau {fbase} -nocheck   \t# output is missing')
         curbufG.append(f'rm {fchk}')
-        nbf = 9999
-    nbfG[gjf] = nbf
 if not nprob['geomfreq']:
     print()
 
@@ -209,11 +231,11 @@ if not nprob['sp_in']:
 nprob['sp_out'] = 0
 badpro = []   # list of defective output files
 listpro = [] # list of lists [inpro, outpro, xmlpro, remark]
-estcpu = []  # estimator of execution time
-bfnl = []; cpul = []; walll = []; ztotl = []; gbfnl = []
+estcpu = []
 print('Checking output files for single-point (SP) energy')
-nucthresh = 1.e-6  # threshold to print warning about nuclear repulsion energy
+Ethresh = 1.e-6  # warning threshold for nuclear repulsion energy or E(ROHF)
 for gjf in gjfs:
+    fout = gjf.replace('.gjf', '.out')
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     outpro = inpro.replace('.in', '.pro')
     xmlpro = inpro.replace('.in', '.xml')  # to be deleted
@@ -236,7 +258,7 @@ for gjf in gjfs:
                 # possibly significant change in input file; re-calculate
                 nprob['sp_out'] += 1
                 listpro.append( [inpro, outpro, xmlpro, 'input is newer than output'] )
-                estcpu.append(nbfG[gjf])
+                estcpu.append(ecost[gjf])
             continue
         # files externally look OK; is there a final energy?
         with open(outpro) as F:
@@ -244,42 +266,29 @@ for gjf in gjfs:
             for line in F:
                 if 'CCSD(T)-F12/cc-pVTZ-F12 energy=' in line:
                     energy = True
-                    # collect execution data from successful calculation
-                    nbfn = mpr.nbfn(outpro)
-                    resources = mpr.resources_used(outpro)
-                    ztot = mpr.Ztot(outpro)
-                    bfnl.append(nbfn); ztotl.append(ztot)
-                    cpul.append(resources['cpu']); walll.append(resources['wall'])
-                    gbfnl.append(nbfG[gjf])
-                # Re-compute nuclear repulsion energies here, to ensure consistent contants
-                ##if ' NUCLEAR REPULSION ENERGY' in line:
-                ##    nuclrep[outpro] = float(line.split()[-1])
+                    rohf[outpro] = mpr.read_RHF_energies(outpro)[0]
+                    try:
+                        hfdif = abs(rohf[outpro] - rohf[fout])
+                        if hfdif > Ethresh:
+                            print(f'\tWarning: ROHF energy difference from geom  = {hfdif:.6f} for {outpro.split(os.sep)[-1]}')
+                    except KeyError:
+                        print(f'\tmissing ROHF energy from {fout}')
+            # Re-compute nuclear repulsion energies here, to ensure consistent contants
+            ##if ' NUCLEAR REPULSION ENERGY' in line:
+            ##    nuclrep[outpro] = float(line.split()[-1])
             mcoord = mpr.read_coordinates(outpro)
             GM = chem.Geometry(mcoord, intype='DataFrame', units='bohr')
             nuclrep[outpro] = GM.nuclear_repulsion()
         # compare nuclear repulsion energy with that in geom opt
         fout = gjf.replace('.gjf', '.out')
         nucdif = abs(nuclrep[outpro] - nuclrep[fout])
-        if nucdif > nucthresh:
-            print(f'\tWarning: nuclear energy difference from geom  = {nucdif:.5f} for {outpro.split(os.sep)[-1]}')
+        if nucdif > Ethresh:
+            print(f'\tWarning: nuclear energy difference from geom  = {nucdif:.6f} for {outpro.split(os.sep)[-1]}')
         if not energy:
             print(f'\t{outpro} is lacking a final energy')
             nprob['sp_out'] += 1
             badpro.append(outpro)
             listpro.append( [inpro, outpro, xmlpro, 'existing output lacks final energy'] )
-            estcpu.append(nbfG[gjf])
-        else:
-            # do have energy; compare SCF occupations
-            dftemp = mpr.final_occup_vector(outpro, omit_empty=True)
-            # restrict to occupied irreps
-            dftemp = dftemp.loc[:, (dftemp != 0).any(axis=0)]
-            dfocc[outpro] = dftemp
-            irM = list(dfocc[outpro].columns)
-            irG = list(dfocc[fout].columns)
-            nirM = len(irM)
-            nirG = len(irG)
-            if nirM != nirG:
-                print(f'\tWarning: change in number of occupied irreps: {irM} in {outpro.split(os.sep)[-1]} and {irG} in geom opt')
     else:
         print(f'\tno input file for {outpro}')
         nprob['sp_out'] += 1
@@ -292,21 +301,6 @@ else:
         if estcpu[i] != 9999:
             # 9999 is dummy value representing 'no value'
             curbufpro = invoke_molpro(curbufpro, *listpro[i])
-
-if False:
-    # Plot time vs. nbfn
-    import matplotlib.pyplot as plt
-    dfcost = pd.DataFrame({'nbfns': bfnl, 'cpu': cpul, 'wall': walll, 'Ztot': ztotl, 'Gbfn': gbfnl})
-    chem.displayDF(dfcost)
-    X = dfcost.nbfns; xdata = 'Number of basis functions'
-    X = dfcost.Ztot; xdata = 'Total nuclear charge'
-    X = dfcost.Gbfn; xdata = 'Number of basis functions in geom/freq'
-    plt.scatter(np.log10(X), np.log10(dfcost.cpu), label='cpu', alpha=0.5)
-    plt.scatter(np.log10(X), np.log10(dfcost.wall), label='wall', alpha=0.5)
-    plt.legend()
-    plt.xlabel(f'log10({xdata})')
-    plt.ylabel('log10(t/s)')
-    plt.show()
 
 #--------------------------------------
 
@@ -386,6 +380,8 @@ if nprob['yaml']:
     fixbuf += curbufy + ['']
 if nprob['sp_in']:
     fixbuf += curbufin + ['']
+if preps:
+    fixbuf += preps + ['']
 if nprob['geomfreq']:
     fixbuf.append(f'cd {GDIR}')
     fixbuf += curbufG + ['cd ..', '']

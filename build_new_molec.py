@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Create the Gaussian input file for geom opt, harmonic freqs, and ROHF single-point energy
 # User input: Molecular label; Descriptive name of molecule; Spin multiplicity (all are neutral); Coordinates
@@ -97,26 +97,11 @@ natom = len(elems)
 
 if writegjf:
     # write the file
-    MW = 500 * (1 + natom // 15)
-    nproc = 4
-    filebuf = [f'%chk={molec}.chk',  f'%mem={MW}mw', f'nprocs={nproc}']
-    filebuf.extend([f'# b3lyp/gen opt freq CPHF(Grid=OneStep)', ''])
-    filebuf.extend([f'{descr}, B3LYP/pcseg-2', '', f'0 {spinmult}'])
+    coords = []  # list of lists
     for iat in range(natom):
             j = iat * 3
             x = float(crd[j]) 
             y = float(crd[j+1])
             z = float(crd[j+2])
-            filebuf.append('{:<3s}  {:11.6f}  {:11.6f}  {:11.6f}'.format(elems[iat], x, y, z))
-    filebuf.extend(['', '@pcseg2.gbs', ''])
-    # Add the ROHF single-point energy (for comparison with Molpro)
-    filebuf.extend(['--Link1--'] + filebuf[:3])
-    filebuf.extend(['# rohf/gen geom=check guess=check', ''])
-    filebuf.extend([f'{descr}, ROHF/cc-pVTZ-F12', '', f'0 {spinmult}', '', '@ccpvtz-f12.gbs', ''])
-    fgjf = os.sep.join([mrx.GDIR, f'{molec}.gjf'])
-    with open(fgjf, 'w') as F:
-        F.write('\n'.join(filebuf))
-    print('=' * 50)
-    print('\n'.join(filebuf))
-    print('=' * 50)
-    print(f'File {fgjf} written')
+            coords.append( [elems[iat], x, y, z] )
+    mrx.write_GJF(molec, descr, spinmult, coords)
