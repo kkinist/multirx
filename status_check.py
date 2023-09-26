@@ -90,9 +90,12 @@ ngjf = len(gjfs)
 print(f'Checking {ngjf} geometry/frequency calculations')
 curbufG = []
 badout = [] # list of defective output files
+dfocc = {}  # key = filename, value = DataFrame of occupation vectors
+nuclrep = {}  # key = filename, value = nuclear repulsion energy
 for gjf in gjfs:
     mtime = os.path.getmtime(gjf)
     fout = gjf.replace('.gjf', '.out')
+    fchk = gjf.replace('.gjf', '.chk')
     nbf = 9999
     spinmult = 1
     if os.path.isfile(fout):
@@ -105,6 +108,7 @@ for gjf in gjfs:
             nprob['geomfreq'] += 1
             print(f'\t{gjf} is newer than its output file')
             curbufG.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is older than input')
+            curbufG.append(f'rm {fchk}')
         if natom > 1:
             with open(fout) as F:
                 # check that the geometry converged
@@ -124,13 +128,23 @@ for gjf in gjfs:
         with open(fout, 'r') as F:
             dfcm = gau.read_charge_mult(F)
             spin_mult = dfcm.Mult.values[0]
+            # Re-compute nuclear repulsion energies here, to ensure consistent contants
+            ##dfnuc = gau.read_nuclear_repulsion(F)
+            ##nuclrep[fout] = dfnuc.repulsion.values[-1]
+            gcoord = gau.read_std_orient(F)
+            gcoord = gcoord.Coordinates.tolist()[-1]
+            G = chem.Geometry(gcoord, intype='DataFrame', units='angstrom')
+            nuclrep[fout] = G.nuclear_repulsion()
         if spin_mult > 1:
-            nbf *= 2  # open-shell will take longer 
+            nbf *= 2  # open-shell will take longer
+        # get converged SCF occupation vectors
+        dfocc[fout] = gau.final_occup_vector(fout)
     else:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
         curbufG.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is missing')
+        curbufG.append(f'rm {fchk}')
         nbf = 9999
     nbfG[gjf] = nbf
 if not nprob['geomfreq']:
@@ -177,7 +191,7 @@ for gjf in gjfs:
             else:
                 # it is different
                 nprob['sp_in'] += 1
-                curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
+                curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
             subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
         else:
             # atomic calculation is cheap
@@ -198,6 +212,7 @@ listpro = [] # list of lists [inpro, outpro, xmlpro, remark]
 estcpu = []  # estimator of execution time
 bfnl = []; cpul = []; walll = []; ztotl = []; gbfnl = []
 print('Checking output files for single-point (SP) energy')
+nucthresh = 1.e-6  # threshold to print warning about nuclear repulsion energy
 for gjf in gjfs:
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     outpro = inpro.replace('.in', '.pro')
@@ -236,12 +251,35 @@ for gjf in gjfs:
                     bfnl.append(nbfn); ztotl.append(ztot)
                     cpul.append(resources['cpu']); walll.append(resources['wall'])
                     gbfnl.append(nbfG[gjf])
+                # Re-compute nuclear repulsion energies here, to ensure consistent contants
+                ##if ' NUCLEAR REPULSION ENERGY' in line:
+                ##    nuclrep[outpro] = float(line.split()[-1])
+            mcoord = mpr.read_coordinates(outpro)
+            GM = chem.Geometry(mcoord, intype='DataFrame', units='bohr')
+            nuclrep[outpro] = GM.nuclear_repulsion()
+        # compare nuclear repulsion energy with that in geom opt
+        fout = gjf.replace('.gjf', '.out')
+        nucdif = abs(nuclrep[outpro] - nuclrep[fout])
+        if nucdif > nucthresh:
+            print(f'\tWarning: nuclear energy difference from geom  = {nucdif:.5f} for {outpro.split(os.sep)[-1]}')
         if not energy:
             print(f'\t{outpro} is lacking a final energy')
             nprob['sp_out'] += 1
             badpro.append(outpro)
             listpro.append( [inpro, outpro, xmlpro, 'existing output lacks final energy'] )
             estcpu.append(nbfG[gjf])
+        else:
+            # do have energy; compare SCF occupations
+            dftemp = mpr.final_occup_vector(outpro, omit_empty=True)
+            # restrict to occupied irreps
+            dftemp = dftemp.loc[:, (dftemp != 0).any(axis=0)]
+            dfocc[outpro] = dftemp
+            irM = list(dfocc[outpro].columns)
+            irG = list(dfocc[fout].columns)
+            nirM = len(irM)
+            nirG = len(irG)
+            if nirM != nirG:
+                print(f'\tWarning: change in number of occupied irreps: {irM} in {outpro.split(os.sep)[-1]} and {irG} in geom opt')
     else:
         print(f'\tno input file for {outpro}')
         nprob['sp_out'] += 1

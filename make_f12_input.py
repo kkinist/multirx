@@ -69,11 +69,15 @@ if memgb is None:
 # write MOLPRO input file
 with open(fpro, 'w') as MPRO:
     MPRO.write('***, CCSD(T)-F12b/cc-pVTZ-F12 energy, {:s} geom\n'.format(comment))
+    '''
     if (natom > 1) and (mult == 1):
         MPRO.write('memory,{:d},G;\n\ngeometry={{\n'.format(memgb))
     else:
         # use 'nosym' for atoms and open-shell molecules
         MPRO.write('memory,{:d},G;\n\nsymmetry,nosym;\ngeometry={{\n'.format(memgb))
+    '''
+    # try using symmetry always
+    MPRO.write('memory,{:d},G;\n\ngeometry={{\n'.format(memgb))
     # print coordinates: symbol, x, y, z
     for iat, row in dfcoord.iterrows():
         MPRO.write('{:s} {:11.6f} {:11.6f} {:11.6f}\n'.format(chem.elz(row.Z),
