@@ -2430,3 +2430,37 @@ def compress_CASRN(strcas):
         if c in '0123456789':
             ccas += c
     return ccas
+
+def write_GJF(molec, descr, spinmult, coords, nproc=4, silent=False):
+    '''
+    Write a Gaussian input file appropriate for this project
+    'molec' is short label, used in filenames
+    'descr' is a longer, descriptive name for the molecule
+    'spinmult' is an integer = 2S+1
+    'coords' is list of lists or equivalent array
+    'nprocs' is the parameter for Gaussian
+    '''
+    natom = len(coords)
+    MW = 500 * (1 + natom // 15)
+    filebuf = [f'%chk={molec}.chk',  f'%mem={MW}mw', f'%nprocs={nproc}']
+    filebuf.extend(['# b3lyp/gen opt freq CPHF(Grid=OneStep)', ''])
+    filebuf.extend([f'{descr}, B3LYP/pcseg-2', '', f'0 {spinmult}'])
+    for atrow in coords:
+        [Z, x, y, z] = atrow
+        el = chem.elz(Z, 'symbol')
+        filebuf.append('{:<3s}  {:11.6f}  {:11.6f}  {:11.6f}'.format(el, x, y, z))
+    filebuf.extend(['', '@pcseg2.gbs', ''])
+    # Add the ROHF single-point energy (for comparison with Molpro)
+    filebuf.extend(['--Link1--'] + filebuf[:3])
+    filebuf.extend(['# rohf/gen geom=check guess=check', ''])
+    filebuf.extend([f'{descr}, ROHF/cc-pVTZ-F12', '', f'0 {spinmult}', '', '@ccpvtz-f12.gbs', ''])
+    fgjf = os.sep.join([GDIR, f'{molec}.gjf'])
+    # actually write the file
+    with open(fgjf, 'w') as F:
+        F.write('\n'.join(filebuf))
+    if not silent:
+        print('=' * 50)
+        print('\n'.join(filebuf))
+        print('=' * 50)
+        print(f'File {fgjf} written')
+    return
