@@ -17,25 +17,50 @@ import gaussian_subs as gau
 
 #--------------------------------------
 
-def restore_old(fpro):
-    # Look for a file named <name>_cc.in or <nam>_cc.pro in the discard directory
-    # If found, copy it to <name>.* in the SP directory and return its timestamp
-    # If not found, return False
-    fold = fpro.replace(EDIR, JUNK).replace('.in', '_cc.in').replace('.pro', '_cc.pro')
-    if os.path.isfile(fold):
-        mtime = os.path.getmtime(fold)
-        print(f'\tcopying {fold} to {fpro}')
-        subprocess.run(['cp', '-p', fold, fpro])
-        return mtime
-    else:
-        return False
-
-def invoke_molpro(curbuf, inpro, outpro, xmlpro):
+def invoke_molpro(curbuf, inpro, outpro, xmlpro, remark):
     # add an 'echo' statement and a molpro command to the file buffer 'curbuf'
     curbuf.append(f'echo "Running molpro on {inpro}"')
-    curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro}  \t# output file is missing')
+    curbuf.append(f'molpro -n 4 --nobackup -o {outpro} {inpro}; rm {xmlpro}  \t# {remark}')
     return curbuf
 
+def compare_pro_in(inpro, outpro):
+    # Return True if output file 'outpro' was generated using
+    #   the same input as shown in 'inpro'
+    # comparison is word by word within each line
+    # Special: in comment, '***,' input may be '***, ' output
+    # Special: floating '-0.0' should match '0.0'
+    inbuf = []
+    with open(inpro, 'r') as F:
+        for line in F:
+            ln = line.strip()
+            if ln[:4] == '***,':
+                ln = ln[4:].strip()
+            wrds = ln.split()
+            inbuf.append(wrds)
+    with open(outpro, 'r') as F:
+        for i, line in enumerate(F):
+            if 'PROGRAM SYSTEM MOLPRO' in line:
+                break
+            ln = line.strip()
+            if ln[:4] == '***,':
+                ln = ln[4:].strip()
+            wrds = ln.split()
+            # delete a line if all words are equal
+            for inline in inbuf.copy():
+                match = (len(inline) == len(wrds))
+                if match:
+                    for iw, ow in zip(inline, wrds):
+                        if iw != ow:
+                            try:
+                                if float(iw) == float(ow):
+                                    continue
+                            except:
+                                pass
+                            match = False
+                if match:
+                    inbuf.remove(inline)
+    return len(inbuf) == 0
+        
 #--------------------------------------
 
 # sub-directory names
@@ -43,12 +68,11 @@ GDIR = 'geomfreq'    # Gaussian files, geom opt and harmonic freqs
 EDIR = 'energysp'    # Molpro files, single-point CCSD(T)-F12
 REFD = 'refdata'     # Reference data
 DATA = 'molec_data'  # Processed molecular YAML files
-JUNK = 'discard/energysp'  # CC outputs rejected because of old filename format
 
 # create file buffer for 'fixing.sh'
 ffix = 'fixing.sh'
 fixbuf = ['#!/bin/bash', '# this file created by status_check.py to fix problems',
-    '# Run this script in the main multirx directory', '']
+          '# Run this script in the main multirx directory', '']
 
 # count the problems found, by category
 nprob = {}
@@ -59,16 +83,22 @@ nprob = {}
 #    usually not an expensive calculation
 # Name looks like <molec>.gjf for input and <molec>.out for output
 Natoms = {}  # number of atoms for each molecule; key is GJF name
-nbfG = {}   # number of basis functions in the geom/freq calculation
+ecost = {}   # CCSD(T) cost estimator: # of electrons, rhf/uhf, # abelian irreps
 nprob['geomfreq'] = 0
 gjfs = glob.glob(os.sep.join([GDIR, '*.gjf']))
 ngjf = len(gjfs)
 print(f'Checking {ngjf} geometry/frequency calculations')
-curbuf = []
+preps = []  # list of commands to prepare Gaussian input files
+curbufG = []
+badout = [] # list of defective output files
+nuclrep = {}  # key = filename, value = nuclear repulsion energy
+rohf = {}  # key = filename, value = ROHF/cc-pVTZ-F12 energy
 for gjf in gjfs:
     mtime = os.path.getmtime(gjf)
     fout = gjf.replace('.gjf', '.out')
-    nbf = 9999
+    fbase = os.path.basename(gjf)
+    fchk = fbase.replace('.gjf', '.chk')
+    Natoms[gjf] = 9999  # dummy value
     spinmult = 1
     if os.path.isfile(fout):
         # check the modification time of the output file
@@ -79,87 +109,118 @@ for gjf in gjfs:
             # input file is newer than output file
             nprob['geomfreq'] += 1
             print(f'\t{gjf} is newer than its output file')
-            curbuf.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is older than input')
-        if natom > 1:
-            with open(fout) as F:
-                # check that the geometry converged (this should have been checked already)
-                geomOK = gau.opt_success(F)
-                if geomOK:
-                    # check that no frequencies are imaginary (this also should have been checked previously)
-                    nimag = gau.get_nimag(F)
-                    if nimag != 0:
-                        print(f'\t** Warning: nimag = {nimag} for {fout}')
-                else:
-                    print(f'\t** Warning: geometry optimization failed for {fout}')
-        nbf = gau.read_nbfn(fout)[0][0]
+            curbufG.append(f'rungau {fbase} -nocheck   \t# output is older than input')
+            curbufG.append(f'rm {fchk}')
+        else:
+            # input file is older than output
+            if natom > 1:
+                with open(fout) as F:
+                    # check that the geometry converged
+                    geomOK = gau.opt_success(F)
+                    if geomOK:
+                        # check that no frequencies are imaginary
+                        nimag = gau.get_nimag(F)
+                        if nimag != 0:
+                            s = f'\t** Warning: nimag = {nimag} for {fout}'
+                            #s += '; consider option CPHF(Grid=OneStep)'
+                            print(s)
+                            badout.append(fout)
+                    else:
+                        print(f'\t** Warning: geometry optimization failed for {fout}')
+                        badout.append(fout)
+        #nbf = gau.read_nbfn(fout)[0][0]
         with open(fout, 'r') as F:
             dfcm = gau.read_charge_mult(F)
             spin_mult = dfcm.Mult.values[0]
-        if spin_mult > 1:
-            nbf *= 4  # open-shell will take longer 
+            # Re-compute nuclear repulsion energies here, to ensure consistent contants
+            ##dfnuc = gau.read_nuclear_repulsion(F)
+            ##nuclrep[fout] = dfnuc.repulsion.values[-1]
+            gcoord = gau.read_std_orient(F)
+            gcoord = gcoord.Coordinates.tolist()[-1]
+            G = chem.Geometry(gcoord, intype='DataFrame', units='angstrom')
+            nuclrep[fout] = G.nuclear_repulsion()
+            dfscf = gau.read_scfe(F)
+            subdf = dfscf[dfscf.Method == 'ROHF']
+            if len(subdf):
+                rohf[fout] = subdf.Energy.values[-1]
+                #print(f'\trohf = {rohf[fout]} for {fout}')
+            else:
+                # No ROHF results
+                nprob['geomfreq'] += 1
+                # Create new input file that includes ROHF step
+                molec = gjf.split(os.sep)[-1].replace('.gjf', '')
+                dfcomment = gau.read_comments(F)
+                comment = dfcomment.Comment.values[0]
+                w = comment.split(', B3')  # expect to see ", B3LYP"
+                descr = w[0]
+                preps.append(f'./rebuild_gjf.py {molec} {descr} {spinmult} \t# need ROHF')
+                curbufG.append(f'rungau {fbase} -nocheck \t# need ROHF')
+                curbufG.append(f'rm {fchk}')
+        compirreps = gau.read_Abelian_irreps(fout)
+        nirr = len(compirreps)
+        if nirr == 0:
+            print(f'\t>>>nirr = {nirr} for gjf = {fout}')
+            nirr = 1
+        openshell = (spin_mult > 1) + 1
+        ecost[gjf] = (Natoms[gjf] ** 2) * openshell / nirr
     else:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
-        curbuf.append(f'rungau {os.path.basename(gjf)} -nocheck   \t# output is missing')
-        nbf = 9999
-    nbfG[gjf] = nbf
+        curbufG.append(f'rungau {fbase} -nocheck   \t# output is missing')
+        curbufG.append(f'rm {fchk}')
 if not nprob['geomfreq']:
     print()
-else:
-    fixbuf.append(f'cd {GDIR}')
-    fixbuf += curbuf + ['cd ..', '']
 
 #--------------------------------------
 
 # Molpro input files (single-point energy)
 # Name looks like <molec>.in 
 nprob['sp_in'] = 0
-curbuf = []
+curbufin = []
 print('Checking input files for single-point (SP) energy')
 for gjf in gjfs:
     fout = gjf.replace('.gjf', '.out')
     if os.path.isfile(fout):
         mtime = os.path.getmtime(fout)  # time of geom/freq calculation
+        if fout in badout:
+            print(f'\t{inpro} has defective geom/freq predecessor')
+            nprob['sp_in'] += 1
+            continue
     else:
         print(f'\t{inpro} is lacking a predecessor geometry output')
         nprob['sp_in'] += 1
-        #curbuf.append(f'./make_f12_input.py {fout} {EDIR}   \t# depends upon prior geometry optimization')
+        continue
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     if os.path.isfile(inpro):
         otime = os.path.getmtime(inpro)  # time of SP input file
     else:
-        # it might just have an old name
-        otime = restore_old(inpro)
-    if not otime:
         # SP input file does not exist
         print(f'\t{inpro} does not exist')
         nprob['sp_in'] += 1
-        curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is missing')
-    else:
-        if otime < mtime:
-            # SP input file is older than geometry file
-            print(f'\t{inpro} is older than the predessor geometry output')
-            if Natoms[gjf] > 1:
-                # But is it OK anyway? Create a new one and compare
-                subprocess.run(['cp', fout, 'tempfile.out'])
-                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
-                if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
-                    print('\t\tbut it looks OK')
-                    curbuf.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
-                else:
-                    # it is different
-                    nprob['sp_in'] += 1
-                    curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
-                subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
+        curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is missing')
+        continue
+    if otime < mtime:
+        # SP input file is older than geometry file
+        print(f'\t{inpro} is older than the predessor geometry output')
+        if Natoms[gjf] > 1:
+            # But is it OK anyway? Create a new one and compare
+            subprocess.run(['cp', fout, 'tempfile.out'])
+            subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
+            if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
+                print('\t\tbut it looks OK')
+                curbufin.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
             else:
-                # atomic calculation is cheap
+                # it is different
                 nprob['sp_in'] += 1
-                curbuf.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
+                curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
+            subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
+        else:
+            # atomic calculation is cheap
+            nprob['sp_in'] += 1
+            curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
 if not nprob['sp_in']:
     print()
-else:
-    fixbuf += curbuf + ['']
 
 #--------------------------------------
 
@@ -168,11 +229,13 @@ else:
 # Can be an expensive calculation
 # Collect stats on time vs bfns
 nprob['sp_out'] = 0
-listpro = [] # list of lists [inpro, outpro, xmlpro]
-sortidx = []  # predictor of execution time
-bfnl = []; cpul = []; walll = []; ztotl = []; gbfnl = []
+badpro = []   # list of defective output files
+listpro = [] # list of lists [inpro, outpro, xmlpro, remark]
+estcpu = []
 print('Checking output files for single-point (SP) energy')
+Ethresh = 1.e-6  # warning threshold for nuclear repulsion energy or E(ROHF)
 for gjf in gjfs:
+    fout = gjf.replace('.gjf', '.out')
     inpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.in')
     outpro = inpro.replace('.in', '.pro')
     xmlpro = inpro.replace('.in', '.xml')  # to be deleted
@@ -181,80 +244,69 @@ for gjf in gjfs:
         if os.path.isfile(outpro):
             otime = os.path.getmtime(outpro) # time of SP output file
         else:
-            # maybe it just has an old name
-            otime = restore_old(outpro)
-        if not otime:
             print(f'\t{outpro} does not exist')
             nprob['sp_out'] += 1
-            listpro.append( [inpro, outpro, xmlpro] )
-            #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
-            sortidx.append(nbfG[gjf])
-        else:
-            # output does exist
-            if otime < mtime:
-                print(f'\t{outpro} is older than its input')
-                nprob['sp_out'] += 1
-                listpro.append( [inpro, outpro, xmlpro] )
-                #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
-                sortidx.append(nbfG[gjf])
+            listpro.append( [inpro, outpro, xmlpro, 'output is missing'] )
+            estcpu.append(nbfG[gjf])
+            continue
+        # output does exist
+        if otime < mtime:
+            print(f'\t{outpro} is older than its input')
+            if compare_pro_in(inpro, outpro):
+                print('\t    but is consistent with it')
             else:
-                # files externally look OK; is there a final energy?
-                with open(outpro) as F:
-                    energy = False
-                    for line in F:
-                        if 'CCSD(T)-F12/cc-pVTZ-F12 energy=' in line:
-                            energy = True
-                            # collect execution data from successful calculation
-                            nbfn = mpr.nbfn(outpro)
-                            resources = mpr.resources_used(outpro)
-                            ztot = mpr.Ztot(outpro)
-                            bfnl.append(nbfn); ztotl.append(ztot)
-                            cpul.append(resources['cpu']); walll.append(resources['wall'])
-                            gbfnl.append(nbfG[gjf])
-                if not energy:
-                    print(f'\t{outpro} is lacking a final energy')
-                    nprob['sp_out'] += 1
-                    listpro.append( [inpro, outpro, xmlpro] )
-                    #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
-                    sortidx.append(nbfG[gjf])
+                # possibly significant change in input file; re-calculate
+                nprob['sp_out'] += 1
+                listpro.append( [inpro, outpro, xmlpro, 'input is newer than output'] )
+                estcpu.append(ecost[gjf])
+            continue
+        # files externally look OK; is there a final energy?
+        with open(outpro) as F:
+            energy = False
+            for line in F:
+                if 'CCSD(T)-F12/cc-pVTZ-F12 energy=' in line:
+                    energy = True
+                    rohf[outpro] = mpr.read_RHF_energies(outpro)[0]
+                    try:
+                        hfdif = abs(rohf[outpro] - rohf[fout])
+                        if hfdif > Ethresh:
+                            print(f'\tWarning: ROHF energy difference from geom  = {hfdif:.6f} for {outpro.split(os.sep)[-1]}')
+                    except KeyError:
+                        print(f'\tmissing ROHF energy from {fout}')
+            # Re-compute nuclear repulsion energies here, to ensure consistent contants
+            ##if ' NUCLEAR REPULSION ENERGY' in line:
+            ##    nuclrep[outpro] = float(line.split()[-1])
+            mcoord = mpr.read_coordinates(outpro)
+            GM = chem.Geometry(mcoord, intype='DataFrame', units='bohr')
+            nuclrep[outpro] = GM.nuclear_repulsion()
+        # compare nuclear repulsion energy with that in geom opt
+        fout = gjf.replace('.gjf', '.out')
+        nucdif = abs(nuclrep[outpro] - nuclrep[fout])
+        if nucdif > Ethresh:
+            print(f'\tWarning: nuclear energy difference from geom  = {nucdif:.6f} for {outpro.split(os.sep)[-1]}')
+        if not energy:
+            print(f'\t{outpro} is lacking a final energy')
+            nprob['sp_out'] += 1
+            badpro.append(outpro)
+            listpro.append( [inpro, outpro, xmlpro, 'existing output lacks final energy'] )
     else:
         print(f'\tno input file for {outpro}')
         nprob['sp_out'] += 1
-        listpro.append( [inpro, outpro, xmlpro] )
-        #curbuf = invoke_molpro(curbuf, inpro, outpro, xmlpro)
-        sortidx.append(nbfG[gjf])
 if not nprob['sp_out']:
     print()
 else:
     # sort the commands by expected increasing order of execution time
-    curbuf = []
-    for i in np.argsort(sortidx):
-        if sortidx[i] != 9999:
+    curbufpro = []
+    for i in np.argsort(estcpu):
+        if estcpu[i] != 9999:
             # 9999 is dummy value representing 'no value'
-            curbuf = invoke_molpro(curbuf, *listpro[i])
-    #curbuf = [curbuf[i] for i in np.argsort(sortidx)]
-    fixbuf += curbuf + ['']
-
-if False:
-    # Plot time vs. nbfn
-    import matplotlib.pyplot as plt
-    dfcost = pd.DataFrame({'nbfns': bfnl, 'cpu': cpul, 'wall': walll, 'Ztot': ztotl, 'Gbfn': gbfnl})
-    chem.displayDF(dfcost)
-    X = dfcost.nbfns; xdata = 'Number of basis functions'
-    X = dfcost.Ztot; xdata = 'Total nuclear charge'
-    X = dfcost.Gbfn; xdata = 'Number of basis functions in geom/freq'
-    plt.scatter(np.log10(X), np.log10(dfcost.cpu), label='cpu', alpha=0.5)
-    plt.scatter(np.log10(X), np.log10(dfcost.wall), label='wall', alpha=0.5)
-    plt.legend()
-    plt.xlabel(f'log10({xdata})')
-    plt.ylabel('log10(t/s)')
-    plt.show()
+            curbufpro = invoke_molpro(curbufpro, *listpro[i])
 
 #--------------------------------------
 
-# Molecular data (summary) files (YAML)
+# Summary molecular data files (YAML)
 nprob['yaml'] = 0
-curbuf = []
+curbufy = []
 print('Checking summary YAML files')
 for gjf in gjfs:
     outpro = gjf.replace(GDIR, EDIR).replace('.gjf', '.pro')
@@ -268,19 +320,21 @@ for gjf in gjfs:
             if otime < mtime:
                 print(f'\t{fyml} is older than its data')
                 nprob['yaml'] += 1
-                curbuf.append(f'./molec_yaml.py {molname}  \t# file is older than its data')
+                curbufy.append(f'./molec_yaml.py {molname}  \t# file is older than its data')
+            elif outpro in badpro:
+                print(f'\t{fyml} energy calculation is defective')
+                nprob['yaml'] += 1
+                curbufy.append(f'./molec_yaml.py {molname}  \t# expecting energy recalculation')
         else:
             print(f'\t{fyml} does not exist')
             nprob['yaml'] += 1
-            curbuf.append(f'./molec_yaml.py {molname}  \t# data file was missing')
+            curbufy.append(f'./molec_yaml.py {molname}  \t# data file was missing')
     else:
         print(f'\tno SP energy {outpro}')
         # do nothing because user may want to run CCSD(T) on another machine
         nprob['yaml'] += 1
 if not nprob['sp_out']:
     print()
-else:
-    fixbuf += curbuf + ['']
 
 #--------------------------------------
 
@@ -293,23 +347,28 @@ if orphans:
     print('Some YAML files do not have supporting calculations:')
     for molec in orphans:
         print(f'\t{molec}')
+        nprob['yaml'] += 1
 else:
-    print(f'There are {len(yamls)} YAML files; all have supporting calculations.')
+    print(f'There are {len(yamls)} YAML files, all with supporting calculations.')
 
 # Do all molecular name-codes have explanations in "label_meanings.tsv"?
 flabels = os.sep.join([REFD, 'label_meanings.tsv'])
 df = pd.read_csv(flabels, sep='\t')
-glossary = set(df.Label)  # set of name-codes with meanings
+glossary = set(df.Label)  # set of name codes
 noname = set(molecs_gjf) - glossary
+nprob['unstarted'] = 0
+nprob['undef'] = 0
 if noname:
     print('Some molecular name-codes are missing definitions:')
     for molec in noname:
         print(f'\t{molec}')
+        nprob['undef'] += 1
 nodata = glossary - set(molecs_gjf)
 if nodata:
     print('Some defined molecules are missing data:')
     for molec in nodata:
         print(f'\t{molec}')
+        nprob['unstarted'] += 1
 
 #--------------------------------------
 
@@ -317,6 +376,17 @@ print('Summary of problems:')
 chem.print_dict(nprob, nindent=1)
 
 # write the fix file
+if nprob['yaml']:
+    fixbuf += curbufy + ['']
+if nprob['sp_in']:
+    fixbuf += curbufin + ['']
+if preps:
+    fixbuf += preps + ['']
+if nprob['geomfreq']:
+    fixbuf.append(f'cd {GDIR}')
+    fixbuf += curbufG + ['cd ..', '']
+if nprob['sp_out']:
+    fixbuf += curbufpro
 with open(ffix, 'w') as F:
     F.write('\n'.join(fixbuf))
 os.chmod(ffix, 0o744)
