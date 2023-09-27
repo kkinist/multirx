@@ -43,7 +43,7 @@ with open(fgau, 'r') as GAU:
             chem.print_err('', 'Geometry optimization failed!')
         nimag = gau.get_nimag(GAU)
         if not silent:
-            print('nimag = ', nimag)
+            print('\tnimag = ', nimag)
         if nimag != 0:
             chem.print_err('', 'Geometry is not an energy minimum!')
     # extract comment line

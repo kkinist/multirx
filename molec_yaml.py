@@ -171,7 +171,12 @@ geom, lineno = gau.gau_geom_freq_energy(FGAU)
 # number of computational irreps
 nirreps = gau.read_compgroup(FGAU)['ops'].iloc[-1]  # last comp group
 geom['nirreps'] = int(nirreps)
+# (RO)HF/cc-pVTZ-F12 energy for cross-check with Molpro
+dfscf = gau.read_scfe(FGAU)
+rohf = dfscf.loc[dfscf.Method == 'ROHF', 'Energy'].values[0]
+geom['HF_check'] = float(rohf)
 doc['Geometry'] = geom
+
 natom = len(geom['coordinates'])
 if natom > 1:
     doc['Frequencies'] = geom.pop('Frequencies')  # move freqs to top level
@@ -190,6 +195,7 @@ if natom > 1:
     # external symmetry number
     rotat['symmetry_number'] = gau.read_symno(FGAU)
     doc['Rotational'] = rotat
+FGAU.close()
 
 # create formula from list of atoms
 atlist = [x[0] for x in geom['coordinates']]
@@ -462,7 +468,6 @@ for itor, ftor in enumerate(ftors):
             continue
         # add to the document
         doc['Torsional_TS_{:d}'.format(itor + 1)] = rotor
-FGAU.close()
 
 # look for overriding data
 if os.path.isfile(foverride):
