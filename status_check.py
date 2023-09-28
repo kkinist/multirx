@@ -76,6 +76,7 @@ fixbuf = ['#!/bin/bash', '# this file created by status_check.py to fix problems
 
 # count the problems found, by category
 nprob = {}
+inputs_to_run = []  # list to prevent duplication
 
 #--------------------------------------
 
@@ -104,13 +105,17 @@ for gjf in gjfs:
         # check the modification time of the output file
         otime = os.path.getmtime(fout)
         natom = gau.natom(fout)  # number of atoms in the molecule
+        if natom is None:
+            chem.print_err('', f'natom = None for file {fout}')
         Natoms[gjf] = natom
         if otime < mtime:
             # input file is newer than output file
             nprob['geomfreq'] += 1
             print(f'\t{gjf} is newer than its output file')
-            curbufG.append(f'rungau {fbase} -nocheck   \t# output is older than input')
-            curbufG.append(f'rm {fchk}')
+            if gjf not in inputs_to_run:
+                curbufG.append(f'rungau {fbase} -nocheck   \t# output is older than input')
+                curbufG.append(f'rm {fchk}')
+                inputs_to_run.append(gjf)
         else:
             # input file is older than output
             if natom > 1:
@@ -131,7 +136,7 @@ for gjf in gjfs:
         #nbf = gau.read_nbfn(fout)[0][0]
         with open(fout, 'r') as F:
             dfcm = gau.read_charge_mult(F)
-            spin_mult = dfcm.Mult.values[0]
+            spin_mult = int(dfcm['Mult'].iloc[-1])
             # Re-compute nuclear repulsion energies here, to ensure consistent contants
             ##dfnuc = gau.read_nuclear_repulsion(F)
             ##nuclrep[fout] = dfnuc.repulsion.values[-1]
@@ -153,9 +158,12 @@ for gjf in gjfs:
                 comment = dfcomment.Comment.values[0]
                 w = comment.split(', B3')  # expect to see ", B3LYP"
                 descr = w[0]
-                preps.append(f'./rebuild_gjf.py {molec} {descr} {spinmult} \t# need ROHF')
-                curbufG.append(f'rungau {fbase} -nocheck \t# need ROHF')
-                curbufG.append(f'rm {fchk}')
+                s = f'./rebuild_gjf.py {molec} "{descr}" {spin_mult} \t# need ROHF'
+                preps.append(s)
+                if gjf not in inputs_to_run:
+                    preps.append(f'rungau {fbase} -nocheck \t# need ROHF')
+                    preps.append(f'rm {fchk}')
+                    inputs_to_run.append(gjf)
         compirreps = gau.read_Abelian_irreps(fout)
         nirr = len(compirreps)
         if nirr == 0:
@@ -167,8 +175,10 @@ for gjf in gjfs:
         # output file is missing
         nprob['geomfreq'] += 1
         print(f'\t{gjf} has no output file')
-        curbufG.append(f'rungau {fbase} -nocheck   \t# output is missing')
-        curbufG.append(f'rm {fchk}')
+        if gjf not in inputs_to_run:
+            curbufG.append(f'rungau {fbase} -nocheck   \t# output is missing')
+            curbufG.append(f'rm {fchk}')
+            inputs_to_run.append(gjf)
 if not nprob['geomfreq']:
     print()
 
@@ -205,16 +215,21 @@ for gjf in gjfs:
         print(f'\t{inpro} is older than the predessor geometry output')
         if Natoms[gjf] > 1:
             # But is it OK anyway? Create a new one and compare
-            subprocess.run(['cp', fout, 'tempfile.out'])
-            subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
-            if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
-                print('\t\tbut it looks OK')
-                curbufin.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
-            else:
-                # it is different
+            try:
+                subprocess.run(['cp', fout, 'tempfile.out'])
+                subprocess.run(['./make_f12_input.py', 'tempfile.out', '.', '-q'])
+                if filecmp.cmp(inpro, 'tempfile.in', shallow=False):
+                    print('\t\tbut it looks OK')
+                    curbufin.append(f'#./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt but geom looks OK')
+                else:
+                    # it is different
+                    nprob['sp_in'] += 1
+                    curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
+                subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
+            except:
+                # something went wrong; just re-run
                 nprob['sp_in'] += 1
                 curbufin.append(f'./make_f12_input.py {fout} {EDIR}  \t# input file is newer than geom opt')
-            subprocess.run(['rm', '-f', 'tempfile.out', 'tempfile.in'])
         else:
             # atomic calculation is cheap
             nprob['sp_in'] += 1
@@ -246,8 +261,10 @@ for gjf in gjfs:
         else:
             print(f'\t{outpro} does not exist')
             nprob['sp_out'] += 1
-            listpro.append( [inpro, outpro, xmlpro, 'output is missing'] )
-            estcpu.append(nbfG[gjf])
+            if inpro not in inputs_to_run:
+                listpro.append( [inpro, outpro, xmlpro, 'output is missing'] )
+                inputs_to_run.append(inpro)
+                estcpu.append(ecost[gjf])
             continue
         # output does exist
         if otime < mtime:
@@ -257,8 +274,10 @@ for gjf in gjfs:
             else:
                 # possibly significant change in input file; re-calculate
                 nprob['sp_out'] += 1
-                listpro.append( [inpro, outpro, xmlpro, 'input is newer than output'] )
-                estcpu.append(ecost[gjf])
+                if inpro not in inputs_to_run:
+                    listpro.append( [inpro, outpro, xmlpro, 'input is newer than output'] )
+                    inputs_to_run.append(inpro)
+                    estcpu.append(ecost[gjf])
             continue
         # files externally look OK; is there a final energy?
         with open(outpro) as F:
@@ -288,7 +307,10 @@ for gjf in gjfs:
             print(f'\t{outpro} is lacking a final energy')
             nprob['sp_out'] += 1
             badpro.append(outpro)
-            listpro.append( [inpro, outpro, xmlpro, 'existing output lacks final energy'] )
+            if inpro not in inputs_to_run:
+                listpro.append( [inpro, outpro, xmlpro, 'existing output lacks final energy'] )
+                inputs_to_run.append(inpro)
+                estcpu.append(ecost[gjf])
     else:
         print(f'\tno input file for {outpro}')
         nprob['sp_out'] += 1
