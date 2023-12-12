@@ -289,7 +289,7 @@ def molecule_search_by_name(name, dfnames=None, moldata=None):
                 break
     return retval
 
-def balance_using_simple(baldict, simple, scompos, natom):
+def balance_using_simple(baldict, simple, scompos, natom, verbose=True):
     # Balance a reaction using only "simple" educts
     # Do not use Gram-Schmidt 
     # 'baldict' {element: coefficient} that must be negated to balance a reaction
@@ -306,7 +306,9 @@ def balance_using_simple(baldict, simple, scompos, natom):
         elems = elems.union(comp.keys())
     if not balset <= elems:
         # the list of simple molecules is missing essential elements
-        chem.print_err('', f'elements {balset} are not spanned by {elems}')
+        if verbose:
+            print(f'elements {balset} are not spanned by {elems}')
+        return None
     # construct composition vectors
     ordel = sorted(elems)
     #print('>>>ordel =\t', ordel)
@@ -624,7 +626,7 @@ def reaction_functional_group_bal(target, moldata, Gdict, fgdetect=False, verbos
     scompos = [scompos[i] for i in idx]
 
     for i in ikeep.copy():
-        retval = check_reactions_balance(rxns[i], Gdict, verbose=False, details=True)
+        retval = check_reactions_balance(rxns[i], Gdict, verbose=verbose, details=True)
         if retval[0][0] == False:
             # reaction needs balancing
             #print(rxns[i])
@@ -637,11 +639,12 @@ def reaction_functional_group_bal(target, moldata, Gdict, fgdetect=False, verbos
                 unbal['charge'] = q
             #print('\t>>>>>>>>', unbal)
             # look for a "simple" molecule that contains only these elements
-            small = balance_using_simple(unbal, simple, scompos, natom)
+            small = balance_using_simple(unbal, simple, scompos, natom, verbose=verbose)
             #for d in small:
             #    print('\t<<', d)
             if small is None:
-                chem.print_err('', f'Failed to balance reaction {rxns[i]}', halt=False)
+                if verbose:
+                    chem.print_err('', f'Failed to balance reaction {rxns[i]}', halt=False)
                 # remove it from the list
                 ikeep.remove(i)
                 continue
@@ -802,7 +805,7 @@ def reaction_string(rxn):
 def build_reactions_DF(rxns, moldata, target, verbose=False):
     # given a list of reactions, return a DataFrame
     # with computed and exptl thermo (T=0) for analysis
-    exptl = select_expt(moldata, T=0)  # selected exptl data
+    exptl = select_expt(moldata, T=0, verbose=verbose)  # selected exptl data
     okrx = rxn_with_expt(rxns, target, exptl, verbose=verbose)   # useable reactions
     eq6sum, uexp = eq6_sums(okrx, target, exptl)  # exptl sums needed to compute EoF
     calcH, calcS = eq5_sums(okrx, target, moldata)  # slow step
@@ -819,7 +822,7 @@ def build_reactions_DF(rxns, moldata, target, verbose=False):
     fmt['Reaction'] = '{:s}'
     return dfrx, fmt
 
-def select_expt(moldata, T=0, priority=['ATcT', 'Local', 'WebBook']):
+def select_expt(moldata, T=0, priority=['ATcT', 'Local', 'WebBook'], verbose=True):
     '''
     Return a dict of selected exptl thermochemistry
         exptl[educt] = dict with keys [EoF, unc, unit, source]
@@ -856,7 +859,7 @@ def select_expt(moldata, T=0, priority=['ATcT', 'Local', 'WebBook']):
                 # try the next, lower-priority data source
                 continue
         exptl[educt] = mdat.copy()
-        if not mdat:
+        if (not mdat) and verbose:
             chem.print_err('', f'No exptl data for {educt}', halt=False)
     return exptl
 
@@ -2235,6 +2238,9 @@ def rxn_with_expt(rxin, target, exptl, verbose=False):
         badmolec = []
         for pair in rx:
             molec = pair[0]
+            if molec == target:
+                # do not require exptl data for the target
+                continue
             try:
                 eof = exptl[molec]['EoF']
                 unc = exptl[molec]['unc']
