@@ -114,6 +114,26 @@ def read_molec_yaml(molec):
         data['Functional_groups'][fgrp] = list(eval(datstr))
     return data
 
+def write_molec_yaml(molec, mdata, verbose=True):
+    # 'molec' is label (short name) for molecule
+    # 'mdata' is dict of molecular data
+    # This function handles the functional-group list of tuples
+    # Return the name of the yaml file
+    fungroups = mdata['Functional_groups']
+    for grp in fungroups.keys():
+        tuplist = fungroups[grp]
+        if isinstance(tuplist, list):
+            # convert to str
+            if verbose:
+                print(f'    {grp:<15s}  {tuplist}')
+            fungroups[grp] = str(tuplist)  # convert list of tuples to string
+    fout = os.sep.join([MDAT, f'{molec}.yml'])
+    with open(fout, 'w') as F:
+        F.write(yaml.dump(mdata))
+    if verbose:
+        print('\tYAML file {:s} created.'.format(fout))
+    return fout
+
 def read_all_molec_yamls(ydir=None):
     # Read all molecular YAML files (*.yml) in directory 'ydir'
     # Return a dict (key = molecule name) of data and a dict of Geometry()
