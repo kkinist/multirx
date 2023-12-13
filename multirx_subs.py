@@ -2490,3 +2490,16 @@ def write_GJF(molec, descr, spinmult, coords, nproc=4, silent=False):
         print('=' * 50)
         print(f'File {fgjf} written')
     return
+
+def ROHF_check(molec, mdata, errtol=5.e-6):
+    # Report discrepancy (Molpro - Gaussian) and whether it exceeds 'errtol'
+    # 'molec' is short name (label) for molecule
+    # 'moldata' is molecular data from YAML file
+    # Return boolean (below errtol) and energy difference (Molpro - Gaussian)
+    hf_molpro = mdata['Energy']['HF']
+    try:
+        hf_gaussian = mdata['Geometry']['HF_check']
+    except KeyError:
+        hf_gaussian = 0
+    diff = hf_molpro - hf_gaussian
+    return (abs(diff) < errtol), diff
