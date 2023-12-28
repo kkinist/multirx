@@ -1,7 +1,7 @@
 # Routines for multireaction thermochemistry
 # KKI July 2022
 
-import yaml, sys, os, time, glob
+import yaml, sys, os, time, glob, re
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -15,8 +15,8 @@ import multiprocessing
 #sys.path.insert(0, '../../karlib')
 sys.path.insert(0, '../../atomic_SOC')
 import chem_subs as chem
-#import molpro_subs as pro
-#import gaussian_subs as gau
+import molpro_subs as mpr
+import gaussian_subs as gau
 
 MDAT = 'molec_data'  # name of directory with molecular YAML files
 REFDAT = 'refdata'   # name of directory with reference data
@@ -93,7 +93,7 @@ BOND_SEP_PROTO_STOICHIOMETRIES = {
 
 def read_yaml(file):
     # read a yaml file, return the contents
-    with open(file, 'r') as Y:
+    with open(file, 'r', encoding='utf-8') as Y:
         x = yaml.safe_load(Y)
     return x
 
@@ -114,12 +114,29 @@ def read_molec_yaml(molec):
         data['Functional_groups'][fgrp] = list(eval(datstr))
     return data
 
+def display_yaml(x, toprint=True):
+    # Readable display
+    if toprint:
+        print(yaml.dump(x, allow_unicode=True, default_flow_style=False))
+        return
+    else:
+        # Return as a string
+        return yaml.dump(x, allow_unicode=True, default_flow_style=False)
+
+def write_yaml(X, filename):
+    # preserve Greek letters, etc.
+    with open(filename, 'w', encoding='utf-8') as FY:
+        yaml.dump(X, FY, allow_unicode=True, default_flow_style=False)
+    return
+
 def write_molec_yaml(molec, mdata, verbose=True):
     # 'molec' is label (short name) for molecule
     # 'mdata' is dict of molecular data
     # This function handles the functional-group list of tuples
     # Return the name of the yaml file
     fungroups = mdata['Functional_groups']
+    if len(fungroups) and verbose:
+        print('Encoding functional groups as text:')
     for grp in fungroups.keys():
         tuplist = fungroups[grp]
         if isinstance(tuplist, list):
@@ -128,10 +145,11 @@ def write_molec_yaml(molec, mdata, verbose=True):
                 print(f'    {grp:<15s}  {tuplist}')
             fungroups[grp] = str(tuplist)  # convert list of tuples to string
     fout = os.sep.join([MDAT, f'{molec}.yml'])
-    with open(fout, 'w') as F:
-        F.write(yaml.dump(mdata))
+    write_yaml(mdata, fout)
+    #with open(fout, 'w') as F:
+    #    F.write(yaml.dump(mdata))
     if verbose:
-        print('\tYAML file {:s} created.'.format(fout))
+        print('YAML file created:  {:s}'.format(fout))
     return fout
 
 def read_all_molec_yamls(ydir=None):
@@ -2450,11 +2468,14 @@ def compress_CASRN(strcas):
     # Return a string of digits (only), extracted from input string
     # Actual CASRN also contains hyphens
     # ATcT identifier has trailing '*0' or similar
-    s = strcas.split('*')[0]
+    s = str(strcas)
     ccas = ''
     for c in s:
         if c in '0123456789':
             ccas += c
+        elif c == '*':
+            # for ATcT number; stop reading here
+            break
     return ccas
 
 def write_GJF(molec, descr, spinmult, coords, nproc=4, silent=False):
@@ -2503,3 +2524,414 @@ def ROHF_check(molec, mdata, errtol=5.e-6):
         hf_gaussian = 0
     diff = hf_molpro - hf_gaussian
     return (abs(diff) < errtol), diff
+
+def find_CASRN_in_WB(webbook, casrn, Hill=None):
+    # Return molecular dict that matches 
+    #   print an error if more than one matches
+    # 'webbook' is the WebBook data structure
+    # Specifying the Hill formula should speed things
+    retval = []
+    if Hill is None:
+        # search everything
+        for hill, mols in webbook.items():
+            for mol in mols:
+                if mol['CASRN'] == casrn:
+                    retval.append(mol)
+    else:
+        # search only this value of Hill
+        for mol in webbook.get(Hill, []):
+            if mol['CASRN'] == casrn:
+                retval.append(mol)
+    nret = len(retval)
+    if nret > 1:
+        print(f'*** More than one match for CASRN = {casrn} ***')
+        for mol in retval:
+            print(mol['Hill'], mol['name_favored'])
+    elif nret == 1:
+        # this is the desired situation; return a dict
+        retval = retval[0]
+    # get here if nret < 1
+    return {}
+
+def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=None, 
+        reflocal=None, dfeleca=None, dfelecm=None, override=None, atct_version='1p122r',
+        write_file=True, use_CIR=False, hftol=5.e-6, nuctol=1.e-5, verbose=True):
+    # Read theoretical and reference data for molecule 'molec' and save to YAML file
+    # If 'molec' is None, return the reference data structures
+    #    otherwise, return the molec's data structure
+    if atct is None:
+        fatct = os.sep.join([REFDAT, f'ATcT_{atct_version}_gases.tsv'])
+        atct = pd.read_csv(fatct, sep='\t')
+    if webbook is None:
+        fwebbook = os.sep.join([REFDAT, 'gas-enthalpies_webbook.yml'])
+        webbook = read_yaml(fwebbook)
+    if soc is None:
+        # spin-orbit corrections
+        fsoc = os.sep.join([REFDAT, 'spin_orbit_correction.xlsx'])
+        soc = pd.read_excel(fsoc, skiprows=1)
+    if dflabel is None:
+        flabel = os.sep.join([REFDAT, 'label_meanings.tsv'])
+        # Read definitions of labels/short names
+        dflabel = pd.read_csv(flabel, sep='\t')
+    if reflocal is None:
+        # look for local reference data for molecule
+        flocal = os.sep.join([REFDAT, 'ref_thermo.yml'])
+        if os.path.isfile(flocal):
+            reflocal = read_yaml(flocal)
+    if dfeleca is None:
+        feleca = os.sep.join([REFDAT, 'elec_states_atoms.tsv'])  # tab-delimited
+        dfeleca = pd.read_csv(feleca, sep='\t')
+    if dfelecm is None:
+        felecm = os.sep.join([REFDAT, 'elec_states_molecules.tsv'])  # tab-delimited
+        dfelecm = pd.read_csv(felecm, sep='\t')
+    if override is None:
+        # Local datafile to override everything else (!)
+        foverride = os.sep.join([REFDAT, 'override.yml'])  # to override everything else
+        override = read_yaml(foverride)
+
+    # Add compressed CASRNs to 'atct', 'dflabel', 'soc' if missing
+    if 'cCAS' not in atct.columns:
+        atct['cCAS'] = atct['ATcT_ID'].apply(lambda x: compress_CASRN(x))
+    if 'cCAS' not in dflabel.columns:
+        dflabel['cCAS'] = dflabel['CASRN'].apply(lambda x: compress_CASRN(x))
+    # Add Hill formulas to 'soc' if missing
+    if 'Hill' not in soc.columns:
+        soc['Hill'] = [chem.formula(chem.formula_to_atomlist(sp), Hill=True) for sp in soc.Species]
+
+    if molec is None:
+        # Just return the refdata structures
+        return atct, webbook, soc, dflabel, reflocal, dfeleca, dfelecm, override
+
+    ### Return a data file for molecule 'molec' ###
+    
+    if verbose:
+        print(f'--- Preparing data file for {molec} ---')
+    #    initialize the main dict, 'doc'
+    doc = {}
+    
+    # Get CASRN for the molecule
+    df_lbl = dflabel.loc[dflabel.Label == molec]
+    casrn = df_lbl.iloc[0]['CASRN']
+    local_name = df_lbl.iloc[0]['Name']
+    if verbose:
+        print(f'CASRN = {casrn}')
+        print(f'Local name = {local_name}')
+    
+    # Gaussian and Molpro output file names
+    fgau = os.sep.join([GDIR, f'{molec}.out'])
+    fpro = os.sep.join([EDIR, f'{molec}.pro'])
+    
+    # Read Gaussian file (geom opt and vib frequencies)
+    
+    # charge and spin multiplicity 
+    FGAU = open(fgau, 'r')
+    df = gau.read_charge_mult(FGAU)
+    charge = df['Charge'].iloc[-1]
+    mult = int(df['Mult'].iloc[-1])
+    doc['Charge'] = int(charge)
+    doc['Spin_mult'] = mult
+    geom, lineno = gau.gau_geom_freq_energy(FGAU)
+    # atomic masses
+    geom['atom_mass'] = gau.read_atom_masses(FGAU)
+    # number of computational irreps
+    nirreps = gau.read_compgroup(FGAU)['ops'].iloc[-1]  # last comp group
+    geom['nirreps'] = int(nirreps)
+    # (RO)HF/cc-pVTZ-F12 energy for cross-check with Molpro
+    dfscf = gau.read_scfe(FGAU)
+    try:
+        rohf = dfscf.loc[dfscf.Method == 'ROHF', 'Energy'].values[0]
+    except IndexError:
+        # no HF_check energy was computed 
+        rohf = 0
+    geom['HF_check'] = float(rohf)
+    dfnucl = gau.read_nuclear_repulsion(FGAU)
+    nucrepg = float(dfnucl['repulsion'].iloc[-1])
+    geom['Nuclear_repulsion'] = nucrepg
+    doc['Geometry'] = geom
+    natom = len(geom['coordinates'])
+    if natom > 1:
+        doc['Frequencies'] = geom.pop('Frequencies')  # move freqs to top level of doc{}
+        # rotational constants
+        dfrot = gau.read_rotational(FGAU)
+        dfrot = dfrot[dfrot.line < lineno].sort_values('line')
+        rotat = {s: float(x) for s, x in zip(['A','B','C'], dfrot['Rotational Constants'].iloc[-1])}
+        pg = gau.read_pointgroup(FGAU)['point group'].iloc[-1]  # last PG (freq calc) is probably tightest
+        if '*' in pg:
+            # linear molecule should have only one rotational constant
+            rotat = {'A': rotat['A']}
+        PG = str(pg)
+        rotat['point_group'] = PG
+        islinear = '*' in PG
+        rotat['unit'] = str(dfrot['Unit'].iloc[-1])
+        # external symmetry number
+        rotat['symmetry_number'] = gau.read_symno(FGAU)
+        doc['Rotational'] = rotat
+    FGAU.close()
+
+    # Read Molpro file (single-point CCSD(T)-F12b energy)
+    regx = re.compile(r'CCSD\(T\)-F12b energy')
+    rx_nbf = re.compile(r'NUMBER OF CONTRACTIONS:')
+    rx_hf = re.compile(r'HF STATE\s*\d+\.\d Energy')
+    rx_ccsd = re.compile(r'CCSD-F12b energy')
+    rx_bs = re.compile(r'SETTING BASIS\s+=')
+    with open(fpro, 'r') as FPRO:
+        for line in FPRO:
+            if regx.search(line):
+                w = line.split()
+                ecc = float(w[-1])
+            if rx_nbf.search(line):
+                w = line.split()
+                nbf = int(w[3])
+                nirr = (len(w) - 5) // 2  # number of irreps
+            if rx_hf.search(line):
+                w = line.split()
+                ehf = float(w[-1])
+            if rx_ccsd.search(line):
+                w = line.split()
+                eccsd = float(w[-1])
+            if rx_bs.search(line):
+                w = line.split('=')
+                bs = w[-1].strip()
+    energy = {'CCSD(T)-F12b': ecc, 'basis_functions': nbf, 'HF': ehf,
+        'CCSD-F12b': eccsd, 'basis': bs}
+    energy['software'] = 'Molpro Version ' + mpr.molpro_version(fpro)
+    energy['nirreps'] = nirr
+    nucrepm = mpr.read_nuclear_repulsion(fpro)
+    energy['Nuclear_repulsion'] = nucrepm
+    doc['Energy'] = energy    
+    
+    # Check for consistency between Gaussian and Molpro on 
+    #   (1) nuclear repulsion energy (warning threshold 'nuctol')
+    #   (2) (RO)HF/VTZ-F12 energy (warning threshold 'hftol')
+    nucdiff = nucrepm - nucrepg
+    nucBad = abs(nucdiff) > nuctol
+    if nucBad:
+        print(f'*** Molpro-Gaussian inconsistency for nuclear repulsion for {molec}: {nucdiff:.5f} ***')
+    elif verbose:
+        print('Molpro and Gaussian nuclear repulsion energies are consistent')
+    hfdiff = ehf - rohf
+    if abs(hfdiff) > hftol:
+        if rohf != 0:
+            print(f'*** Molpro-Gaussian HF inconsistency for {molec}: {hfdiff:.6f} ***')
+        else:
+            if nucBad:
+                print(f'*** No HF/VTZ-F12 energy from Gaussian for {molec} ***')
+            else:
+                print(f'    No HF/VTZ-F12 energy from Gaussian for {molec}')
+    elif verbose:
+        print('Molpro and Gaussian (RO)HF energies are consistent')
+    
+    # create formula for target, from list of atoms
+    atlist = [x[0] for x in geom['coordinates']]
+    formula = chem.formula(atlist)
+    hill = chem.formula(atlist, Hill=True)  # Hill convention
+    if verbose:
+        print('Hill:   ', hill)
+    
+    # collect identifiers
+    identifier = {
+        'local_label': molec,  # the label used in the system (e.g. filenames)
+        'names': {'local': local_name},
+        'formula': formula,
+        'Hill': hill,
+        'CASRN': casrn  # required
+    }
+    # look for standard identifiers
+    if use_CIR and (natom > 2):
+        # never trust CIRconvert for atoms or diatomics
+        if verbose:
+            print('    querying CIRconvert() service')
+        identifier['IUPAC'] = chem.CIRconvert(formula, 'iupac_name')
+        if 'failed' in identifier['IUPAC']:
+            identifier['IUPAC'] = chem.CIRconvert(local_name, 'iupac_name')
+        s = chem.CIRconvert(formula, 'stdinchi')
+        if 'failed' in s:
+            s = chem.CIRconvert(local_name, 'stdinchi')
+            if '=' in s:
+                identifier['InChI'] = s.split('=')[1]
+        if 'CASRN' not in identifier.keys():
+            # do not overwrite user-provided CASRN
+            cas = ', '.join(chem.CIRconvert(formula, 'cas').split('\n'))  # multiple values will be spliced into one string
+            if 'failed' in cas:
+                cas = ', '.join(chem.CIRconvert(local_name, 'cas').split('\n'))
+                if 'failed' in cas:
+                    cas = ''  # so it will evaluate to False
+            if verbose:
+                print(f'\tobtained CASRN = {cas}')
+            identifier['CASRN'] = cas
+        if len(identifier['IUPAC'].split('\n')) > 1:
+            # do not show multiple IUPAC names
+            del identifier['IUPAC']
+    doc['Identifiers'] = identifier
+    
+    # Find the molecule in the thermochemical databases
+    #    CASRN must match
+    cCASRN = compress_CASRN(casrn)
+
+    # match the CAS numbers
+    df_atct = atct[atct.cCAS == cCASRN]
+    #df_wb = webbook[webbook.cCAS == cCASRN]
+    wbmol = find_CASRN_in_WB(webbook, casrn, Hill=hill)
+
+    # possibly look at Hill formula instead of CASRN
+    if len(df_atct) > 1:
+        print('*** Multiple ATcT matches on CASRN! ***')
+        chem.displayDF(df_atct)
+        sys.exit(1)
+    if isinstance(wbmol, list):
+        print('*** Multiple WebBook matches on CASRN! ***')
+        for m in wbmol:
+            display_yaml(m)
+        sys.exit(1)
+    if len(df_atct) and verbose:
+        print('ATcT data (DataFrame):')
+        chem.displayDF(df_atct)
+    elif verbose:
+        print('no CASRN matches in ATcT')
+    if len(wbmol) and verbose:
+        print('WebBook data:')
+        display_yaml([wbmol])
+    elif verbose:
+        print('no CASRN matches in WebBook')    
+    
+    # collect ATcT value for enthalpy of formation
+    refdata = {}
+    if len(df_atct) == 1:
+        data = {}
+        data['EoF0'] = float(df_atct['EoF0'].iloc[0])
+        data['EoF298'] = float(df_atct['EoF298'].iloc[0])
+        data['unc'] = float(df_atct['Unc'].iloc[0])
+        data['unit'] = 'kJ/mol'
+        # ATcT uncertainties: "listed uncertainties correspond to estimated 95% confidence limits"
+        #    so take k=2.  Also assume k=2 for WebBook (when available)
+        data['k_cover'] = 2.
+        data['ATcT_version'] = atct_version.replace('p', '.', 1)
+        refdata['ATcT'] = data
+        
+    # Select one value from the (possibly multiple) WebBook values for EoF
+    data = {}
+    if verbose:
+        print(f'WebBook has {len(wbmol.get("thermo", ""))} values for EoF298')
+    # Discard values without uncertainty
+    wbthermo = []
+    years = []  # to be taken from the squibs
+    for therm in wbmol.get('thermo', ''):
+        if therm['unc'] >= 0:
+            wbthermo.append(therm)
+            years.append(int(therm['squib'][:4]))
+        elif verbose:
+            print(f'  Discarding EoF298 = {therm["EoF298"]} because no uncertainty (squib {therm["squib"]})')
+    if len(wbthermo) > 1:
+        # choose most recent value
+        ymax = max(years)
+        if verbose:
+            print(f'Most recent squib year is {ymax}')
+        tlist = wbthermo.copy()
+        wbthermo = []
+        for year, therm in zip(years, tlist):
+            if (year < ymax) and verbose:
+                print(f'  Discarding EoF298 = {therm["EoF298"]} because older (squib {therm["squib"]})')
+            else:
+                wbthermo.append(therm)
+    if len(wbthermo) > 1:
+        if verbose:
+            print(f'There are {len(wbthermo)} values from year {ymax}')
+        # Are the values consistent?
+        vals = []
+        uncs = []
+        squibs = []
+        for therm in wbthermo:
+            vals.append(therm['EoF298'])
+            uncs.append(therm['unc'])
+            squibs.append(therm['squib'])
+        if verbose:
+            for v, u, sq in zip(vals, uncs, squibs):
+                print(f'  {v} ± {u} from {sq}')
+            print('I am choosing the value with the *largest* uncertainty')
+        iumax = np.argmax(uncs)
+        data = wbthermo[iumax]
+    refdata['WebBook'] = data
+    
+    # look for local reference thermochemical data for molecule
+    if molec in reflocal.keys():
+        refdata['Local'] = reflocal[molec]
+        refdata['Local']['k_cover'] = 1.  # assume k=1 for local data
+        if verbose:
+            print('Reading local reference data:')
+            display_yaml([reflocal[molec]])
+    
+    # look for spin-orbit correction
+    subsoc = soc[soc.Hill == hill]
+    if len(subsoc == 1):
+        socdata = {'value': float(subsoc['Value'].iloc[0])}
+        socdata['unc'] = float(subsoc['Unc'].iloc[0])
+        socdata['unit'] = subsoc['Unit'].iloc[0]
+        socdata['source'] = subsoc['Source'].iloc[0]
+        refdata['spin_orbit'] = socdata
+        term = subsoc['Term'].iloc[0]
+        socdata['Term'] = term
+    doc['Refdata'] = refdata
+
+    # look for data about electronic energy levels
+    elec = {}
+    isatom = (natom == 1)
+    if isatom:
+        dfelec = dfeleca[dfeleca['atom'] == molec].copy()
+    else:
+        dfelec = dfelecm[dfelecm['name'] == molec].copy()
+    if len(dfelec):
+        if verbose:
+            print('Reading electronic energy levels:')
+        # delete the first column (name of atom or molecule)
+        dfelec.drop(dfelec.columns[0], axis=1, inplace=True)
+        if natom == 1:
+            # convert J to degeneracy
+            dfelec['degen'] = np.round(dfelec.J * 2 + 1).astype(int)
+        else:
+            # get degeneracy from leading numeral in 'label'
+            dfelec['degen'] = dfelec['label'].apply(chem.term_degeneracy, args=(isatom,))
+        if verbose:
+            chem.displayDF(dfelec)
+        # convert DataFrame to dict
+        dfdict = dfelec.reset_index().to_dict(orient='list')
+        del dfdict['index'] # unwanted
+        elec['levels'] = dfdict
+    else:
+        # no electronic energy levels provided
+        # print a warning if it's an atom or a linear molecule
+        s = ''
+        if natom == 1:
+            s = f'Please provide at least a ground term for {molec} in "elec_states_atoms.tsv"'
+        elif islinear:
+            s = f'Assuming a Sigma ground term for {molec}'
+        elif (doc['Spin_mult'] > 1):
+            # print a warning if it's an open-shell symmetric or spherical top
+            pgtype = gau.PG_type(PG)
+            symtop = (pgtype == 'symmetric') or (pgtype == 'spherical')
+            if symtop:
+                s = 'No multiplicity specified for open-shell symmetric top'
+        if s:
+            print(f'\t*** Warning: {s} ***')
+    doc['Electronic'] = elec
+
+    # Detect functional groups
+    G = chem.Geometry(geom['coordinates'])
+    G.spinmult = doc['Spin_mult']
+    fungroups = G.find_functional_group('all', spin=True)
+    doc['Functional_groups'] = fungroups
+    if verbose:
+        print('Functional groups detected:')
+        for k, v in fungroups.items():
+            print(f'    {k:<15s} {v}')
+
+    # look for overriding data
+    if molec in override.keys():
+        if verbose:
+            print('Found overriding data')
+        chem.merge_dicts(doc, override[molec])
+
+    # save molecular data to YAML file, if requested
+    if write_file:
+        fout = write_molec_yaml(molec, doc, verbose=verbose)
+        
+    return doc
