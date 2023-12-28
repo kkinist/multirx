@@ -2549,7 +2549,7 @@ def find_CASRN_in_WB(webbook, casrn, Hill=None):
             print(mol['Hill'], mol['name_favored'])
     elif nret == 1:
         # this is the desired situation; return a dict
-        retval = retval[0]
+        return retval[0]
     # get here if nret < 1
     return {}
 
