@@ -107,7 +107,10 @@ def read_molec_yaml(molec):
         # provide helpful message for nitric oxide
         if 'False.yml' in f:
             print("\tNitric oxide requires quotes ('no') or the YAML parser will call it 'False'")
-        data = None
+            data = None
+        else:
+            # missing or broken YAML file
+            return None
     # Functional group dict value must be converted from str to list of tuple
     fdict = data.get('Functional_groups', {})
     for fgrp, datstr in fdict.items():
@@ -2499,7 +2502,7 @@ def write_GJF(molec, descr, spinmult, coords, nproc=4, silent=False):
     filebuf.extend(['', '@pcseg2.gbs', ''])
     # Add the ROHF single-point energy (for comparison with Molpro)
     filebuf.extend(['--Link1--'] + filebuf[:3])
-    filebuf.extend(['# rohf/gen geom=check guess=check', ''])
+    filebuf.extend(['# rohf/gen geom=check', ''])
     filebuf.extend([f'{descr}, ROHF/cc-pVTZ-F12', '', f'0 {spinmult}', '', '@ccpvtz-f12.gbs', ''])
     fgjf = os.sep.join([GDIR, f'{molec}.gjf'])
     # actually write the file
@@ -2553,9 +2556,84 @@ def find_CASRN_in_WB(webbook, casrn, Hill=None):
     # get here if nret < 1
     return {}
 
+def gau_geom_freq_energy(FGAU):
+    # This is for reading a 3-part file with geom opt, harmonic freqs, and a single-point (RO)HF
+    # Return a dict with coordinates, frequencies, optimized SCF energy, and metadata
+    # also return the line number of the last (freq calc) "Optimized" announcement
+    # include electronic state labels for opt, freq, and ROHF
+    # FGAU is a file handle
+    dfcmd = gau.read_command(FGAU)
+    if len(dfcmd) != 3:
+        chem.print_err('', 'This should be a 3-part file but there are {len(dfcmd)} parts')
+    dfcomment = gau.read_comments(FGAU)
+    dfscf = gau.read_scfe(FGAU)
+    dfcrd = gau.read_std_orient(FGAU)
+    dfstate = gau.read_electronic_state(FGAU)
+    print('>>dfstate')
+    chem.displayDF(dfstate)
+    dfbfn = gau.read_nbfn_DF(FGAU)
+    dfspinmul = gau.read_charge_mult(FGAU)
+    openshell = (dfspinmul.Mult > 1).any()
+    
+    # Gather info from the geom/freq part
+    # first command should be the geom/freq command
+    cmd = str(dfcmd.at[0, 'Command']).split('#', 1)[1].strip()
+    # likewise for first command
+    comment = str(dfcomment.at[0, 'Comment'])
+    rev = gau.read_version(FGAU)
+    # date of the computation
+    compdate = rev[-1]
+    vers = 'Gaussian{:s} {:s}'.format(rev[0], rev[2])
+    retval = {'command': cmd, 'comment': comment, 'date': compdate, 'software': vers}
+    # get line number the single-point command
+    lineno = int(dfcmd.at[2, 'line'])
+    # get the last DFT energy in the opt/freq
+    subdf = dfscf[dfscf.line < lineno].sort_values('line')
+    scfE = float(subdf['Energy'].iloc[-1])
+    retval['E_scf'] = scfE
+    # get the last state symmetry in the opt/freq
+    subdf = dfstate[dfstate.line < lineno].sort_values('line')
+    estate = str(subdf['e-state'].iloc[-1])
+    retval['e-state'] = estate
+    # get the last bfns in the opt/freq
+    subdf = dfbfn[dfbfn.line < lineno].sort_values('line')
+    nbfn = int(subdf['nbfn'].iloc[-1])
+    retval['basis_functions'] = nbfn
+    # get the last coords in the opt/freq
+    subdf = dfcrd[dfcrd.line < lineno].sort_values('line')
+    crd = subdf['Coordinates'].iloc[-1]
+    unit = str(subdf['Unit'].iloc[-1])
+    coords = []
+    for i, row in crd.iterrows():
+        c = [chem.elz(row.Z, 'symbol')] + list(row[['x', 'y', 'z']])
+        coords.append(c)
+    retval['coordinates'] = coords
+    # remove trailing "s" from name of unit
+    if unit[-1] == 's':
+        unit = unit[:-1]
+    retval['unit'] = unit
+    if len(coords) > 1:
+        # not an atom
+        # get harmonic vibrational frequencies
+        freql = gau.read_freqs(FGAU)
+        dffreq = freql[0][2]
+        freqa = dffreq.Freq.values
+        retval['Frequencies'] = freqa.tolist()
+        # number of imaginary frequencies in the geometry block
+        retval['nimag'] = int(np.sum(freqa < 0))
+        
+    # Gather info from the single-point (RO)HF
+    hf_scf = float(dfscf['Energy'].iloc[-1])
+    retval['HF_check'] = hf_scf
+    if openshell:
+        # record the electronic state
+        hf_state = str(dfstate['e-state'].iloc[-1])
+        retval['HF_state'] = hf_state
+    return retval, lineno
+
 def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=None, 
         reflocal=None, dfeleca=None, dfelecm=None, override=None, atct_version='1p122r',
-        write_file=True, use_CIR=False, hftol=5.e-6, nuctol=1.e-5, verbose=True):
+        write_file=True, use_CIR=False, hftol=5.e-6, nuctol=5.e-5, verbose=True):
     # Read theoretical and reference data for molecule 'molec' and save to YAML file
     # If 'molec' is None, return the reference data structures
     #    otherwise, return the molec's data structure
@@ -2611,6 +2689,9 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
     
     # Get CASRN for the molecule
     df_lbl = dflabel.loc[dflabel.Label == molec]
+    n = len(df_lbl)
+    if n != 1:
+        chem.print_err('', f'{n} matches in glossary for name "{molec}"')
     casrn = df_lbl.iloc[0]['CASRN']
     local_name = df_lbl.iloc[0]['Name']
     if verbose:
@@ -2624,13 +2705,17 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
     # Read Gaussian file (geom opt and vib frequencies)
     
     # charge and spin multiplicity 
-    FGAU = open(fgau, 'r')
+    try:
+        FGAU = open(fgau, 'r')
+    except FileNotFoundError:
+        chem.print_err('', f'No Gaussian file {fgau}', halt=False)
+        return doc
     df = gau.read_charge_mult(FGAU)
     charge = df['Charge'].iloc[-1]
     mult = int(df['Mult'].iloc[-1])
     doc['Charge'] = int(charge)
     doc['Spin_mult'] = mult
-    geom, lineno = gau.gau_geom_freq_energy(FGAU)
+    geom, lineno = gau_geom_freq_energy(FGAU)
     # atomic masses
     geom['atom_mass'] = gau.read_atom_masses(FGAU)
     # number of computational irreps
@@ -2669,35 +2754,59 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
     FGAU.close()
 
     # Read Molpro file (single-point CCSD(T)-F12b energy)
+    
     regx = re.compile(r'CCSD\(T\)-F12b energy')
     rx_nbf = re.compile(r'NUMBER OF CONTRACTIONS:')
-    rx_hf = re.compile(r'HF STATE\s*\d+\.\d Energy')
+    rx_hf = re.compile(r'HF STATE\s*(\d+\.\d) Energy')
     rx_ccsd = re.compile(r'CCSD-F12b energy')
     rx_bs = re.compile(r'SETTING BASIS\s+=')
-    with open(fpro, 'r') as FPRO:
-        for line in FPRO:
-            if regx.search(line):
-                w = line.split()
-                ecc = float(w[-1])
-            if rx_nbf.search(line):
-                w = line.split()
-                nbf = int(w[3])
-                nirr = (len(w) - 5) // 2  # number of irreps
-            if rx_hf.search(line):
-                w = line.split()
-                ehf = float(w[-1])
-            if rx_ccsd.search(line):
-                w = line.split()
-                eccsd = float(w[-1])
-            if rx_bs.search(line):
-                w = line.split('=')
-                bs = w[-1].strip()
+    rx_pg = re.compile(r'Point group\s+(\S+)\s*$')
+    rx_spinline = re.compile(r'NELEC=\s+(\d+)\s+SYM=(\d+)\s+MS2=\s*(\d+)')
+    PG = 'unk'
+    st_sym = 'unk'
+    try:
+        FPRO = open(fpro, 'r')
+    except FileNotFoundError:
+        chem.print_err('', f'No Molpro file {fpro}', halt=False)
+        return doc
+    for line in FPRO:
+        if regx.search(line):
+            w = line.split()
+            ecc = float(w[-1])
+        if rx_nbf.search(line):
+            w = line.split()
+            nbf = int(w[3])
+            nirr = (len(w) - 5) // 2  # number of irreps
+        m = rx_hf.search(line)
+        if m:
+            w = line.split()
+            ehf = float(w[-1])
+            st_sym = m.group(1).split('.')[1]  # last part of label like 1.1
+        m = rx_spinline.search(line)
+        if m:
+            nopen = int(m.group(3))  # number of unpaired electrons
+        if rx_ccsd.search(line):
+            w = line.split()
+            eccsd = float(w[-1])
+        if rx_bs.search(line):
+            w = line.split('=')
+            bs = w[-1].strip()
+        m = rx_pg.search(line)
+        if m:
+            PG = m.group(1)
+    # construct state label in point group
+    mult = nopen + 1
+    st_irrep = mpr.irrep_lookup(PG, st_sym)
+    st_lbl = f'{mult}{st_irrep}'
+    FPRO.close()
+    
     energy = {'CCSD(T)-F12b': ecc, 'basis_functions': nbf, 'HF': ehf,
-        'CCSD-F12b': eccsd, 'basis': bs}
+        'CCSD-F12b': eccsd, 'basis': bs, 'state': st_lbl}
     energy['software'] = 'Molpro Version ' + mpr.molpro_version(fpro)
     energy['nirreps'] = nirr
     nucrepm = mpr.read_nuclear_repulsion(fpro)
     energy['Nuclear_repulsion'] = nucrepm
+    energy['point_group'] = PG
     doc['Energy'] = energy    
     
     # Check for consistency between Gaussian and Molpro on 
@@ -2867,9 +2976,11 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         socdata['unc'] = float(subsoc['Unc'].iloc[0])
         socdata['unit'] = subsoc['Unit'].iloc[0]
         socdata['source'] = subsoc['Source'].iloc[0]
-        refdata['spin_orbit'] = socdata
         term = subsoc['Term'].iloc[0]
         socdata['Term'] = term
+        if verbose:
+            print(f'SOC = {socdata["value"]} from {socdata["source"]}')
+        refdata['spin_orbit'] = socdata
     doc['Refdata'] = refdata
 
     # look for data about electronic energy levels
