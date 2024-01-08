@@ -2755,7 +2755,8 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
 
     # Read Molpro file (single-point CCSD(T)-F12b energy)
     
-    regx = re.compile(r'CCSD\(T\)-F12b energy')
+    regx = re.compile(r'CCSD\(T\)-F12b energy') # not present in Molpro vers 2023.2
+    regx_alt = re.compile(r'CCSD\(T\)-F12 energy')
     rx_nbf = re.compile(r'NUMBER OF CONTRACTIONS:')
     rx_hf = re.compile(r'HF STATE\s*(\d+\.\d) Energy')
     rx_ccsd = re.compile(r'CCSD-F12b energy')
@@ -2769,8 +2770,12 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
     except FileNotFoundError:
         chem.print_err('', f'No Molpro file {fpro}', halt=False)
         return doc
+    inF12b = False
     for line in FPRO:
         if regx.search(line):
+            w = line.split()
+            ecc = float(w[-1])
+        if inF12b and regx_alt.search(line):
             w = line.split()
             ecc = float(w[-1])
         if rx_nbf.search(line):
@@ -2788,6 +2793,7 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         if rx_ccsd.search(line):
             w = line.split()
             eccsd = float(w[-1])
+            inF12b = True
         if rx_bs.search(line):
             w = line.split('=')
             bs = w[-1].strip()
