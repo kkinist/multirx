@@ -2965,6 +2965,8 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
             print('I am choosing the value with the *largest* uncertainty')
         iumax = np.argmax(uncs)
         data = wbthermo[iumax]
+    else:
+        data = wbthermo
     refdata['WebBook'] = data
     
     # look for local reference thermochemical data for molecule
@@ -3052,3 +3054,114 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         fout = write_molec_yaml(molec, doc, verbose=verbose)
         
     return doc
+
+def make_f12_input(fgau, outdir, memGB=0, silent=False, bfchunk=200):
+    # Generate MOLPRO ccsd(t)-f12 input file from output of Gaussian geom/freq
+    #   fgau = Gaussian output file
+    #   outdir = where to put the Molpro input file
+    #   memGB = memory in GB for Molpro
+    #   silent = verbosity flag
+    #   bfchunk = parameter for choosing default memGB
+
+    # create name for MOLPRO input assuming fgau is called '*.out'
+    # Return the name of the created file
+    froot = os.path.basename(fgau)
+    fpro = os.sep.join([outdir, froot.replace('.out', '.in')])
+    if not silent:
+        print('Creating CCSD(T)-F12 input file')
+        print(f'\tfgau = {fgau}, fpro = {fpro}')
+
+    # read from Gaussian output file
+    natom = gau.natom(fgau)
+    irrep = 1
+    with open(fgau, 'r') as GAU:
+        if natom > 1:
+            # not an atom
+            ok = gau.opt_success(GAU)
+            if not ok:
+                chem.print_err('', 'Geometry optimization failed!')
+            nimag = gau.get_nimag(GAU)
+            if not silent:
+                print('\tnimag = ', nimag)
+            if nimag != 0:
+                chem.print_err('', 'Geometry is not an energy minimum!')
+        # extract comment line
+        dfcomment = gau.read_comments(GAU)
+        comment = dfcomment.Comment.tolist()[0]
+        # extract last 'standard orientation' coordinates
+        dfcoords = gau.read_std_orient(GAU)
+        dfcoord = dfcoords.Coordinates.tolist()[-1]
+        natom = len(dfcoord)
+        # extract charge and spin 
+        dfmult = gau.read_charge_mult(GAU)
+        charge = dfmult.Charge.tolist()[-1]
+        mult = dfmult.Mult.tolist()[-1]
+        if mult > 1:
+            # open-shell; try to transfer state symmetry from Gaussian to Molpro
+            # Is the point group one of Molpro's comp groups?
+            dfpg = gau.read_pointgroup(GAU)
+            pg = dfpg['point group'].iloc[-2]  # from freq calc
+            pg = pg.capitalize()
+            if pg in mpr.COMP_GROUPS:
+                # Get the state symmetry from Gaussian freq calc
+                dfelec = gau.read_electronic_state(GAU)
+                estate = dfelec['e-state'].iloc[-2]
+                stsym = estate.split('-')[1]
+                try:
+                    irrep = mpr.IRREPS[pg].index(stsym)
+                    use_symm = True
+                    if not silent:
+                        print(f'\tTransferring to Molpro irrep = {irrep} in compgroup {pg}')
+                except:
+                    # unexpected situation
+                    irrep = 1
+                    use_symm = False
+            else:
+                # untrusted point group
+                irrep = 1
+                use_symm = False
+        else:
+            # singlet (closed-shell)
+            use_symm = True
+            irrep = 1
+        # extract number of basis functions
+        nbf, lineno = gau.read_nbfn(GAU)
+        nbf = nbf[-1]
+
+    if memGB == 0:
+        # memory will be based upon number of basis functions in geom opt
+        #   at the rate of 1 GB per 'bfchunk' basis functions or fraction thereof
+        memGB = 1 + (nbf // bfchunk)
+        if not silent:
+            print(f'\tsetting memGB = {memGB}')
+
+    # write MOLPRO input file
+    #fpro = 'testpro.in'
+    with open(fpro, 'w') as MPRO:
+        MPRO.write('***, CCSD(T)-F12b/cc-pVTZ-F12 energy, {:s} geom\n'.format(comment))
+        '''
+        if (natom > 1) and (mult == 1):
+            MPRO.write('memory,{:d},G;\n\ngeometry={{\n'.format(memgb))
+        else:
+            # use 'nosym' for atoms and open-shell molecules
+            MPRO.write('memory,{:d},G;\n\nsymmetry,nosym;\ngeometry={{\n'.format(memgb))
+        '''
+        # try using (allowing) symmetry always
+        if use_symm:
+            MPRO.write('memory,{:d},G;\n\ngeometry={{\n'.format(memGB))
+        else:
+            MPRO.write('memory,{:d},G;\n\nsymmetry,nosym;\ngeometry={{\n'.format(memGB))
+        # print coordinates: symbol, x, y, z
+        for iat, row in dfcoord.iterrows():
+            MPRO.write('{:s} {:11.6f} {:11.6f} {:11.6f}\n'.format(chem.elz(row.Z),
+                row.x, row.y, row.z))
+        MPRO.write('};\n\n')
+        MPRO.write('basis=cc-pVTZ-F12\n')
+        # in MOLPRO, always use R(O)HF
+        # in MOLPRO, spin is 2S, not 2S+1
+        MPRO.write('{{rhf;wf,sym={:d},spin={:d},charge={:d}}}\n'.format(irrep, mult-1, charge))
+        MPRO.write('uccsd(t)-f12\n\n')
+    if not silent:
+        print(f'\tFile {fpro} created')
+    return fpro
+
