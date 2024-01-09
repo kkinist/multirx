@@ -1,17 +1,27 @@
+%chk=ch3cl.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 CH3Cl, B3LYP/pcseg-2
 
 0 1
-C
-Cl 1 1.5
-H 1 r 2 a
-H 1 r 2 a 3 120.
-H 1 r 2 a 3 -120.
-
-r 1.
-a 109.5
+C       0.000000     0.000000    -1.135788
+Cl      0.000000     0.000000     0.661350
+H       0.000000     1.029754    -1.476076
+H       0.891793    -0.514877    -1.476076
+H      -0.891793    -0.514877    -1.476076
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3cl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+CH3Cl, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

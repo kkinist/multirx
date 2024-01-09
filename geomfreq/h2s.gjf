@@ -1,13 +1,25 @@
+%chk=h2s.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydrogen sulfide, B3LYP/pcseg-2
 
 0 1
-S	0.0000000	0.0000000	0.1034930
-H	0.0000000	0.9782450	-0.8279460
-H	0.0000000	-0.9782450	-0.8279460
+S       0.000000    -0.000000     0.103185
+H       0.000000     0.969668    -0.825476
+H      -0.000000    -0.969668    -0.825476
 
 @pcseg2.gbs
 
+--Link1--
+%chk=h2s.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydrogen sulfide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

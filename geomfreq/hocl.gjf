@@ -1,12 +1,25 @@
+%chk=hocl.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 HOCl, B3LYP/pcseg-2
 
 0 1
-O
-H 1 1.
-Cl 1 1.7 2 100.
+O       0.036173     1.106966     0.000000
+H      -0.904332     1.327388     0.000000
+Cl      0.036173    -0.599007     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hocl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+HOCl, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

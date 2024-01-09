@@ -1,16 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=cl2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 oxygen dichloride, B3LYP/pcseg-2
 
 0 1
-O
-Cl 1 r
-Cl 1 r 2 a
-
-r 1.7
-a 105.
+O       0.000000     0.000000     0.766989
+Cl     -0.000000     1.426421    -0.180468
+Cl     -0.000000    -1.426421    -0.180468
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cl2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+oxygen dichloride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

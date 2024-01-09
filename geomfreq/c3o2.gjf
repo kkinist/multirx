@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=c3o2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 carbon suboxide, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.0000000
-C	0.0000000	0.0000000	1.2722740
-C	0.0000000	0.0000000	-1.2722740
-O	0.0000000	0.0000000	2.4347830
-O	0.0000000	0.0000000	-2.4347830
+C       0.000000     0.000000     0.000000
+C       0.000000     0.000000     1.271408
+C       0.000000     0.000000    -1.271408
+O       0.000000     0.000000     2.430159
+O       0.000000     0.000000    -2.430159
 
 @pcseg2.gbs
 
+--Link1--
+%chk=c3o2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+carbon suboxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

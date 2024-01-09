@@ -1,14 +1,26 @@
+%chk=c2cl2.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 dichloroacetylene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.5997930
-C	0.0000000	0.0000000	-0.5997930
-Cl	0.0000000	0.0000000	2.2470690
-Cl	0.0000000	0.0000000	-2.2470690
+C       0.000000     0.000000     0.599170
+C       0.000000     0.000000    -0.599170
+Cl      0.000000     0.000000     2.238174
+Cl      0.000000     0.000000    -2.238174
 
 @pcseg2.gbs
 
+--Link1--
+%chk=c2cl2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+dichloroacetylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

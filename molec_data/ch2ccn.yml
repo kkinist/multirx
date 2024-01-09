@@ -1,34 +1,48 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -169.914741442082
-  CCSD-F12b: -169.877347135933
-  HF: -169.174875978667
+  CCSD(T)-F12b: -169.914741438609
+  CCSD-F12b: -169.877347135404
+  HF: -169.174875944901
+  Nuclear_repulsion: 82.68744217
   basis: CC-PVTZ-F12
   basis_functions: 248
-  nirreps: 1
-  software: Molpro Version 2021.3
+  nirreps: 2
+  point_group: Cs
+  software: Molpro Version 2023.2
+  state: 2A'
 Frequencies:
-- 85.9932
-- 246.619
-- 421.3884
-- 572.2968
-- 882.0627
-- 931.277
-- 967.0186
+- 85.9923
+- 246.6204
+- 421.3894
+- 572.2969
+- 882.0638
+- 931.2774
+- 967.0198
 - 1432.5656
-- 1820.451
-- 2097.6133
-- 3072.6439
-- 3146.4018
+- 1820.4506
+- 2097.6102
+- 3072.6445
+- 3146.4022
 Functional_groups:
   2S: '[0]'
-  C-C: '[(0, 1)]'
+  C#C: '[(1, 2)]'
+  C-C: '[(1, 2)]'
   C=C: '[(0, 1)]'
 Geometry:
   E_scf: -170.227852549
+  HF_check: -169.174875394
+  HF_state: 2-A'
+  Nuclear_repulsion: 82.6874453501
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 12.0
+  - 14.00307
+  - 1.00783
+  - 1.00783
   basis_functions: 148
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: 1-cyanovinyl, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -36,39 +50,37 @@ Geometry:
     - 1.724711
     - -0.0
   - - C
-    - 0.0
+    - -0.0
     - 0.539731
-    - 0.0
+    - -0.0
   - - C
     - -0.223847
     - -0.775007
     - 0.0
   - - N
-    - -0.485322
+    - -0.485323
     - -1.91845
     - 0.0
   - - H
-    - -0.072431
+    - -0.07243
     - 2.625973
-    - 0.0
+    - -0.0
   - - H
     - 1.612552
     - 1.866564
     - -0.0
-  e-state: 2A'
+  date: 29-Sep-2023
+  e-state: 2-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 15091-87-9*0
   CASRN: 15091-87-9
   Hill: C3H2N
-  IUPAC: Conversion failed
   formula: C3H2N
   local_label: ch2ccn
   names:
-    ATcT: 1-Cyanovinyl
     local: 1-cyanovinyl
 Refdata:
   ATcT:
@@ -78,30 +90,12 @@ Refdata:
     k_cover: 2.0
     unc: 1.1
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 248.8743973
-  B: 4.3612936
-  C: 4.2861822
+  A: 248.87428
+  B: 4.36129
+  C: 4.28618
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 6
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -169.87974250373966
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 91.8897
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

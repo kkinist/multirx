@@ -1,12 +1,24 @@
-%nprocs=2
-%mem=1GB
-# b3lyp/gen opt freq
+%chk=cl2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 Cl2 geom opt, B3LYP/pcseg-2
 
 0 1
-Cl
-Cl 1 1.7
+Cl      0.000000     0.000000     1.009437
+Cl      0.000000     0.000000    -1.009437
 
-@/home/irikura/basis/pcseg2.gbs
+@pcseg2.gbs
 
+--Link1--
+%chk=cl2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+Cl2 geom opt, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

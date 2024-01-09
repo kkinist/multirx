@@ -1,13 +1,25 @@
+%chk=clco.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chloroformyl, B3LYP/pcseg-2
 
 0 2
-Cl	-0.4984660	-0.9253850	0.0000000
-C	0.0000000	0.8646180	0.0000000
-O	1.0592400	1.3179800	0.0000000
+Cl     -0.498205    -0.907162     0.000000
+C       0.000000     0.838897     0.000000
+O       1.058686     1.298547     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chloroformyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

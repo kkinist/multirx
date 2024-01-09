@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hoco2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 bicarbonate radical, B3LYP/pcseg-2
 
 0 2
-C          0.026983       0.003325       0.000000
-O         -1.292405      -0.127697       0.000000
-O          0.623993       1.096016       0.000000
-O          0.754541      -1.018503       0.000000
-H         -1.688212       0.756848       0.000000
+C       0.000000     0.055228    -0.000000
+O      -0.330239    -1.227706     0.000000
+O       1.169316     0.477931    -0.000000
+O      -0.898356     0.929059    -0.000000
+H       0.474223    -1.765634     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hoco2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+bicarbonate radical, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

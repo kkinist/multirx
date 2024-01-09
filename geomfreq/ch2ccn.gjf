@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2ccn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 1-cyanovinyl, B3LYP/pcseg-2
 
 0 2
-C         -1.907870      -0.021954       0.000000
-C         -0.608873       0.045235       0.000000
-C          0.718308       0.000958       0.000000
-N          1.898787      -0.013268       0.000000
-H         -2.531983       0.871867       0.000000
-H         -2.436771      -0.976134       0.000000
+C       0.533370     1.724711    -0.000000
+C       0.000000     0.539731     0.000000
+C      -0.223847    -0.775007     0.000000
+N      -0.485322    -1.918450     0.000000
+H      -0.072431     2.625973     0.000000
+H       1.612552     1.866564    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2ccn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+1-cyanovinyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

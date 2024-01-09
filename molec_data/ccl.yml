@@ -5,11 +5,11 @@ Electronic:
     - 0.0
     - 135.65
     degen:
-    - 1
-    - 1
+    - 2
+    - 2
     label:
-    - 2P_0.5
-    - 2P_1.5
+    - 2Pi_0.5
+    - 2Pi_1.5
     source:
     - Jin et al., JMS 182, 189 (1997)
     - Jin et al., JMS 182, 189 (1997)
@@ -17,19 +17,28 @@ Energy:
   CCSD(T)-F12b: -497.6419011998
   CCSD-F12b: -497.624655006238
   HF: -497.2607951035
+  Nuclear_repulsion: 32.4752901
   basis: CC-PVTZ-F12
   basis_functions: 115
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 850.0763
+- 850.0746
 Functional_groups:
   2S: '[0]'
   chloro: '[(0, 1)]'
 Geometry:
   E_scf: -498.189713018
+  HF_check: -497.260794836
+  HF_state: '?'
+  Nuclear_repulsion: 32.4752900991
+  atom_mass:
+  - 12.0
+  - 34.96885
   basis_functions: 64
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: chlormethylidyne, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -40,21 +49,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.433582
+  date: 28-Sep-2023
   e-state: '?'
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 3889-76-7*0
   CASRN: 3889-76-7
   Hill: CCl
-  WebBook: C3889767
   formula: CCl
   local_label: ccl
   names:
-    ATcT: Chloromethylidyne
-    WebBook: Chloromethylidyne
     local: chloromethylidyne
 Refdata:
   ATcT:
@@ -64,40 +70,16 @@ Refdata:
     k_cover: 2.0
     unc: 0.67
     unit: kJ/mol
-  WebBook:
-    EoF298: 502.08
-    comment: 'Review # Data last reviewed in December, 1969'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
   spin_orbit:
+    Term: 2Pi
     source: CCCBDB
     unc: -1.0
     unit: cm-1
     value: -67.5
 Rotational:
-  A: 20.4770762
+  A: 20.477078
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -497.64031071370005
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 4.9833
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

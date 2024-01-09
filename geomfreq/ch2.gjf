@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methylene, B3LYP/pcseg-2
 
 0 3
-C	0.0000000	0.0000000	0.1026490
-H	0.0000000	0.9963620	-0.3079480
-H	0.0000000	-0.9963620	-0.3079480
+C       0.000000     0.000000     0.102649
+H      -0.000000     0.996362    -0.307948
+H      -0.000000    -0.996362    -0.307948
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methylene, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

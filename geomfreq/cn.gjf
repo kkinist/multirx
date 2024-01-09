@@ -1,12 +1,24 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=cn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyano radical, B3LYP/pcseg-2
 
 0 2
-C          0.613311       0.000000       0.000000
-N         -0.691254       0.000000       0.000000
+C       0.000000     0.000000    -0.625509
+N       0.000000     0.000000     0.536151
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+cyano radical, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

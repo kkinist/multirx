@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=foo.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 fluoroperoxyl, B3LYP/pcseg-2
 
 0 2
-O	1.1344780	0.1594170	0.0000000
-O	0.0000000	0.5565370	0.0000000
-F	-1.0084250	-0.6364030	0.0000000
+O       1.134225     0.215909    -0.000000
+O       0.000000     0.568920     0.000000
+F      -1.008200    -0.697626     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=foo.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+fluoroperoxyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

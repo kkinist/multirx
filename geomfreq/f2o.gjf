@@ -1,15 +1,25 @@
+%chk=f2o.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 F2O, B3LYP/pcseg-2
 
 0 1
-O
-F 1 r
-F 1 r 2 a
-
-r 1.5
-a 100.
+O      -0.000000     0.000000     0.598304
+F      -0.000000     1.104910    -0.265913
+F      -0.000000    -1.104910    -0.265913
 
 @pcseg2.gbs
 
+--Link1--
+%chk=f2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+F2O, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

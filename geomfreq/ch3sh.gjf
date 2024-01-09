@@ -1,16 +1,28 @@
+%chk=ch3sh.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methanethiol, B3LYP/pcseg-2
 
 0 1
-C	-0.0480190	1.1645230	0.0000000
-S	-0.0480190	-0.6711720	0.0000000
-H	1.2906260	-0.8345800	0.0000000
-H	-1.0953020	1.4657220	0.0000000
-H	0.4305490	1.5602390	0.8946260
-H	0.4305490	1.5602390	-0.8946260
+C      -0.047887     1.158813     0.000000
+S      -0.047887    -0.667837     0.000000
+H       1.284474    -0.834899     0.000000
+H      -1.092571     1.460452     0.000000
+H       0.430807     1.553478     0.892173
+H       0.430807     1.553478    -0.892173
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3sh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methanethiol, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

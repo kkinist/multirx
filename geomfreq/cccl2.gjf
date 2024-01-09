@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
+%chk=cccl2.chk
+%mem=500mw
+%nprocs=4
 # b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 dichlorovinylidene, B3LYP/pcseg-2
 
 0 1
-C          0.000000      -0.455470       0.000000
-C          0.000000      -1.781505       0.000000
-Cl        -1.506018       0.383823       0.000000
-Cl         1.506018       0.383823       0.000000
+C      -0.000000     0.000000     0.445316
+C      -0.000000     0.000000     1.762732
+Cl      0.000000     1.505464    -0.389656
+Cl     -0.000000    -1.505464    -0.389656
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cccl2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+dichlorovinylidene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

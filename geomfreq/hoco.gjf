@@ -1,14 +1,26 @@
+%chk=hoco.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydroxyformyl, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.4085900	0.0000000
-O	-0.9392290	-0.5460210	0.0000000
-O	1.1654300	0.2557830	0.0000000
-H	-1.8096080	-0.1296410	0.0000000
+C       0.000000     0.408678     0.000000
+O      -0.939745    -0.546856     0.000000
+O       1.166034     0.256794    -0.000000
+H      -1.810307    -0.131573     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hoco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydroxyformyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hcoh.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydroxymethylene, B3LYP/pcseg-2
 
 0 1
-C         -0.736661      -0.124032       0.000000
-O          0.560617       0.083611       0.000000
-H         -1.131890       0.927438       0.000000
-H          1.005780      -0.777590       0.000000
+C       0.010725     0.741233    -0.000000
+O       0.010725    -0.568070    -0.000000
+H      -1.075449     0.980846     0.000000
+H       0.925302    -0.883688    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hcoh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydroxymethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

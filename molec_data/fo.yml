@@ -5,11 +5,11 @@ Electronic:
     - 0.0
     - 193.8
     degen:
-    - 1
-    - 1
+    - 2
+    - 2
     label:
-    - 2P_1.5
-    - 2P_0.5
+    - 2Pi_1.5
+    - 2Pi_0.5
     source:
     - Hammer et al., JMS 129, 99 (1988)
     - Hammer et al., JMS 129, 99 (1988)
@@ -17,19 +17,28 @@ Energy:
   CCSD(T)-F12b: -174.74520860433
   CCSD-F12b: -174.726891454627
   HF: -174.200460460483
+  Nuclear_repulsion: 28.21728744
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 1112.7443
+- 1112.748
 Functional_groups:
   2S: '[0]'
   fluoro: '[(0, 1)]'
 Geometry:
   E_scf: -174.952595212
+  HF_check: -174.200460143
+  HF_state: '?'
+  Nuclear_repulsion: 28.2172874368
+  atom_mass:
+  - 15.99491
+  - 18.9984
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: oxygen monofluoride, B3LYP/pcseg-2
   coordinates:
   - - O
@@ -40,21 +49,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.635418
+  date: 29-Sep-2023
   e-state: '?'
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 12061-70-0*0
   CASRN: 12061-70-0
   Hill: FO
-  WebBook: C12061700
   formula: FO
   local_label: fo
   names:
-    ATcT: Fluorooxidanyl
-    WebBook: Oxygen monofluoride
     local: oxygen monofluoride
 Refdata:
   ATcT:
@@ -64,40 +70,16 @@ Refdata:
     k_cover: 2.0
     unc: 0.15
     unit: kJ/mol
-  WebBook:
-    EoF298: 108.78
-    comment: 'Review # Data last reviewed in September, 1995'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
   spin_orbit:
+    Term: 2Pi
     source: CCCBDB
     unc: -1.0
     unit: cm-1
     value: -98.1
 Rotational:
-  A: 31.9202832
+  A: 31.92027
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -174.74317114703592
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 6.52288
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

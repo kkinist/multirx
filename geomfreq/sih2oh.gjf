@@ -1,15 +1,27 @@
+%chk=sih2oh.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydroxysilyl, B3LYP/pcseg-2
 
 0 2
-Si        -0.585565       0.011723       0.060928
-O          1.065763      -0.058880      -0.041137
-H         -1.141588       1.151752      -0.736013
-H         -1.066405      -1.277892      -0.502607
-H          1.548681       0.735175       0.200168
+Si      0.569511     0.018728    -0.106888
+O      -1.072870    -0.111956     0.067429
+H       1.097584     1.211954     0.620680
+H       1.132706    -1.226905     0.470263
+H      -1.620478     0.648407    -0.133945
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sih2oh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydroxysilyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -6,25 +6,32 @@ Electronic:
     degen:
     - 1
     label:
-    - 1S+
+    - 1Sigma+
     source:
     - .nan
 Energy:
   CCSD(T)-F12b: -435.730450562952
   CCSD-F12b: -435.708353528278
   HF: -435.361066006249
+  Nuclear_repulsion: 33.14154173
   basis: CC-PVTZ-F12
   basis_functions: 115
   nirreps: 4
+  point_group: C2v
   software: Molpro Version 2021.3
+  state: 1A1
 Frequencies:
-- 1308.147
+- 1308.1536
 Functional_groups: {}
 Geometry:
   E_scf: -436.264522958
-  HF_check: 0.0
+  HF_check: -435.36106579
+  Nuclear_repulsion: 33.1415417349
+  atom_mass:
+  - 12.0
+  - 31.97207
   basis_functions: 64
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: carbonyl monosulfide, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -35,7 +42,8 @@ Geometry:
     - 0.0
     - 0.0
     - 0.41805
-  e-state: 1SG
+  date: 27-Sep-2023
+  e-state: 1-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
@@ -55,8 +63,9 @@ Refdata:
     source: Gurvich 1989, 4th ed
     unc: 0.375
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 24.651482
+  A: 24.651468
   point_group: C*V
   symmetry_number: 1
   unit: GHZ

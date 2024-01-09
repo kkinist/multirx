@@ -1,15 +1,27 @@
+%chk=hcooh.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 formic acid, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.4209460	0.0000000
-O	-1.0284200	-0.4471320	0.0000000
-O	1.1585650	0.1180590	0.0000000
-H	-0.3919370	1.4474160	0.0000000
-H	-0.6492220	-1.3405050	0.0000000
+C       0.000000     0.420864     0.000000
+O      -1.027094    -0.446949    -0.000000
+O       1.157626     0.118410     0.000000
+H      -0.384787     1.446819    -0.000000
+H      -0.659473    -1.343689    -0.000000
 
-@/home/irikura/basis/pcseg2.gbs
+@pcseg2.gbs
 
+--Link1--
+%chk=hcooh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+formic acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

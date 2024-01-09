@@ -6,10 +6,10 @@ Electronic:
     - 7918.1
     degen:
     - 3
-    - 1
+    - 2
     label:
-    - 3Sg-
-    - 1Dg
+    - 3Sigma_g-
+    - 1Delta_g
     source:
     - WebBook
     - WebBook
@@ -17,19 +17,28 @@ Energy:
   CCSD(T)-F12b: -150.191271198801
   CCSD-F12b: -150.170434428628
   HF: -149.664784015732
+  Nuclear_repulsion: 28.10334536
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Frequencies:
-- 1632.8628
+- 1632.8647
 Functional_groups:
   2S: '[0, 0]'
   peroxide: '[(0, 1), (1, 0)]'
 Geometry:
   E_scf: -150.387271836
+  HF_check: -149.66478348
+  HF_state: 3-SGG
+  Nuclear_repulsion: 28.1033453646
+  atom_mass:
+  - 15.99491
+  - 15.99491
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: O2, B3LYP/pcseg-2
   coordinates:
   - - O
@@ -40,19 +49,18 @@ Geometry:
     - 0.0
     - 0.0
     - -0.60255
-  e-state: 3SGG
+  date: 30-Sep-2023
+  e-state: 3-SGG
   nimag: 0
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7782-44-7*0
   CASRN: 7782-44-7
   Hill: O2
   formula: O2
   local_label: o2
   names:
-    ATcT: Dioxygen
     local: dioxygen
 Refdata:
   ATcT:
@@ -62,28 +70,10 @@ Refdata:
     k_cover: 2.0
     unc: -999.0
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 43.5130085
+  A: 43.513007
   point_group: D*H
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 3
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -150.18762554604368
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 9.57166
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

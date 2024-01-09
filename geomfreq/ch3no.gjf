@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch3no.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitrosomethane, B3LYP/pcseg-2
 
 0 1
-C	-0.9446420	-0.5763180	0.0000000
-N	0.0000000	0.5724660	0.0000000
-O	1.1563800	0.2388310	0.0000000
-H	-0.4137440	-1.5318100	0.0000000
-H	-1.5847210	-0.4641000	0.8819810
-H	-1.5847210	-0.4641000	-0.8819810
+C      -0.943872    -0.574710     0.000000
+N       0.000000     0.564575     0.000000
+O       1.155677     0.242237     0.000000
+H      -0.422618    -1.531245     0.000000
+H      -1.579782    -0.455207     0.878896
+H      -1.579782    -0.455207    -0.878896
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3no.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitrosomethane, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

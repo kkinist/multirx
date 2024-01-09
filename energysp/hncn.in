@@ -2,17 +2,15 @@
 memory,1,G;
 
 geometry={
-C    0.000000    0.109431   -0.000000
-N   -0.070387    1.295039   -0.000000
-N   -0.053065   -1.159519    0.000000
-H    0.864158   -1.605227    0.000000
+C    0.000000    0.109431    0.000000
+N   -0.070390    1.295039    0.000000
+N   -0.053062   -1.159519    0.000000
+H    0.864162   -1.605225    0.000000
 };
 
-! specify 2A" to aid scf convergence
 basis=cc-pVTZ-F12
-! casscf to get better orbitals
-{multi;occ,9,2;closed,3,0;wf,sym=2,spin=1,charge=0}
 
-{rhf;wf,sym=2,spin=1,charge=0;start,2140.2}
+! ROHF does not converge with default starting guess
+{rhf;start,h0;wf,sym=2,spin=1,charge=0}
 uccsd(t)-f12
 

@@ -1,13 +1,25 @@
+%chk=scl2.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 sulfur dichloride, B3LYP/pcseg-2
 
 0 1
-S	0.0000000	0.0000000	0.8687510
-Cl	0.0000000	1.6389850	-0.4088240
-Cl	0.0000000	-1.6389850	-0.4088240
+S       0.000000     0.000000     0.854491
+Cl      0.000000     1.611868    -0.402114
+Cl     -0.000000    -1.611868    -0.402114
 
 @pcseg2.gbs
 
+--Link1--
+%chk=scl2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+sulfur dichloride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

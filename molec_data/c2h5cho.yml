@@ -4,35 +4,38 @@ Energy:
   CCSD(T)-F12b: -192.905135442519
   CCSD-F12b: -192.871782491979
   HF: -192.036823648762
+  Nuclear_repulsion: 118.46493052
   basis: CC-PVTZ-F12
   basis_functions: 320
   nirreps: 2
+  point_group: Cs
   software: Molpro Version 2021.3
+  state: 1A'
 Frequencies:
-- 137.1941
-- 225.9544
-- 253.0301
-- 668.1636
-- 671.978
-- 846.8254
-- 905.1447
-- 1004.2986
-- 1110.5776
+- 137.195
+- 225.9531
+- 253.0297
+- 668.1642
+- 671.979
+- 846.8255
+- 905.1453
+- 1004.2967
+- 1110.5624
 - 1147.7795
-- 1281.9095
-- 1364.4206
-- 1411.9894
-- 1425.3322
-- 1448.9351
-- 1493.8756
-- 1500.7174
-- 1803.1599
-- 2866.8282
-- 3004.6473
-- 3023.3981
-- 3048.2196
-- 3112.4001
-- 3115.2134
+- 1281.9116
+- 1364.4208
+- 1411.9881
+- 1425.33
+- 1448.9327
+- 1493.8686
+- 1500.7214
+- 1803.154
+- 2866.8289
+- 3004.6441
+- 3023.3963
+- 3048.2194
+- 3112.3989
+- 3115.2102
 Functional_groups:
   C-C: '[(0, 1), (1, 2)]'
   aldehyde: '[(1, 2, 3, 9)]'
@@ -40,8 +43,21 @@ Functional_groups:
   methyl: '[(0, 4, 5, 6)]'
 Geometry:
   E_scf: -193.229349601
+  HF_check: -192.036822809
+  Nuclear_repulsion: 118.4649305195
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 12.0
+  - 15.99491
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
   basis_functions: 204
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: propanal, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -84,23 +100,18 @@ Geometry:
     - -2.059277
     - 0.097447
     - 0.0
-  e-state: 1A'
+  date: 30-Sep-2023
+  e-state: 1-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 123-38-6*0
   CASRN: 123-38-6
   Hill: C3H6O
-  IUPAC: propanal
-  InChI: 1S/C3H6O/c1-2-3-4/h3H,2H2,1H3
-  WebBook: C123386
   formula: C3H6O
   local_label: c2h5cho
   names:
-    ATcT: Propionaldehyde
-    WebBook: Propanal
     local: propanal
 Refdata:
   ATcT:
@@ -111,36 +122,17 @@ Refdata:
     unc: 0.25
     unit: kJ/mol
   WebBook:
-    EoF298: -188.65656
-    comment: 'Cm # Heat of hydrogenation'
+  - EoF298: -188.657
+    comment: 'method:Cm # Heat of hydrogenation'
     k_cover: 2.0
-    source: 1991WIB/CRO3447-3450
-    unc: 0.75312
+    squib: 1991WIB/CRO3447-3450
+    unc: 0.753
     unit: kJ/mol
 Rotational:
-  A: 16.952472
-  B: 5.8109856
-  C: 4.5674644
+  A: 16.95247
+  B: 5.81098
+  C: 4.56746
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 10
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -192.82281505795294
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 216.13214
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

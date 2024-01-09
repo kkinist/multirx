@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=c2hf3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 trifluoroethylene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.4334550	0.0000000
-C	-0.6965630	-0.6928640	0.0000000
-F	1.3086170	0.5098120	0.0000000
-F	-0.5633910	1.6213750	0.0000000
-F	-0.0834210	-1.8790610	0.0000000
-H	-1.7768700	-0.7126800	0.0000000
+C       0.000000     0.430548     0.000000
+C      -0.703431    -0.687112     0.000000
+F       1.314988     0.501514     0.000000
+F      -0.555622     1.630278     0.000000
+F      -0.092621    -1.882281     0.000000
+H      -1.780128    -0.706222     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=c2hf3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+trifluoroethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

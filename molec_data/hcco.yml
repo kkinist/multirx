@@ -14,27 +14,39 @@ Electronic:
     - Simmonett et al., JPCA 113, 11643 (2009)
     - Simmonett et al., JPCA 113, 11643 (2009)
 Energy:
-  CCSD(T)-F12b: -151.740137815722
-  CCSD-F12b: -151.711872397911
-  HF: -151.14300268501
+  CCSD(T)-F12b: -151.730778449357
+  CCSD-F12b: -151.703281728261
+  HF: -151.137124811534
+  Nuclear_repulsion: 52.54532159
   basis: CC-PVTZ-F12
   basis_functions: 177
-  nirreps: 1
-  software: Molpro Version 2021.3
+  nirreps: 2
+  point_group: Cs
+  software: Molpro Version 2023.2
+  state: 2A'
 Frequencies:
-- 452.1006
-- 502.4474
-- 561.5781
-- 1269.0659
-- 2078.3177
-- 3354.7121
+- 452.0999
+- 502.4598
+- 561.578
+- 1269.0651
+- 2078.3219
+- 3354.7124
 Functional_groups:
   2S: '[0]'
+  C=C: '[(0, 1)]'
   carbonyl: '[(0, 2)]'
 Geometry:
   E_scf: -151.991547438
+  HF_check: -151.143002035
+  HF_state: 2-A"
+  Nuclear_repulsion: 52.5453279617
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 15.99491
+  - 1.00783
   basis_functions: 104
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: ketenyl, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -42,31 +54,29 @@ Geometry:
     - 0.044411
     - 0.0
   - - C
-    - 1.04785
-    - -0.698973
+    - 1.047847
+    - -0.698977
     - 0.0
   - - O
-    - -1.049849
-    - 0.564681
+    - -1.049847
+    - 0.564686
     - 0.0
   - - H
-    - 2.111696
-    - -0.590078
+    - 2.111693
+    - -0.590087
     - 0.0
-  e-state: 2A"
+  date: 29-Sep-2023
+  e-state: 2-A"
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 51095-15-9*0
   CASRN: 51095-15-9
   Hill: C2HO
-  IUPAC: Conversion failed
   formula: C2HO
   local_label: hcco
   names:
-    ATcT: Ketenyl
     local: ketenyl
 Refdata:
   ATcT:
@@ -76,30 +86,12 @@ Refdata:
     k_cover: 2.0
     unc: 0.55
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 1255.7876007
-  B: 10.9579924
-  C: 10.8632002
+  A: 1255.78519
+  B: 10.95799
+  C: 10.8632
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 4
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -151.7217897347413
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 48.17288
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

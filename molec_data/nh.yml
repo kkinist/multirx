@@ -6,25 +6,34 @@ Electronic:
     degen:
     - 3
     label:
-    - 3S-
+    - 3Sigma-
     source:
     - WebBook
 Energy:
   CCSD(T)-F12b: -55.159216311255
   CCSD-F12b: -55.15479628142
   HF: -54.977344428492
+  Nuclear_repulsion: 3.56128686
   basis: CC-PVTZ-F12
   basis_functions: 71
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Frequencies:
-- 3258.174
+- 3258.1838
 Functional_groups:
   2S: '[0, 0]'
 Geometry:
   E_scf: -55.245467684
+  HF_check: -54.9773444088
+  HF_state: 3-SG
+  Nuclear_repulsion: 3.5612868606
+  atom_mass:
+  - 14.00307
+  - 1.00783
   basis_functions: 44
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: NH, B3LYP/pcseg-2
   coordinates:
   - - N
@@ -35,21 +44,18 @@ Geometry:
     - 0.0
     - 0.0
     - -0.910123
-  e-state: 3SG
+  date: 28-Sep-2023
+  e-state: 3-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 13774-92-0*0
   CASRN: 13774-92-0
   Hill: HN
-  WebBook: C13774920
   formula: HN
   local_label: nh
   names:
-    ATcT: Imidogen
-    WebBook: Imidogen
     local: imidogen
 Refdata:
   ATcT:
@@ -59,35 +65,10 @@ Refdata:
     k_cover: 2.0
     unc: 0.16
     unit: kJ/mol
-  WebBook:
-    EoF298: 376.56
-    comment: 'Review # Data last reviewed in June, 1977'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 496.8568907
+  A: 496.856465
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 3
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -55.15194217580557
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 19.09824
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

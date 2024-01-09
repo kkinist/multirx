@@ -1,13 +1,24 @@
+%chk=so.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 sulfur monoxide, B3LYP/pcseg-2
 
 0 3
-S
-O 1 r
-
-r 1.5
+S       0.000000     0.000000     0.497484
+O       0.000000     0.000000    -0.994968
 
 @pcseg2.gbs
 
+--Link1--
+%chk=so.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+sulfur monoxide, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

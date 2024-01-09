@@ -5,11 +5,11 @@ Electronic:
     - 0.0
     - 123.26
     degen:
-    - 1
-    - 1
+    - 2
+    - 2
     label:
-    - 2P_0.5
-    - 2P_1.5
+    - 2Pi_0.5
+    - 2Pi_1.5
     source:
     - WebBook
     - WebBook
@@ -17,19 +17,28 @@ Energy:
   CCSD(T)-F12b: -129.768973756948
   CCSD-F12b: -129.748781507976
   HF: -129.299519164781
+  Nuclear_repulsion: 25.87279553
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 1972.8664
+- 1972.8581
 Functional_groups:
   2S: '[0]'
   nitrosyl: '[(0, 1)]'
 Geometry:
   E_scf: -129.945365955
+  HF_check: -129.299518879
+  HF_state: '?'
+  Nuclear_repulsion: 25.8727955259
+  atom_mass:
+  - 14.00307
+  - 15.99491
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: NO, B3LYP/pcseg-2
   coordinates:
   - - N
@@ -40,21 +49,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.534506
+  date: 30-Sep-2023
   e-state: '?'
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 10102-43-9*0
   CASRN: 10102-43-9
   Hill: 'NO'
-  WebBook: C10102439
   formula: 'NO'
   local_label: 'no'
   names:
-    ATcT: Nitric oxide
-    WebBook: Nitric oxide
     local: nitric oxide
 Refdata:
   ATcT:
@@ -64,40 +70,16 @@ Refdata:
     k_cover: 2.0
     unc: 0.066
     unit: kJ/mol
-  WebBook:
-    EoF298: 90.29
-    comment: 'Review # Data last reviewed in June, 1963'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
   spin_orbit:
+    Term: 2Pi
     source: CCCBDB
     unc: -1.0
     unit: cm-1
     value: -59.9
 Rotational:
-  A: 51.5956406
+  A: 51.59557
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -129.76484218644282
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 11.564
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

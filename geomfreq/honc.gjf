@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=honc.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 isofulminic acid, B3LYP/pcseg-2
 
 0 1
-N          0.203232       0.037871       0.000000
-O         -1.119816      -0.075269       0.000000
-C          1.377923      -0.013919       0.000000
-H         -1.458175       0.834115       0.000000
+N       0.000000     0.240463     0.000000
+O       0.033271    -1.087839     0.000000
+C      -0.206355     1.391050    -0.000000
+H       0.971966    -1.326827     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=honc.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+isofulminic acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

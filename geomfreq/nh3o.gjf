@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=nh3o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ammonia oxide, B3LYP/pcseg-2
 
 0 1
-N	0.0000000	0.0000000	-0.5388260
-O	0.0000000	0.0000000	0.8271810
-H	0.0000000	0.9498420	-0.9485570
-H	0.8225870	-0.4749210	-0.9485570
-H	-0.8225870	-0.4749210	-0.9485570
+N       0.000000     0.000000    -0.537991
+O       0.000000     0.000000     0.823247
+H       0.000000     0.950384    -0.940012
+H       0.823057    -0.475192    -0.940012
+H      -0.823057    -0.475192    -0.940012
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nh3o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ammonia oxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

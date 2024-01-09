@@ -1,13 +1,25 @@
+%chk=cloo.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq scf=xqc
+# b3lyp/gen opt freq CPHF(Grid=OneStep) scf=xqc
 
 chloroperoxyl, B3LYP/pcseg-2
 
 0 2
-Cl	-0.5483260	-1.1214860	0.0000000
-O	0.0000000	1.0628640	0.0000000
-O	1.1651940	1.3202940	0.0000000
+Cl         -0.548097    -1.135985     0.000000
+O           0.000081     1.072836     0.000000
+O           1.164427     1.341129     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cloo.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check 
+
+chloroperoxyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ccl2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 phosgene, B3LYP/pcseg-2
 
 0 1
-O	0.0000000	0.0000000	1.6800390
-C	0.0000000	0.0000000	0.5050980
-Cl	0.0000000	1.4563560	-0.4844380
-Cl	0.0000000	-1.4563560	-0.4844380
+O      -0.000000     0.000000     1.674462
+C      -0.000000     0.000000     0.501776
+Cl      0.000000     1.457033    -0.482540
+Cl     -0.000000    -1.457033    -0.482540
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ccl2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+phosgene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

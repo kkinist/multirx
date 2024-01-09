@@ -1,14 +1,27 @@
+%chk=ketene.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 Ketene, B3LYP/pcseg-2
 
 0 1
-C 0. 0. 0.
-C 0. 0. 1.4
-O 0. 0. 2.7
-H 0. 1. 0.
-H 0. -1. 0.
+C       0.000000     0.000000    -1.205313
+C      -0.000000     0.000000     0.102501
+O      -0.000000     0.000000     1.261752
+H       0.000000     0.936886    -1.738575
+H      -0.000000    -0.936886    -1.738575
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ketene.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+Ketene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

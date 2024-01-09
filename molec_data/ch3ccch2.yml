@@ -4,58 +4,76 @@ Energy:
   CCSD(T)-F12b: -155.084095019522
   CCSD-F12b: -155.05151813825
   HF: -154.343119062093
+  Nuclear_repulsion: 94.08589844
   basis: CC-PVTZ-F12
   basis_functions: 302
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 45.1809
-- 182.0144
-- 207.5167
-- 395.1265
-- 427.9674
-- 685.5864
-- 772.5216
-- 1032.4114
-- 1034.4039
-- 1053.9157
-- 1261.5949
-- 1415.5158
-- 1470.4158
-- 1471.53
-- 1471.7882
-- 2141.1314
-- 3009.8518
-- 3058.3975
-- 3075.3796
-- 3139.2413
-- 3225.0901
+- 45.2341
+- 182.0169
+- 207.517
+- 395.1267
+- 427.9671
+- 685.5851
+- 772.5225
+- 1032.412
+- 1034.4035
+- 1053.916
+- 1261.5939
+- 1415.5145
+- 1470.4122
+- 1471.5287
+- 1471.7874
+- 2141.124
+- 3009.849
+- 3058.394
+- 3075.3755
+- 3139.241
+- 3225.0915
 Functional_groups:
   2S: '[0]'
-  C-C: '[(0, 1), (2, 3)]'
+  C#C: '[(1, 2)]'
+  C-C: '[(0, 1)]'
+  C=C: '[(1, 2), (2, 3)]'
   methyl: '[(0, 4, 5, 6)]'
 Geometry:
   E_scf: -155.39474453
+  HF_check: -154.34311831
+  HF_state: 2-A'
+  Nuclear_repulsion: 94.0858984421
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 12.0
+  - 12.0
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
   basis_functions: 190
-  command: b3lyp/gen opt freq Int(Grid=UltraFine)
-  comment: 2-butynyl, B3LYP/pcseg-2, Cs symm
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
+  comment: 2-butynyl, B3LYP/pcseg-2
   coordinates:
   - - C
     - -0.028027
     - 1.96483
     - 0.0
   - - C
-    - 0.0
+    - -0.0
     - 0.51376
     - 0.0
   - - C
     - 0.011144
     - -0.708394
-    - 0.0
+    - -0.0
   - - C
     - 0.025897
     - -2.073464
-    - 0.0
+    - -0.0
   - - H
     - -1.05597
     - 2.338765
@@ -76,19 +94,18 @@ Geometry:
     - 0.032055
     - -2.630663
     - 0.926502
-  e-state: 2A'
+  date: 29-Sep-2023
+  e-state: 2-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 82252-88-8*0
   CASRN: 82252-88-8
   Hill: C4H5
   formula: C4H5
   local_label: ch3ccch2
   names:
-    ATcT: 2-Butynyl
     local: 2-buynyl
 Refdata:
   ATcT:
@@ -98,10 +115,11 @@ Refdata:
     k_cover: 2.0
     unc: 0.79
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 103.8294887
-  B: 3.6246791
-  C: 3.5800035
+  A: 103.82947
+  B: 3.62468
+  C: 3.58
   point_group: CS
   symmetry_number: 1
   unit: GHZ

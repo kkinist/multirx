@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt=calcall 
+%chk=ch2nho.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 oxaziridine, B3LYP/pcseg-2
 
 0 1
-C	0.6875680	-0.3331160	0.0170190
-N	-0.7331320	-0.4466370	-0.1608040
-O	-0.0340060	0.8620850	0.0203670
-H	1.1367880	-0.6211260	0.9679840
-H	1.2884900	-0.5323710	-0.8678770
-H	-1.1467180	-0.6180250	0.7604720
+C       0.687713    -0.331642     0.017221
+N      -0.730096    -0.448687    -0.160634
+O      -0.036827     0.861899     0.020383
+H       1.134886    -0.618160     0.965731
+H       1.289509    -0.526597    -0.864653
+H      -1.145381    -0.619771     0.756967
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2nho.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+oxaziridine, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

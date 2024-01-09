@@ -1,12 +1,24 @@
+%chk=cs.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 carbonyl monosulfide, B3LYP/pcseg-2
 
 0 1
-C
-S 1 1.6
+C       0.000000     0.000000    -1.114800
+S       0.000000     0.000000     0.418050
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cs.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+carbonyl monosulfide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

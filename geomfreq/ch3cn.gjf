@@ -1,16 +1,28 @@
+%chk=ch3cn.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 acetonitrile, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	-1.1759280
-C	0.0000000	0.0000000	0.2808600
-N	0.0000000	0.0000000	1.4328540
-H	0.0000000	1.0245280	-1.5531900
-H	0.8872670	-0.5122640	-1.5531900
-H	-0.8872670	-0.5122640	-1.5531900
+C       0.000000     0.000000    -1.174026
+C       0.000000     0.000000     0.280660
+N       0.000000     0.000000     1.429968
+H       0.000000     1.022382    -1.549861
+H       0.885409    -0.511191    -1.549861
+H      -0.885409    -0.511191    -1.549861
 
-@/home/irikura/basis/pcseg2.gbs
+@pcseg2.gbs
 
+--Link1--
+%chk=ch3cn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+acetonitrile, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

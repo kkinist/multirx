@@ -30,36 +30,41 @@ Energy:
   CCSD(T)-F12b: -75.000699894458
   CCSD-F12b: -74.997098568172
   HF: -74.811012234099
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 53
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Functional_groups:
   2S: '[0, 0]'
 Geometry:
   E_scf: -75.0954115928
+  HF_check: -74.8110119707
+  HF_state: '?'
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 15.99491
   basis_functions: 30
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: oxygen atom, B3LYP/pcseg-2
   coordinates:
   - - O
     - 0.0
     - 0.0
     - 0.0
+  date: 29-Sep-2023
   e-state: '?'
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 17778-80-2*0
   CASRN: 17778-80-2
   Hill: O
-  WebBook: C17778802
   formula: O
   local_label: o
   names:
-    ATcT: Oxygen atom
-    WebBook: Oxygen, atomic
     local: oxygen atom
 Refdata:
   ATcT:
@@ -70,13 +75,14 @@ Refdata:
     unc: 0.0021
     unit: kJ/mol
   WebBook:
-    EoF298: 249.18
-    comment: 'Review # CODATA Review value'
+  - EoF298: 249.18
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.1
     unit: kJ/mol
   spin_orbit:
+    Term: 3P
     source: CCCBDB
     unc: -1.0
     unit: cm-1

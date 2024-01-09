@@ -1,15 +1,25 @@
+%chk=o3.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ozone, B3LYP/pcseg-2
 
 0 1
-O
-O 1 r
-O 1 r 2 a
+O      -0.000000     0.000000     0.428968
+O      -0.000000     1.076610    -0.214484
+O      -0.000000    -1.076610    -0.214484
 
-r 1.3
-a 120.
+@pcseg2.gbs
 
-@/home/irikura/basis/pcseg2.gbs
+--Link1--
+%chk=o3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
 
+ozone, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

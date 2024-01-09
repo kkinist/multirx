@@ -15,36 +15,41 @@ Energy:
   CCSD(T)-F12b: -54.527917930634
   CCSD-F12b: -54.525237812953
   HF: -54.40022503097
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 53
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 4A
 Functional_groups:
   2S: '[0, 0, 0]'
 Geometry:
   E_scf: -54.6033823841
+  HF_check: -54.4002250136
+  HF_state: 4-A1G
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 14.00307
   basis_functions: 30
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: nitrogen atom, B3LYP/pcseg-2
   coordinates:
   - - N
     - 0.0
     - 0.0
     - 0.0
-  e-state: 4A1G
+  date: 29-Sep-2023
+  e-state: 4-A1G
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 17778-88-0*0
   CASRN: 17778-88-0
   Hill: N
-  WebBook: C17778880
   formula: N
   local_label: n
   names:
-    ATcT: Nitrogen atom
-    WebBook: Nitrogen, atomic
     local: nitrogen atom
 Refdata:
   ATcT:
@@ -55,13 +60,14 @@ Refdata:
     unc: 0.024
     unit: kJ/mol
   WebBook:
-    EoF298: 472.68
-    comment: 'Review # CODATA Review value'
+  - EoF298: 472.68
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.4
     unit: kJ/mol
   spin_orbit:
+    Term: 4S
     source: ASD
     unc: -1.0
     unit: cm-1

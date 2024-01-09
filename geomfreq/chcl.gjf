@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=chcl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chloromethylene, B3LYP/pcseg-2
 
 0 1
-C	0.0451910	1.1990280	0.0000000
-Cl	0.0451910	-0.5072640	0.0000000
-H	-1.0394030	1.4293230	0.0000000
+C       0.045144     1.195949     0.000000
+Cl      0.045144    -0.506032     0.000000
+H      -1.038320     1.426847     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=chcl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chloromethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

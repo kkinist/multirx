@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt=calcall  CPHF(Grid=OneStep)
+%chk=hco2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 formate radical, B3LYP/pcseg-2
 
 0 2
-C          0.000000       0.236144       0.000000
-H          0.000000       1.400244       0.000000
-O          1.166412      -0.132696       0.000000
-O         -1.166412      -0.132696       0.000000
+C       0.000000     0.000000     0.206896
+H       0.000000     0.000000     1.368742
+O      -0.000000     1.163406    -0.163132
+O      -0.000000    -1.163406    -0.163132
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hco2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+formate radical, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

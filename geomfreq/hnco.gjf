@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hnco.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 isocyanic acid, B3LYP/pcseg-2
 
 0 1
-H	1.3641900	-1.3721540	0.0000000
-N	0.3965150	-1.0980430	0.0000000
-C	0.0000000	0.0489630	0.0000000
-O	-0.5174750	1.0955840	0.0000000
+H       1.336227    -1.407697     0.000000
+N       0.381448    -1.098052     0.000000
+C      -0.000000     0.049265     0.000000
+O      -0.500795     1.099809     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hnco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+isocyanic acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

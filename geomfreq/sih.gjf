@@ -1,12 +1,24 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=sih.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 silicon monohydride, B3LYP/pcseg-2
 
 0 2
-Si	0.0000000	0.0000000	0.1025260
-H	0.0000000	0.0000000	-1.4353670
+Si      0.000000     0.000000     0.102038
+H       0.000000     0.000000    -1.428532
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sih.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+silicon monohydride, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

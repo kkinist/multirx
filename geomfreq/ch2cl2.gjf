@@ -1,15 +1,27 @@
+%chk=ch2cl2.chk
 %mem=500mw
-%nprocs=8
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 CH2Cl2, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.7690320
-H	-0.9002820	0.0000000	1.3770090
-H	0.9002820	0.0000000	1.3770090
-Cl	0.0000000	1.4885440	-0.2167120
-Cl	0.0000000	-1.4885440	-0.2167120
+C       0.000000    -0.000000     0.767760
+H      -0.896665     0.000000     1.373349
+H       0.896665    -0.000000     1.373349
+Cl     -0.000000     1.487512    -0.216272
+Cl     -0.000000    -1.487512    -0.216272
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2cl2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+CH2Cl2, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

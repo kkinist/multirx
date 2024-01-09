@@ -6,7 +6,7 @@ Electronic:
     - 1630.0
     degen:
     - 2
-    - 2
+    - 4
     label:
     - 2A1
     - 2Pi_u
@@ -17,21 +17,31 @@ Energy:
   CCSD(T)-F12b: -659.147120866911
   CCSD-F12b: -659.111591363835
   HF: -658.269620602145
+  Nuclear_repulsion: 105.90831807
   basis: CC-PVTZ-F12
   basis_functions: 168
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 233.674
-- 539.9016
-- 553.0096
+- 233.6771
+- 539.8951
+- 553.0125
 Functional_groups:
   2S: '[0]'
   fluoro: '[(0, 1), (0, 2)]'
 Geometry:
   E_scf: -659.84535973
+  HF_check: -658.269620454
+  HF_state: 2-A1
+  Nuclear_repulsion: 105.9083180776
+  atom_mass:
+  - 34.96885
+  - 18.9984
+  - 18.9984
   basis_functions: 94
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: chlorine difluoride, B3LYP/pcseg-2
   coordinates:
   - - Cl
@@ -39,27 +49,25 @@ Geometry:
     - 0.0
     - 0.197488
   - - F
-    - -0.0
+    - 0.0
     - 1.693453
     - -0.186516
   - - F
     - -0.0
     - -1.693453
     - -0.186516
-  e-state: 2A1
+  date: 1-Oct-2023
+  e-state: 2-A1
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 24801-48-7*0
   CASRN: 24801-48-7
   Hill: ClF2
-  IUPAC: Conversion failed
   formula: ClF2
   local_label: clf2
   names:
-    ATcT: Chlorine difluoride
     local: chlorine difluoride
 Refdata:
   ATcT:
@@ -69,30 +77,12 @@ Refdata:
     k_cover: 2.0
     unc: 1.4
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 188.2066806
-  B: 4.6379279
-  C: 4.5263853
+  A: 188.20698
+  B: 4.63793
+  C: 4.52638
   point_group: C2V
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 2
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -659.1441590306634
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 7.776299999999999
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

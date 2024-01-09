@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=onno.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 NO dimer, B3LYP/pcseg-2
 
 0 1
-O          1.190694      -0.529879       0.000000
-O         -1.190694      -0.529879       0.000000
-N          0.989635       0.605250       0.000000
-N         -0.989635       0.605250       0.000000
+O       0.000000     1.213663    -0.524765
+O      -0.000000    -1.213663    -0.524765
+N      -0.000000     0.987561     0.599732
+N      -0.000000    -0.987561     0.599732
 
 @pcseg2.gbs
 
+--Link1--
+%chk=onno.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+NO dimer, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

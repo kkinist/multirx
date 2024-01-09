@@ -1,13 +1,24 @@
+%chk=sh.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 sulfhydryl, B3LYP/pcseg-2
 
 0 2
-H
-S 1 r
-
-r 1.35
+H       0.000000     0.000000    -1.268105
+S       0.000000     0.000000     0.079257
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+sulfhydryl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

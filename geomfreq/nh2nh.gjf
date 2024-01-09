@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=nh2nh.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydrazinyl, B3LYP/pcseg-2
 
 0 2
-N         -0.633471       0.015242       0.050336
-N          0.715637      -0.079700      -0.016331
-H         -1.099269       0.849936      -0.292550
-H         -1.099936      -0.840167      -0.219751
-H          1.057564       0.885825       0.039824
+N       0.594866     0.024450    -0.069904
+N      -0.738248    -0.150807     0.023006
+H       1.022884     0.900447     0.199935
+H       1.132663    -0.796909     0.154652
+H      -1.151876     0.780957    -0.026298
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nh2nh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydrazinyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

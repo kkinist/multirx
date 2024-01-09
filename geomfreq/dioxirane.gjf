@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=dioxirane.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 dioxirane, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.7297670
-H	0.9283620	0.0000000	1.3016480
-H	-0.9283620	0.0000000	1.3016480
-O	0.0000000	0.7502740	-0.4363690
-O	0.0000000	-0.7502740	-0.4363690
+C       0.000000     0.000000     0.730385
+H       0.925739    -0.000000     1.301892
+H      -0.925739     0.000000     1.301892
+O       0.000000     0.749377    -0.436631
+O      -0.000000    -0.749377    -0.436631
 
 @pcseg2.gbs
 
+--Link1--
+%chk=dioxirane.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+dioxirane, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

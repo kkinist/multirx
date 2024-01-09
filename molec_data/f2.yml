@@ -6,24 +6,32 @@ Electronic:
     degen:
     - 1
     label:
-    - 1Sg+
+    - 1Sigma_g+
     source:
     - .nan
 Energy:
   CCSD(T)-F12b: -199.384983543066
   CCSD-F12b: -199.364931154822
   HF: -198.770391953176
+  Nuclear_repulsion: 30.66276324
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 8
+  point_group: D2h
   software: Molpro Version 2021.3
+  state: 1Ag
 Frequencies:
-- 1047.9698
+- 1047.9621
 Functional_groups: {}
 Geometry:
   E_scf: -199.596986273
+  HF_check: -198.770391858
+  Nuclear_repulsion: 30.6627632417
+  atom_mass:
+  - 18.9984
+  - 18.9984
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: F2, B3LYP/pcseg-2
   coordinates:
   - - F
@@ -34,19 +42,18 @@ Geometry:
     - 0.0
     - 0.0
     - -0.698948
-  e-state: 1SGG
+  date: 1-Oct-2023
+  e-state: 1-SGG
   nimag: 0
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7782-41-4*0
   CASRN: 7782-41-4
   Hill: F2
   formula: F2
   local_label: f2
   names:
-    ATcT: Difluorine
     local: difluorine
 Refdata:
   ATcT:
@@ -56,28 +63,10 @@ Refdata:
     k_cover: 2.0
     unc: -999.0
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 27.2257478
+  A: 27.225782
   point_group: D*H
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -199.38264393505096
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 6.14264
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

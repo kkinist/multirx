@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=chonh2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 formamide, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.4186690	0.0000000
-O	1.1961670	0.2422360	0.0000000
-N	-0.9352040	-0.5686340	0.0000000
-H	-0.4677700	1.4245110	0.0000000
-H	-0.6361770	-1.5307940	0.0000000
-H	-1.9189580	-0.3631730	0.0000000
+C       0.000000     0.418397     0.000000
+O       1.195446     0.236336     0.000000
+N      -0.936188    -0.564267    -0.000000
+H      -0.449598     1.426623     0.000000
+H      -0.643868    -1.527131    -0.000000
+H      -1.916782    -0.350689    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=chonh2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+formamide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

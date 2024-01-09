@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=c2cl4.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 tetrachloroethylene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.6716280
-C	0.0000000	0.0000000	-0.6716280
-Cl	0.0000000	1.4548000	1.5969070
-Cl	0.0000000	-1.4548000	1.5969070
-Cl	0.0000000	-1.4548000	-1.5969070
-Cl	0.0000000	1.4548000	-1.5969070
+C       0.000000     0.000000     0.669434
+C       0.000000     0.000000    -0.669434
+Cl      0.000000     1.453437     1.594396
+Cl     -0.000000    -1.453437     1.594396
+Cl     -0.000000    -1.453437    -1.594396
+Cl      0.000000     1.453437    -1.594396
 
 @pcseg2.gbs
 
+--Link1--
+%chk=c2cl4.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+tetrachloroethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hco3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 peroxyformyl, B3LYP/pcseg-2
 
 0 2
-C         -0.739041      -0.495486       0.000000
-H         -1.117932      -1.527258       0.000000
-O         -1.344908       0.517104       0.000000
-O          0.675750      -0.609313       0.000000
-O          1.294055       0.560173       0.000000
+C       0.000000     0.864794     0.000000
+H      -0.655961     1.742216     0.000000
+O       1.175756     0.823228     0.000000
+O      -0.865755    -0.264465     0.000000
+O      -0.228006    -1.425135     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hco3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+peroxyformyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -6,25 +6,34 @@ Electronic:
     degen:
     - 2
     label:
-    - 2S+
+    - 2Sigma+
     source:
     - WebBook
 Energy:
   CCSD(T)-F12b: -92.600157458091
   CCSD-F12b: -92.579662539245
   HF: -92.225514193754
+  Nuclear_repulsion: 19.13248529
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 2153.2967
+- 2153.2969
 Functional_groups:
   2S: '[0]'
 Geometry:
   E_scf: -92.7483995755
+  HF_check: -92.2255139896
+  HF_state: 2-SG
+  Nuclear_repulsion: 19.1324852871
+  atom_mass:
+  - 12.0
+  - 14.00307
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: cyano radical, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -35,21 +44,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.536151
-  e-state: 2SG
+  date: 29-Sep-2023
+  e-state: 2-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 2074-87-5*0
   CASRN: 2074-87-5
   Hill: CN
-  WebBook: C2074875
   formula: CN
   local_label: cn
   names:
-    ATcT: Nitrilomethyl
-    WebBook: Cyano radical
     local: cyano radical
 Refdata:
   ATcT:
@@ -59,40 +65,16 @@ Refdata:
     k_cover: 2.0
     unc: 0.14
     unit: kJ/mol
-  WebBook:
-    EoF298: 435.14
-    comment: 'Review # Data last reviewed in June, 1969'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
   spin_orbit:
+    Term: 2Sigma+
     source: WebBook
     unc: -1.0
     unit: cm-1
     value: 0.0
 Rotational:
-  A: 57.9534411
+  A: 57.953436
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -92.5953498398342
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 12.6224
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

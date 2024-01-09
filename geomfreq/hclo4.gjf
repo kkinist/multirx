@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hclo4.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 perchloric acid, B3LYP/pcseg-2
 
 0 1
-Cl	-0.1518530	0.0107160	0.0000000
-O	-0.4953910	1.4317850	0.0000000
-O	1.5762160	0.0890320	0.0000000
-O	-0.4953910	-0.7190510	1.2327920
-O	-0.4953910	-0.7190510	-1.2327920
-H	1.8611440	-0.8439030	0.0000000
+Cl     -0.143219     0.009250     0.000000
+O      -0.481376     1.387245     0.000000
+O       1.520306     0.089565     0.000000
+O      -0.481376    -0.696157     1.195576
+O      -0.481376    -0.696157    -1.195576
+H       1.825297    -0.833214     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hclo4.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+perchloric acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

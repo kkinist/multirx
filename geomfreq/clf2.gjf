@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=clf2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chlorine difluoride, B3LYP/pcseg-2
 
 0 2
-Cl         0.000000       0.202291       0.000000
-F          1.685603      -0.186170       0.000000
-F         -1.685603      -0.186170       0.000000
+Cl      0.000000     0.000000     0.197488
+F      -0.000000     1.693453    -0.186516
+F      -0.000000    -1.693453    -0.186516
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clf2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chlorine difluoride, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

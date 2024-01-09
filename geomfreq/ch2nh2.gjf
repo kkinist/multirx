@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2nh2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 aminomethyl, B3LYP/pcseg-2
 
 0 2
-C         -0.739584       0.000000       0.060485
-N          0.652708       0.000000      -0.065849
-H         -1.238757       0.928384      -0.194831
-H         -1.238757      -0.928384      -0.194831
-H          1.107329      -0.829538       0.292200
-H          1.107329       0.829538       0.292200
+C       0.012320     0.730973     0.000000
+N       0.012320    -0.660073    -0.000000
+H       0.259261     1.220135     0.929424
+H       0.259261     1.220135    -0.929424
+H      -0.339344    -1.102800    -0.833944
+H      -0.339344    -1.102800     0.833944
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2nh2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+aminomethyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

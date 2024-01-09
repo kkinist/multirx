@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=clcn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyanogen chloride, B3LYP/pcseg-2
 
 0 1
-Cl	0.0000000	0.0000000	0.9789440
-C	0.0000000	0.0000000	-0.6560930
-N	0.0000000	0.0000000	-1.8150700
+Cl      0.000000     0.000000     0.976849
+C       0.000000     0.000000    -0.656846
+N       0.000000     0.000000    -1.809338
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clcn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+cyanogen chloride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

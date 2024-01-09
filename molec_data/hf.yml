@@ -6,25 +6,33 @@ Electronic:
     degen:
     - 1
     label:
-    - 1S+
+    - 1Sigma+
     source:
     - .nan
 Energy:
   CCSD(T)-F12b: -100.386944000312
   CCSD-F12b: -100.379207204639
   HF: -100.067750130983
+  Nuclear_repulsion: 5.16611497
   basis: CC-PVTZ-F12
   basis_functions: 71
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 1A
 Frequencies:
-- 4081.3968
+- 4081.3963
 Functional_groups:
   fluoro: '[(0, 1)]'
 Geometry:
   E_scf: -100.492645144
+  HF_check: -100.067750083
+  Nuclear_repulsion: 5.1661149727
+  atom_mass:
+  - 1.00783
+  - 18.9984
   basis_functions: 44
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: HF, B3LYP/pcseg-2
   coordinates:
   - - H
@@ -35,21 +43,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.092189
-  e-state: 1SG
+  date: 29-Sep-2023
+  e-state: 1-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7664-39-3*0
   CASRN: 7664-39-3
   Hill: HF
-  WebBook: C7664393
-  formula: HF
+  formula: FH
   local_label: hf
   names:
-    ATcT: Hydrogen fluoride
-    WebBook: hydrogen fluoride
     local: hydrogen fluoride
 Refdata:
   ATcT:
@@ -60,34 +65,15 @@ Refdata:
     unc: 0.048
     unit: kJ/mol
   WebBook:
-    EoF298: -273.3
-    comment: 'Review # CODATA Review value'
+  - EoF298: -273.3
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.7
     unit: kJ/mol
 Rotational:
-  A: 621.3286219
+  A: 621.328142
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -100.37783192136129
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 23.923759999999998
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

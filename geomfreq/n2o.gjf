@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=n2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitrous oxide, B3LYP/pcseg-2
 
 0 1
-N	0.0000000	0.0000000	-1.2001060
-N	0.0000000	0.0000000	-0.0723620
-O	0.0000000	0.0000000	1.1134100
+N       0.000000     0.000000    -1.194607
+N       0.000000     0.000000    -0.073711
+O       0.000000     0.000000     1.109778
 
 @pcseg2.gbs
 
+--Link1--
+%chk=n2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitrous oxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

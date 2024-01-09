@@ -1,10 +1,23 @@
+%chk=si.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 silicon atom, B3LYP/pcseg-2
 
 0 3
-Si
+Si      0.000000     0.000000     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=si.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+silicon atom, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

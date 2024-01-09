@@ -1,13 +1,25 @@
+%chk=fco.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 fluoroformyl, B3LYP/pcseg-2
 
 0 2
-F	-1.0172450	-0.4256070	0.0000000
-C	0.0000000	0.4193330	0.0000000
-O	1.1444010	0.1643080	0.0000000
+F      -1.013482    -0.442939     0.000000
+C       0.000000     0.421571    -0.000000
+O       1.140168     0.182128    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=fco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+fluoroformyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=nh4.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ammonium radical, B3LYP/pcseg-2
 
 0 2
-N	0.0000000	0.0000000	0.0000000
-H	0.6010220	0.6010220	0.6010220
-H	-0.6010220	-0.6010220	0.6010220
-H	-0.6010220	0.6010220	-0.6010220
-H	0.6010220	-0.6010220	-0.6010220
+N       0.000000     0.000000     0.000000
+H       0.605436     0.605436     0.605436
+H      -0.605436    -0.605436     0.605436
+H      -0.605436     0.605436    -0.605436
+H       0.605436    -0.605436    -0.605436
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nh4.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ammonium radical, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

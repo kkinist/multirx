@@ -1,32 +1,35 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -228.849827005248
-  CCSD-F12b: -228.81398108706
-  HF: -227.919461070511
+  CCSD(T)-F12b: -228.849827005593
+  CCSD-F12b: -228.813981078324
+  HF: -227.919461027458
+  Nuclear_repulsion: 121.21591892
   basis: CC-PVTZ-F12
   basis_functions: 284
   nirreps: 2
-  software: Molpro Version 2021.3
+  point_group: Cs
+  software: Molpro Version 2023.2
+  state: 1A'
 Frequencies:
-- 67.922
-- 425.043
-- 545.8559
-- 585.3725
-- 665.2208
-- 858.7184
-- 998.7862
-- 1069.6537
-- 1201.3741
-- 1336.7976
-- 1408.537
-- 1471.4095
-- 1477.7492
-- 1814.4626
-- 3056.6293
-- 3114.807
-- 3165.519
-- 3750.9817
+- 67.9058
+- 425.0418
+- 545.8506
+- 585.3699
+- 665.214
+- 858.7163
+- 998.7857
+- 1069.6536
+- 1201.3755
+- 1336.7942
+- 1408.534
+- 1471.4081
+- 1477.7463
+- 1814.461
+- 3056.6318
+- 3114.8103
+- 3165.5197
+- 3750.9824
 Functional_groups:
   C-C: '[(0, 1)]'
   carbonyl: '[(1, 2)]'
@@ -35,16 +38,27 @@ Functional_groups:
   methyl: '[(0, 3, 4, 5)]'
 Geometry:
   E_scf: -229.190855036
+  HF_check: -227.919460142
+  Nuclear_repulsion: 121.2159352887
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 15.99491
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 15.99491
+  - 1.00783
   basis_functions: 176
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: acetic acid, B3LYP/pcseg-2
   coordinates:
   - - C
     - 1.067677
-    - -0.900975
+    - -0.900976
     - 0.0
   - - C
-    - 0.0
+    - -0.0
     - 0.155398
     - 0.0
   - - O
@@ -53,15 +67,15 @@ Geometry:
     - 0.0
   - - H
     - 2.045333
-    - -0.430909
+    - -0.43091
     - 0.0
   - - H
-    - 0.958591
-    - -1.537527
+    - 0.95859
+    - -1.537528
     - 0.87789
   - - H
-    - 0.958591
-    - -1.537527
+    - 0.95859
+    - -1.537528
     - -0.87789
   - - O
     - -1.242078
@@ -69,25 +83,20 @@ Geometry:
     - 0.0
   - - H
     - -1.873927
-    - 0.342768
+    - 0.342769
     - 0.0
-  e-state: 1A'
+  date: 29-Sep-2023
+  e-state: 1-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 64-19-7*0
   CASRN: 64-19-7
   Hill: C2H4O2
-  IUPAC: acetic acid
-  InChI: 1S/C2H4O2/c1-2(3)4/h1H3,(H,3,4)
-  WebBook: C64197
   formula: C2H4O2
   local_label: acoh
   names:
-    ATcT: Acetic acid
-    WebBook: Acetic acid
     local: acetic acid
 Refdata:
   ATcT:
@@ -99,35 +108,17 @@ Refdata:
     unit: kJ/mol
   WebBook:
     EoF298: -431.9
-    comment: nan
+    comment: '# Value computed using «Delta»_fH_l_i_q_u_i_d° value of -483.52±0.36kj/mol
+      from 1997STE/CHI1052-1066 and «Delta»_v_a_pH° value of 51.6±1.5kj/mol from 1970KON/WAD.'
     k_cover: 2.0
-    source: 1997STE/CHI1052-1066
+    squib: 1997STE/CHI1052-1066
     unc: 1.5
     unit: kJ/mol
 Rotational:
-  A: 11.3704983
-  B: 9.4730454
-  C: 5.3372636
+  A: 11.3705
+  B: 9.47304
+  C: 5.33726
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 8
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -228.78951341860002
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 158.35330000000002
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

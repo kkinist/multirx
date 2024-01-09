@@ -1,16 +1,28 @@
+%chk=hc4h.chk
 %mem=500mw
-%nprocs=8
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 diacetylene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.6807090
-C	0.0000000	0.0000000	-0.6807090
-C	0.0000000	0.0000000	1.8873850
-C	0.0000000	0.0000000	-1.8873850
-H	0.0000000	0.0000000	2.9492650
-H	0.0000000	0.0000000	-2.9492650
+C       0.000000     0.000000     0.681864
+C       0.000000     0.000000    -0.681864
+C       0.000000     0.000000     1.886080
+C       0.000000     0.000000    -1.886080
+H       0.000000     0.000000     2.947499
+H       0.000000     0.000000    -2.947499
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hc4h.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+diacetylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

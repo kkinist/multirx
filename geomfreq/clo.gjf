@@ -1,14 +1,24 @@
+%chk=clo.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ClO, B3LYP/pcseg-2
 
 0 2
-Cl
-O 1 r
-
-r 1.5
+Cl      0.000000     0.000000     0.507894
+O       0.000000     0.000000    -1.079274
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clo.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ClO, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

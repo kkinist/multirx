@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch3ch.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ethylidene, B3LYP/pcseg-2
 
 0 3
-C         -0.663291      -0.020353       0.000000
-C          0.798901       0.085006       0.000000
-H          1.605712      -0.637820       0.000000
-H         -1.130450       0.972479       0.000000
-H         -1.044978      -0.552233      -0.887119
-H         -1.044978      -0.552233       0.887119
+C       0.046788    -0.609871     0.000000
+C       0.046788     0.849839     0.000000
+H      -0.717343     1.612369     0.000000
+H       1.066804    -1.003082     0.000000
+H      -0.455461    -1.024549     0.884770
+H      -0.455461    -1.024549    -0.884770
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3ch.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ethylidene, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

@@ -25,34 +25,41 @@ Energy:
   CCSD(T)-F12b: -340.829766101036
   CCSD-F12b: -340.825677133667
   HF: -340.71834948474
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 62
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 4A
 Functional_groups:
   2S: '[0, 0, 0]'
 Geometry:
   E_scf: -341.288958999
+  HF_check: -340.718349446
+  HF_state: 4-A1G
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 30.97376
   basis_functions: 34
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: phosphorus atom, B3LYP/pcseg-2
   coordinates:
   - - P
     - 0.0
     - 0.0
     - 0.0
-  e-state: 4A1G
+  date: 30-Sep-2023
+  e-state: 4-A1G
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
   CASRN: 7723-14-0
   Hill: P
-  WebBook: C7723140
   formula: P
   local_label: p
   names:
-    WebBook: Phosphorus
     local: phosphorus atom
 Refdata:
   Local:
@@ -63,13 +70,14 @@ Refdata:
     unc: 0.5
     unit: kJ/mol
   WebBook:
-    EoF298: 316.5
-    comment: 'Review # CODATA Review value'
+  - EoF298: 316.5
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 1.0
     unit: kJ/mol
   spin_orbit:
+    Term: 4S
     source: ASD
     unc: -1.0
     unit: cm-1

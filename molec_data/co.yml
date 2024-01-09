@@ -6,25 +6,33 @@ Electronic:
     degen:
     - 1
     label:
-    - 1S+
+    - 1Sigma+
     source:
     - .nan
 Energy:
   CCSD(T)-F12b: -113.199681129643
   CCSD-F12b: -113.181880904658
   HF: -112.78916160992
+  Nuclear_repulsion: 22.58603742
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 1A
 Frequencies:
-- 2212.3789
+- 2212.3852
 Functional_groups:
   carbonyl: '[(0, 1)]'
 Geometry:
   E_scf: -113.361320995
+  HF_check: -112.789161154
+  Nuclear_repulsion: 22.5860374157
+  atom_mass:
+  - 12.0
+  - 15.99491
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: CO, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -35,21 +43,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.481976
-  e-state: 1SG
+  date: 27-Sep-2023
+  e-state: 1-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 630-08-0*0
   CASRN: 630-08-0
   Hill: CO
-  WebBook: C630080
   formula: CO
   local_label: co
   names:
-    ATcT: Carbon monoxide
-    WebBook: Carbon monoxide
     local: carbon monoxide
 Refdata:
   ATcT:
@@ -60,34 +65,15 @@ Refdata:
     unc: 0.026
     unit: kJ/mol
   WebBook:
-    EoF298: -110.53
-    comment: 'Review # CODATA Review value'
+  - EoF298: -110.53
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.17
     unit: kJ/mol
 Rotational:
-  A: 58.2811392
+  A: 58.281205
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -113.19474174979888
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 12.96834
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

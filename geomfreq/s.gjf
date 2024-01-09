@@ -1,9 +1,23 @@
-# b3lyp/gen opt freq
+%chk=s.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 sulfur atom, B3LYP/pcseg-2
 
 0 3
-S
+S       0.000000     0.000000     0.000000
 
-@/home/irikura/basis/pcseg2.gbs
+@pcseg2.gbs
 
+--Link1--
+%chk=s.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+sulfur atom, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

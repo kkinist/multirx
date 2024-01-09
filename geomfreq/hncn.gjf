@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hncn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyanoaminyl, B3LYP/pcseg-2
 
 0 2
-C          0.068830       0.022410       0.000000
-N          1.262207       0.001518       0.000000
-N         -1.200762      -0.080235       0.000000
-H         -1.673287       0.826884       0.000000
+C       0.000000     0.109431    -0.000000
+N      -0.070387     1.295039    -0.000000
+N      -0.053065    -1.159519     0.000000
+H       0.864158    -1.605227     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hncn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check 
+
+cyanoaminyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

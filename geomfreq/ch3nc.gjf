@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch3nc.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methyl isocyanide, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	-1.1048980
-N	0.0000000	0.0000000	0.3110130
-C	0.0000000	0.0000000	1.4823870
-H	0.0000000	1.0268030	-1.4806740
-H	0.8892370	-0.5134010	-1.4806740
-H	-0.8892370	-0.5134010	-1.4806740
+C       0.000000     0.000000    -1.104969
+N       0.000000     0.000000     0.313028
+C       0.000000     0.000000     1.477439
+H      -0.000000     1.023811    -1.475339
+H       0.886646    -0.511905    -1.475339
+H      -0.886646    -0.511905    -1.475339
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3nc.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methyl isocyanide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

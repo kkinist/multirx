@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2n.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methylene amidogen, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.0000000	-0.5031530
-N	0.0000000	0.0000000	0.7406450
-H	0.0000000	0.9347000	-1.0827970
-H	0.0000000	-0.9347000	-1.0827970
+C       0.000000    -0.000000    -0.500878
+N       0.000000     0.000000     0.736617
+H      -0.000000     0.934572    -1.075524
+H      -0.000000    -0.934572    -1.075524
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2n.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methylene amidogen, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

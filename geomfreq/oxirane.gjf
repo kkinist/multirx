@@ -1,20 +1,29 @@
+%chk=oxirane.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 Ethylene oxide, B3LYP/pcseg-2
 
 0 1
-O
-C 1 co
-C 1 co 2 60.
-H 2 ch 1 a 3 120.
-H 2 ch 1 a 3 -120.
-H 3 ch 1 a 2 120.
-H 3 ch 1 a 2 -120.
-
-co 1.3
-ch 1.
-a 109.
+O      -0.000000     0.000000     0.853669
+C      -0.000000     0.731767    -0.372403
+C      -0.000000    -0.731767    -0.372403
+H      -0.917383     1.267532    -0.590129
+H       0.917383     1.267532    -0.590129
+H       0.917383    -1.267532    -0.590129
+H      -0.917383    -1.267532    -0.590129
 
 @pcseg2.gbs
 
+--Link1--
+%chk=oxirane.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+Ethylene oxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

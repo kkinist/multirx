@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=sih2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 silylene, B3LYP/pcseg-2
 
 0 3
-Si         0.000000       0.071641       0.000000
-H          1.091375      -0.994373       0.000000
-H         -1.091375      -0.994373       0.000000
+Si      0.000000     0.000000     0.094791
+H      -0.000000     1.276222    -0.663537
+H      -0.000000    -1.276222    -0.663537
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sih2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+silylene, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

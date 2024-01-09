@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=nh2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 aminoxyl, B3LYP/pcseg-2
 
 0 2
-N    -0.070000    0.000000   -0.539434
-O     0.020000    0.000000    0.733800
-H     0.350000    0.877096   -1.047180
-H     0.350000   -0.877096   -1.047180
+N      -0.013685     0.540901     0.000000
+O      -0.013685    -0.733529    -0.000000
+H       0.102635     1.040963     0.874711
+H       0.102635     1.040963    -0.874711
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nh2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+aminoxyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

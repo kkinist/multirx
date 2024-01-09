@@ -1,31 +1,42 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -189.583530443304
-  CCSD-F12b: -189.555363012089
-  HF: -188.856057709309
+  CCSD(T)-F12b: -189.583530444772
+  CCSD-F12b: -189.55536301042
+  HF: -188.856057689894
+  Nuclear_repulsion: 70.2789617
   basis: CC-PVTZ-F12
   basis_functions: 195
   nirreps: 2
-  software: Molpro Version 2021.3
+  point_group: Cs
+  software: Molpro Version 2023.2
+  state: 1A'
 Frequencies:
-- 629.2858
-- 679.2257
-- 1053.7294
-- 1121.4439
-- 1298.6883
-- 1404.558
-- 1815.2481
-- 3054.1702
-- 3728.715
+- 629.2855
+- 679.2287
+- 1053.7302
+- 1121.447
+- 1298.6905
+- 1404.5586
+- 1815.2517
+- 3054.1622
+- 3728.7079
 Functional_groups:
   carbonyl: '[(0, 2)]'
   carboxylic acid: '[(0, 2, 1, 4)]'
   hydroxyl: '[(1, 4)]'
 Geometry:
   E_scf: -189.84935502
+  HF_check: -188.856056973
+  Nuclear_repulsion: 70.2789624891
+  atom_mass:
+  - 12.0
+  - 15.99491
+  - 15.99491
+  - 1.00783
+  - 1.00783
   basis_functions: 118
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: formic acid, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -35,7 +46,7 @@ Geometry:
   - - O
     - -1.027094
     - -0.446949
-    - -0.0
+    - 0.0
   - - O
     - 1.157626
     - 0.11841
@@ -43,28 +54,23 @@ Geometry:
   - - H
     - -0.384787
     - 1.446819
-    - -0.0
+    - 0.0
   - - H
-    - -0.659473
+    - -0.659472
     - -1.343689
-    - -0.0
-  e-state: 1A'
+    - 0.0
+  date: 28-Sep-2023
+  e-state: 1-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 64-18-6*0
   CASRN: 64-18-6
   Hill: CH2O2
-  IUPAC: formic acid
-  InChI: 1S/CH2O2/c2-1-3/h1H,(H,2,3)
-  WebBook: C64186
   formula: CH2O2
   local_label: hcooh
   names:
-    ATcT: Formic acid
-    WebBook: Formic acid
     local: formic acid
 Refdata:
   ATcT:
@@ -75,36 +81,18 @@ Refdata:
     unc: 0.22
     unit: kJ/mol
   WebBook:
-    EoF298: -378.61016
-    comment: 'Cm # Heat of hydrolysis'
+  - EoF298: -379.2
+    comment: 'method:Ccb # Value computed using «Delta»_fH_l_i_q_u_i_d° from 1964LEB1435-1437
+      and «Delta»_v_a_pH° value of 46.3kJ/mol from 1970KON/WAD2612-26.'
     k_cover: 2.0
-    source: 1974GUT3608-3615
-    unc: .nan
+    squib: 1964LEB1435-1437
+    unc: 0.6
     unit: kJ/mol
 Rotational:
-  A: 78.1335341
-  B: 12.0678099
-  C: 10.4532881
+  A: 78.13352
+  B: 12.06781
+  C: 10.45329
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 5
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -189.55052136621376
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 86.66532
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

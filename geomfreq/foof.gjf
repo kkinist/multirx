@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=foof.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 fluorine peroxide, B3LYP/pcseg-2
 
 0 1
-F	0.5663890	1.3426720	-0.4846690
-O	0.5663890	0.2728630	0.5452530
-O	-0.5663890	-0.2728630	0.5452530
-F	-0.5663890	-1.3426720	-0.4846690
+F       0.547965     1.394365    -0.486688
+O       0.547965     0.275490     0.547524
+O      -0.547965    -0.275490     0.547524
+F      -0.547965    -1.394365    -0.486688
 
 @pcseg2.gbs
 
+--Link1--
+%chk=foof.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+fluorine peroxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

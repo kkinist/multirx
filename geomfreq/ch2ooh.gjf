@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt=calcfc freq CPHF(Grid=OneStep)
+%chk=ch2ooh.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydroperoxymethyl, B3LYP/pcseg-2
 
 0 2
-C          -1.249410     0.388427    -0.003203
-O          -0.622937    -0.636840     0.002493
-H          -0.752924     1.369923    -0.040246
-H          -2.353039     0.381677     0.025378
-O           1.720623     0.219453     0.009886
-H           1.820938    -0.743066    -0.064940
+C       1.232718     0.384590     0.000025
+O       0.601959    -0.638883    -0.000017
+H       0.740432     1.368419     0.000258
+H       2.336528     0.372406    -0.000168
+O      -1.678567     0.223966    -0.000067
+H      -1.860404    -0.729026     0.000431
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2ooh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydroperoxymethyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hcco.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ketenyl, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.0461670	0.0000000
-C	1.0750570	-0.6685010	0.0000000
-O	-1.0723730	0.5248060	0.0000000
-H	2.1286420	-0.4644380	0.0000000
+C       0.000000     0.044411     0.000000
+C       1.047850    -0.698973     0.000000
+O      -1.049849     0.564681     0.000000
+H       2.111696    -0.590078     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hcco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ketenyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hno3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitric acid, B3LYP/pcseg-2
 
 0 1
-N	0.0000000	0.1522840	0.0000000
-O	-0.2701090	-1.2261760	0.0000000
-O	1.1721590	0.4552710	0.0000000
-O	-0.9796850	0.8394830	0.0000000
-H	0.6210780	-1.6146050	0.0000000
+N       0.000000     0.155135     0.000000
+O      -0.269789    -1.229910     0.000000
+O       1.168978     0.458360     0.000000
+O      -0.976105     0.839226     0.000000
+H       0.615327    -1.627348     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hno3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitric acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

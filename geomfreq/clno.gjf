@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=clno.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitrosyl chloride, B3LYP/pcseg-2
 
 0 1
-Cl	-0.5227060	-0.9751810	0.0000000
-N	0.0000000	1.0076270	0.0000000
-O	1.1107500	1.1905860	0.0000000
+Cl     -0.524782    -0.944467     0.000000
+N      -0.000000     0.977495     0.000000
+O       1.115163     1.151683     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clno.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitrosyl chloride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

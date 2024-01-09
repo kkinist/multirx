@@ -1,17 +1,29 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch3ooh.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methyl hydroperoxide, B3LYP/pcseg-2
 
 0 1
-C	1.1210770	-0.2262680	0.0186250
-O	-0.0176810	0.6091600	-0.0147720
-O	-1.1653140	-0.2648330	-0.1057760
-H	1.9725660	0.4616100	0.0339150
-H	1.1399000	-0.8552350	0.9186370
-H	1.1780170	-0.8622010	-0.8724600
-H	-1.5529850	-0.1411830	0.7725470
+C       1.130103    -0.223057     0.027076
+O      -0.015542     0.604797    -0.031824
+O      -1.163615    -0.285676    -0.089299
+H       1.970509     0.471127     0.018008
+H       1.148960    -0.817526     0.943505
+H       1.186092    -0.879118    -0.843440
+H      -1.652924     0.010898     0.688453
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3ooh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methyl hydroperoxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -4,21 +4,30 @@ Energy:
   CCSD(T)-F12b: -535.463026252901
   CCSD-F12b: -535.442925325524
   HF: -534.930851938122
+  Nuclear_repulsion: 50.76486735
   basis: CC-PVTZ-F12
   basis_functions: 133
   nirreps: 2
+  point_group: Cs
   software: Molpro Version 2021.3
+  state: 1A'
 Frequencies:
-- 739.1708
-- 1259.4377
-- 3777.1644
+- 739.1782
+- 1259.4275
+- 3777.1694
 Functional_groups:
   chloro: '[(0, 2)]'
   hydroxyl: '[(0, 1)]'
 Geometry:
   E_scf: -536.033235486
+  HF_check: -534.930851582
+  Nuclear_repulsion: 50.76486735
+  atom_mass:
+  - 15.99491
+  - 1.00783
+  - 34.96885
   basis_functions: 78
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: HOCl, B3LYP/pcseg-2
   coordinates:
   - - O
@@ -33,7 +42,8 @@ Geometry:
     - 0.036173
     - -0.599007
     - 0.0
-  e-state: 1A'
+  date: 30-Sep-2023
+  e-state: 1-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
@@ -41,45 +51,24 @@ Geometry:
 Identifiers:
   CASRN: 7790-92-3
   Hill: HClO
-  IUPAC: HYPOCHLOROUS ACID
-  WebBook: C7790923
-  formula: HClO
+  formula: ClHO
   local_label: hocl
   names:
-    WebBook: Hypochlorous acid
     local: hypochlorous acid
 Refdata:
-  WebBook:
-    EoF298: -74.48
-    comment: 'Review # Data last reviewed in March, 1979'
+  ATcT:
+    ATcT_version: 1.122r
+    EoF0: -73.866
+    EoF298: -76.805
     k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
+    unc: 0.027
     unit: kJ/mol
+  WebBook: []
 Rotational:
-  A: 613.6397964
-  B: 14.9063679
-  C: 14.552854
+  A: 613.64013
+  B: 14.90636
+  C: 14.55285
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -535.4501311606714
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 33.85606
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

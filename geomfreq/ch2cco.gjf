@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2cco.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 propadienone, B3LYP/pcseg-2
 
 0 1
-C	0.9150470	-1.5806730	0.0000000
-C	0.0000000	-0.6296860	0.0000000
-C	-0.3147780	0.6215920	0.0000000
-O	-0.7784250	1.6918430	0.0000000
-H	1.9823970	-1.3698520	0.0000000
-H	0.6433930	-2.6322900	0.0000000
+C       0.865298     1.615347    -0.000000
+C       0.000000     0.619966     0.000000
+C      -0.297457    -0.633139     0.000000
+O      -0.736064    -1.715252     0.000000
+H       1.941565     1.457764    -0.000000
+H       0.539898     2.651213    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2cco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+propadienone, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

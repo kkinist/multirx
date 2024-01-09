@@ -1,14 +1,26 @@
+%chk=hnnh.chk
 %mem=500mw
-%nprocs=6
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 trans-diazene, B3LYP/pcseg-2
 
 0 1
-N          0.612154      -0.104001       0.000000
-N         -0.612154       0.104001       0.000000
-H          1.067855       0.828370       0.000000
-H         -1.067855      -0.828370       0.000000
+N       0.000000     0.617846     0.000000
+N      -0.000000    -0.617846     0.000000
+H       0.986734     0.920830     0.000000
+H      -0.986734    -0.920830     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hnnh.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+trans-diazene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

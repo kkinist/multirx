@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=cf2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 difluoromethylene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.5983110
-F	0.0000000	1.0295860	-0.1994370
-F	0.0000000	-1.0295860	-0.1994370
+C      -0.000000     0.000000     0.596789
+F       0.000000     1.032555    -0.198930
+F      -0.000000    -1.032555    -0.198930
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cf2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+difluoromethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

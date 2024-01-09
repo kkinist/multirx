@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hoclo2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chloric acid (HO-ClO2), B3LYP/pcseg-2
 
 0 1
-Cl         0.139607      -0.011449      -0.329675
-O         -1.491045       0.333019       0.113796
-O          0.359909      -1.331250       0.254754
-O          0.927066       1.035321       0.293795
-H         -1.605248      -0.191399       0.926966
+Cl     -0.168126     0.008965    -0.342312
+O       1.475001    -0.318738     0.055052
+O      -0.391414     1.321836     0.249750
+O      -0.926382    -1.039493     0.309526
+H       1.600511     0.138744     0.904688
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hoclo2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chloric acid (HO-ClO2), ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -1,14 +1,24 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=sio.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 silicon monoxide, B3LYP/pcseg-2
 
 0 1
-Si
-O 1 r
-
-r 1.6
+Si      0.000000     0.000000     0.549688
+O       0.000000     0.000000    -0.961954
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sio.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+silicon monoxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

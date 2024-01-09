@@ -1,13 +1,25 @@
+%chk=nco.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 isocyanato radical, B3LYP/pcseg-2
 
 0 2
-N	0.0000000	0.0000000	-1.2664250
-C	0.0000000	0.0000000	-0.0405610
-O	0.0000000	0.0000000	1.1385430
+N       0.000000     0.000000    -1.261832
+C       0.000000     0.000000    -0.040615
+O       0.000000     0.000000     1.134564
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nco.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+isocyanato radical, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

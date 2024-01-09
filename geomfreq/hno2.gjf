@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq symm=loose
+%chk=hno2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitryl hydride (H-NO2), B3LYP/pcseg-2
 
 0 1
-N          0.000000       0.336791       0.000000
-O         -1.095170      -0.190940       0.000000
-O          1.095170      -0.190940       0.000000
-H         -0.000000       1.381218       0.000000
+N       0.000000    -0.000000     0.308888
+O      -0.000000     1.092485    -0.219505
+O      -0.000000    -1.092485    -0.219505
+H       0.000000    -0.000000     1.349863
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hno2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitryl hydride (H-NO2), ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

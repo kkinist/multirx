@@ -1,17 +1,29 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt(cart,calcfc) freq
+%chk=ch3cccl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 1-chloropropyne, B3LYP/pcseg-2
 
 0 1
-C         -1.229142       0.000000       0.000000
-C         -0.026224       0.000000       0.000000
-C         -2.684170       0.000000       0.000000
-Cl         1.618189       0.000000       0.000000
-H         -3.079822       1.021402       0.000000
-H         -3.079822      -0.510701       0.884560
-H         -3.079822      -0.510701      -0.884560
+C      -0.000000     0.000000    -1.086083
+C       0.000000    -0.000000     0.113379
+C      -0.000000     0.000000    -2.540980
+Cl      0.000000    -0.000000     1.757601
+H      -0.000000     1.018420    -2.932371
+H      -0.881978    -0.509210    -2.932371
+H       0.881978    -0.509210    -2.932371
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3cccl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+1-chloropropyne, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

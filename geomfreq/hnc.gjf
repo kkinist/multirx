@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hnc.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 hydrogen isocyanide, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	-0.7396350
-N	0.0000000	0.0000000	0.4302560
-H	0.0000000	0.0000000	1.4260210
+C       0.000000     0.000000    -0.736349
+N       0.000000     0.000000     0.427663
+H       0.000000     0.000000     1.424453
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hnc.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+hydrogen isocyanide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

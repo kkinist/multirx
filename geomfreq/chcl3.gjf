@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=chcl3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chloroform, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.4566840
-H	0.0000000	0.0000000	1.5412330
-Cl	0.0000000	1.6967390	-0.0839480
-Cl	1.4694190	-0.8483690	-0.0839480
-Cl	-1.4694190	-0.8483690	-0.0839480
+C       0.000000     0.000000     0.455183
+H       0.000000     0.000000     1.535548
+Cl      0.000000     1.695776    -0.083660
+Cl      1.468585    -0.847888    -0.083660
+Cl     -1.468585    -0.847888    -0.083660
 
 @pcseg2.gbs
 
+--Link1--
+%chk=chcl3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chloroform, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

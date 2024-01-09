@@ -1,16 +1,28 @@
+%chk=ch2cch.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq 
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 propargyl, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.0000000	-1.2496440
-C	0.0000000	0.0000000	0.1147410
-C	0.0000000	0.0000000	1.3373990
-H	0.0000000	0.9298430	-1.8070390
-H	0.0000000	-0.9298430	-1.8070390
-H	0.0000000	0.0000000	2.3991050
+C      -0.000000    -0.000000    -1.248788
+C       0.000000     0.000000     0.115231
+C       0.000000     0.000000     1.335304
+H      -0.000000     0.927412    -1.803449
+H      -0.000000    -0.927412    -1.803449
+H       0.000000     0.000000     2.396415
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2cch.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+propargyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

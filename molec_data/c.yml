@@ -30,36 +30,41 @@ Energy:
   CCSD(T)-F12b: -37.788058450333
   CCSD-F12b: -37.785725772881
   HF: -37.688318470974
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 53
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Functional_groups:
   2S: '[0, 0]'
 Geometry:
   E_scf: -37.859137566
+  HF_check: -37.6883182815
+  HF_state: '?'
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 12.0
   basis_functions: 30
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: carbon atom, B3LYP/pcseg-2
   coordinates:
   - - C
     - 0.0
     - 0.0
     - 0.0
+  date: 30-Sep-2023
   e-state: '?'
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7440-44-0*0
   CASRN: 7440-44-0
   Hill: C
-  WebBook: C7440440
   formula: C
   local_label: c
   names:
-    ATcT: Carbon
-    WebBook: Carbon
     local: carbon atom
 Refdata:
   ATcT:
@@ -70,13 +75,14 @@ Refdata:
     unc: 0.045
     unit: kJ/mol
   WebBook:
-    EoF298: 716.68
-    comment: 'Review # CODATA Review value'
+  - EoF298: 716.68
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.45
     unit: kJ/mol
   spin_orbit:
+    Term: 3P
     source: CCCBDB
     unc: -1.0
     unit: cm-1

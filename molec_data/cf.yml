@@ -5,11 +5,11 @@ Electronic:
     - 0.0
     - 77.12
     degen:
-    - 1
-    - 1
+    - 2
+    - 2
     label:
-    - 2P_0.5
-    - 2P_1.5
+    - 2Pi_0.5
+    - 2Pi_1.5
     source:
     - WebBook
     - WebBook
@@ -17,19 +17,28 @@ Energy:
   CCSD(T)-F12b: -137.660321357786
   CCSD-F12b: -137.645850041346
   HF: -137.230244651144
+  Nuclear_repulsion: 22.4018625
   basis: CC-PVTZ-F12
   basis_functions: 106
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 2A
 Frequencies:
-- 1293.8668
+- 1293.8649
 Functional_groups:
   2S: '[0]'
   fluoro: '[(0, 1)]'
 Geometry:
   E_scf: -137.841058623
+  HF_check: -137.230244413
+  HF_state: '?'
+  Nuclear_repulsion: 22.4018625041
+  atom_mass:
+  - 12.0
+  - 18.9984
   basis_functions: 60
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: fluoromethylidyne, B3LYP/pcseg-2
   coordinates:
   - - C
@@ -40,21 +49,18 @@ Geometry:
     - 0.0
     - 0.0
     - 0.510236
+  date: 29-Sep-2023
   e-state: '?'
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 3889-75-6*0
   CASRN: 3889-75-6
   Hill: CF
-  WebBook: C3889756
   formula: CF
   local_label: cf
   names:
-    ATcT: Fluoromethylidyne
-    WebBook: Fluoromethylidyne
     local: fluoromethylidyne
 Refdata:
   ATcT:
@@ -64,40 +70,16 @@ Refdata:
     k_cover: 2.0
     unc: 0.12
     unit: kJ/mol
-  WebBook:
-    EoF298: 255.22
-    comment: 'Review # Data last reviewed in June, 1970'
-    k_cover: 2.0
-    source: 1998CHA1-1951
-    unc: .nan
-    unit: kJ/mol
+  WebBook: []
   spin_orbit:
+    Term: 2Pi
     source: CCCBDB
     unc: -1.0
     unit: cm-1
     value: -38.6
 Rotational:
-  A: 42.2315276
+  A: 42.231513
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 2
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -137.6576085554875
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 7.58422
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

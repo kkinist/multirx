@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=nccn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyanogen, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.6878680
-C	0.0000000	0.0000000	-0.6878680
-N	0.0000000	0.0000000	1.8459140
-N	0.0000000	0.0000000	-1.8459140
+C       0.000000     0.000000     0.687886
+C       0.000000     0.000000    -0.687886
+N       0.000000     0.000000     1.839812
+N       0.000000     0.000000    -1.839812
 
 @pcseg2.gbs
 
+--Link1--
+%chk=nccn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+cyanogen, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

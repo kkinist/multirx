@@ -1,23 +1,23 @@
 %chk=ch3o.chk
 %mem=500mw
-nprocs=4
-# b3lyp/gen opt freq CPHF(Grid=OneStep)
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep) scf=xqc
 
 methoxyl, B3LYP/pcseg-2
 
 0 2
-O      -0.011057     0.793759     0.000000
-C      -0.011057    -0.577188     0.000000
-H       1.060699    -0.867561     0.000000
-H      -0.452947    -1.009690     0.911521
-H      -0.452947    -1.009690    -0.911521
+O	-0.0112290	0.7912330	0.0000000
+C	-0.0112290	-0.5735000	0.0000000
+H	1.0583740	-0.8659140	0.0000000
+H	-0.4505840	-1.0114760	0.9090900
+H	-0.4505840	-1.0114760	-0.9090900
 
 @pcseg2.gbs
 
 --Link1--
 %chk=ch3o.chk
 %mem=500mw
-nprocs=4
+%nprocs=4
 # rohf/gen geom=check guess=check
 
 methoxyl, ROHF/cc-pVTZ-F12

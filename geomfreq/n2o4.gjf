@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=n2o4.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 dinitrogen tetroxide, B3LYP/pcseg-2
 
 0 1
-N	0.0000000	0.0000000	0.9055060
-N	0.0000000	0.0000000	-0.9055060
-O	0.0000000	1.0952790	1.3638300
-O	0.0000000	-1.0952790	1.3638300
-O	0.0000000	1.0952790	-1.3638300
-O	0.0000000	-1.0952790	-1.3638300
+N       0.000000     0.000000     0.903313
+N       0.000000     0.000000    -0.903313
+O      -0.000000     1.094042     1.359493
+O      -0.000000    -1.094042     1.359493
+O       0.000000     1.094042    -1.359493
+O      -0.000000    -1.094042    -1.359493
 
 @pcseg2.gbs
 
+--Link1--
+%chk=n2o4.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+dinitrogen tetroxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

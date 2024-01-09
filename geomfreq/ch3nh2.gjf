@@ -1,17 +1,29 @@
+%chk=ch3nh2.chk
 %mem=500mw
 %nprocs=4
-# b3lyp/gen opt freq
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methylamine, B3LYP/pcseg-2
 
 0 1
-C	0.0504530	0.7051000	0.0000000
-N	0.0504530	-0.7606310	0.0000000
-H	-0.9433770	1.1809590	0.0000000
-H	0.5920890	1.0660160	0.8784170
-H	0.5920890	1.0660160	-0.8784170
-H	-0.4483470	-1.1095860	-0.8121270
-H	-0.4483470	-1.1095860	0.8121270
+C       0.048724     0.706182     0.000000
+N       0.048724    -0.757044    -0.000000
+H      -0.944722     1.171521     0.000000
+H       0.587191     1.064886     0.877059
+H       0.587191     1.064886    -0.877059
+H      -0.431535    -1.119539    -0.812975
+H      -0.431535    -1.119539     0.812975
 
-@/home/irikura/basis/pcseg2.gbs
+@pcseg2.gbs
 
+--Link1--
+%chk=ch3nh2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methylamine, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -1,12 +1,25 @@
+%chk=co2.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 CO2, B3LYP/pcseg-2
 
 0 1
-C 0. 0. 0.
-O 0. 0. 1.3
-O 0. 0. -1.3
+C       0.000000     0.000000     0.000000
+O       0.000000     0.000000     1.159424
+O       0.000000     0.000000    -1.159424
 
 @pcseg2.gbs
 
+--Link1--
+%chk=co2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+CO2, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

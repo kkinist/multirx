@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch3ocl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 methyl hypochlorite, B3LYP/pcseg-2
 
 0 1
-O	0.0000000	0.8192110	0.0000000
-Cl	-0.8117040	-0.7243370	0.0000000
-C	1.4142830	0.6423480	0.0000000
-H	1.7959020	1.6663760	0.0000000
-H	1.7586820	0.1197900	0.8973290
-H	1.7586820	0.1197900	-0.8973290
+O       0.000000     0.801016     0.000000
+Cl     -0.810833    -0.702084     0.000000
+C       1.413260     0.618683     0.000000
+H       1.809959     1.633712     0.000000
+H       1.747317     0.090749     0.894492
+H       1.747317     0.090749    -0.894492
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch3ocl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+methyl hypochlorite, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

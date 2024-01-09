@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=cf2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 carbonyl difluoride, B3LYP/pcseg-2
 
 0 1
-O	0.0000000	0.0000000	1.3157980
-C	0.0000000	0.0000000	0.1410860
-F	0.0000000	1.0604220	-0.6318280
-F	0.0000000	-1.0604220	-0.6318280
+O       0.000000     0.000000     1.315319
+C       0.000000     0.000000     0.145378
+F      -0.000000     1.065050    -0.633045
+F      -0.000000    -1.065050    -0.633045
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cf2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+carbonyl difluoride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

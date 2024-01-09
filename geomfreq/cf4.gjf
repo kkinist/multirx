@@ -1,17 +1,27 @@
+%chk=cf4.chk
 %mem=500mw
-# b3lyp/gen opt freq
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 CF4, B3LYP/pcseg-2
 
 0 1
-C
-F 1 r
-F 1 r 2 a
-F 1 r 2 a 3 120.
-F 1 r 2 a 3 -120.
-
-r 1.4
-a 109.4712
+C       0.000000     0.000000     0.000000
+F       0.765608     0.765608     0.765608
+F      -0.765608    -0.765608     0.765608
+F      -0.765608     0.765608    -0.765608
+F       0.765608    -0.765608    -0.765608
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cf4.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+CF4, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

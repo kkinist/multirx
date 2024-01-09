@@ -1,14 +1,26 @@
+%chk=so3.chk
 %mem=500mw
-%nprocs=6
-# b3lyp/gen opt freq symm=loose
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 sulfur trioxide, B3LYP/pcseg-2
 
 0 1
-S	0.0000000	0.0000000	0.0000000
-O	0.0000000	1.4454860	0.0000000
-O	1.2518270	-0.7227430	0.0000000
-O	-1.2518270	-0.7227430	0.0000000
+S       0.000000     0.000000     0.000000
+O       0.000000     1.429277     0.000000
+O      -1.237790    -0.714639     0.000000
+O       1.237790    -0.714639     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=so3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+sulfur trioxide, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -1,35 +1,38 @@
 Charge: 0
 Electronic: {}
 Energy:
-  CCSD(T)-F12b: -154.861704263299
-  CCSD-F12b: -154.837867561659
-  HF: -154.154067961735
+  CCSD(T)-F12b: -154.861704261931
+  CCSD-F12b: -154.837867557936
+  HF: -154.154067944078
+  Nuclear_repulsion: 81.76201302
   basis: CC-PVTZ-F12
   basis_functions: 267
   nirreps: 2
-  software: Molpro Version 2021.3
+  point_group: Cs
+  software: Molpro Version 2023.2
+  state: 1A'
 Frequencies:
-- 232.8887
-- 272.5315
-- 417.8668
-- 821.0679
-- 897.0524
-- 1030.5164
-- 1099.5434
-- 1178.7025
-- 1265.3382
-- 1298.7229
-- 1406.0547
-- 1448.7448
-- 1481.5262
-- 1499.2179
-- 1526.6368
-- 2982.3548
-- 3006.4556
-- 3038.7857
-- 3104.4821
-- 3109.4385
-- 3839.6555
+- 232.8686
+- 272.5027
+- 417.8626
+- 821.0661
+- 897.0528
+- 1030.5144
+- 1099.5422
+- 1178.7036
+- 1265.3373
+- 1298.7244
+- 1406.0582
+- 1448.7473
+- 1481.5275
+- 1499.2192
+- 1526.639
+- 2982.3506
+- 3006.4495
+- 3038.7823
+- 3104.4776
+- 3109.4311
+- 3839.6663
 Functional_groups:
   C-C: '[(0, 1)]'
   alcohol: '[(1, 2, 3)]'
@@ -37,13 +40,25 @@ Functional_groups:
   methyl: '[(0, 4, 5, 6)]'
 Geometry:
   E_scf: -155.113425599
+  HF_check: -154.154067307
+  Nuclear_repulsion: 81.7620137154
+  atom_mass:
+  - 12.0
+  - 12.0
+  - 15.99491
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
+  - 1.00783
   basis_functions: 174
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: ethanol geom opt, B3LYP/pcseg-2
   coordinates:
   - - C
     - 1.176458
-    - -0.399722
+    - -0.399721
     - 0.0
   - - C
     - 0.0
@@ -51,23 +66,23 @@ Geometry:
     - 0.0
   - - O
     - -1.199837
-    - -0.221095
+    - -0.221096
     - 0.0
   - - H
     - -1.955748
-    - 0.370364
+    - 0.370363
     - 0.0
   - - H
     - 2.115389
-    - 0.155312
+    - 0.155313
     - 0.0
   - - H
-    - 1.152597
-    - -1.037863
+    - 1.152598
+    - -1.037862
     - 0.883257
   - - H
-    - 1.152597
-    - -1.037863
+    - 1.152598
+    - -1.037862
     - -0.883257
   - - H
     - 0.037553
@@ -77,23 +92,18 @@ Geometry:
     - 0.037553
     - 1.198719
     - -0.884794
-  e-state: 1A'
+  date: 29-Sep-2023
+  e-state: 1-A'
   nimag: 0
   nirreps: 2
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 64-17-5*0
   CASRN: 64-17-5
   Hill: C2H6O
-  IUPAC: ethanol
-  InChI: 1S/C2H6O/c1-2-3/h3H,2H2,1H3
-  WebBook: C64175
   formula: C2H6O
   local_label: ethanol
   names:
-    ATcT: Ethanol
-    WebBook: Ethanol
     local: ethanol
 Refdata:
   ATcT:
@@ -104,36 +114,18 @@ Refdata:
     unc: 0.22
     unit: kJ/mol
   WebBook:
-    EoF298: -234.7
-    comment: nan
+  - EoF298: -234.7
+    comment: 'method:Ccb # Value computed using «Delta»_fH_l_i_q_u_i_d° from 1965CHA/ROS374-379
+      and «Delta»_v_a_pH° value of 42.3kJ/mol from 1966WAD544.'
     k_cover: 2.0
-    source: 1965CHA/ROS374-379
-    unc: .nan
+    squib: 1965CHA/ROS374-379
+    unc: 0.3
     unit: kJ/mol
 Rotational:
-  A: 35.347236
-  B: 9.335707
-  C: 8.1341391
+  A: 35.34724
+  B: 9.33571
+  C: 8.13414
   point_group: CS
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 9
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -154.78365773191933
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 204.91114
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

@@ -4,20 +4,29 @@ Energy:
   CCSD(T)-F12b: -76.369820458023
   CCSD-F12b: -76.361088371071
   HF: -76.065049811323
+  Nuclear_repulsion: 9.1636331
   basis: CC-PVTZ-F12
   basis_functions: 89
   nirreps: 4
+  point_group: C2v
   software: Molpro Version 2021.3
+  state: 1A1
 Frequencies:
-- 1625.309
-- 3810.6951
-- 3914.2166
+- 1625.3111
+- 3810.6996
+- 3914.2189
 Functional_groups:
   hydroxyl: '[(0, 1)]'
 Geometry:
-  E_scf: -76.4672462164
+  E_scf: -76.4672462162
+  HF_check: -76.0650495355
+  Nuclear_repulsion: 9.1636330965
+  atom_mass:
+  - 15.99491
+  - 1.00783
+  - 1.00783
   basis_functions: 58
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: H2O, B3LYP/pcseg-2
   coordinates:
   - - O
@@ -32,22 +41,18 @@ Geometry:
     - -0.0
     - -0.762184
     - -0.467388
-  e-state: 1A1
+  date: 30-Sep-2023
+  e-state: 1-A1
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7732-18-5*0
   CASRN: 7732-18-5
   Hill: H2O
-  IUPAC: oxidane
-  WebBook: C7732185
   formula: H2O
   local_label: h2o
   names:
-    ATcT: Water
-    WebBook: Water
     local: water
 Refdata:
   ATcT:
@@ -58,36 +63,17 @@ Refdata:
     unc: 0.026
     unit: kJ/mol
   WebBook:
-    EoF298: -241.826
-    comment: 'Review # CODATA Review value'
+  - EoF298: -241.826
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.04
     unit: kJ/mol
 Rotational:
-  A: 827.1271
-  B: 431.60063
-  C: 283.6106403
+  A: 827.12724
+  B: 431.60096
+  C: 283.6108
   point_group: C2V
   symmetry_number: 2
   unit: GHZ
 Spin_mult: 1
-natom: 3
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -76.34894501809688
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 54.80846
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

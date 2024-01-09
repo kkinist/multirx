@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
+%chk=ccf2.chk
+%mem=500mw
+%nprocs=4
 # b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 difluorovinylidene, B3LYP/pcseg-2
 
 0 1
-C          0.000000      -0.179511       0.000000
-C          0.000000      -1.524700       0.000000
-F          1.096627       0.538217       0.000000
-F         -1.096627       0.538217       0.000000
+C       0.000000    -0.000000     0.164358
+C       0.000000    -0.000000     1.504106
+F       0.000000     1.101771    -0.556155
+F      -0.000000    -1.101771    -0.556155
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ccf2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+difluorovinylidene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

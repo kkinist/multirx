@@ -30,36 +30,41 @@ Energy:
   CCSD(T)-F12b: -288.938638427084
   CCSD-F12b: -288.935857495942
   HF: -288.854139903313
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 62
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Functional_groups:
   2S: '[0, 0]'
 Geometry:
   E_scf: -289.3994756
+  HF_check: -288.854139892
+  HF_state: '?'
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 27.97693
   basis_functions: 34
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: silicon atom, B3LYP/pcseg-2
   coordinates:
   - - Si
     - 0.0
     - 0.0
     - 0.0
+  date: 29-Sep-2023
   e-state: '?'
   nirreps: 8
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7440-21-3*0
   CASRN: 7440-21-3
   Hill: Si
-  WebBook: C7440213
   formula: Si
   local_label: si
   names:
-    ATcT: Silicon
-    WebBook: Silicon
     local: silcon atom
 Refdata:
   ATcT:
@@ -70,34 +75,16 @@ Refdata:
     unc: 0.64
     unit: kJ/mol
   WebBook:
-    EoF298: 450.0
-    comment: 'Review # CODATA Review value'
+  - EoF298: 450.0
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 8.0
     unit: kJ/mol
   spin_orbit:
+    Term: 3P
     source: CCCBDB
     unc: -1.0
     unit: cm-1
     value: -149.8
 Spin_mult: 3
-natom: 1
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -288.9393209661049
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 0.0
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

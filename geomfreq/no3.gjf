@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
+%chk=no3.chk
+%mem=500mw
+%nprocs=4
 # b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitroxyl, B3LYP/pcseg-2
 
 0 2
-N          0.000000       0.000000       0.000000
-O          0.000000       1.233063       0.000000
-O          1.067864      -0.616532       0.000000
-O         -1.067864      -0.616531       0.000000
+N       0.000000     0.000000     0.000000
+O       0.000000     1.231553    -0.000000
+O       1.066556    -0.615777    -0.000000
+O      -1.066556    -0.615777    -0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=no3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitroxyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

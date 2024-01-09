@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt=calcall 
+%chk=hccn.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyanomethylene, B3LYP/pcseg-2
 
 0 3
-C	0.0639480	-1.2142600	0.0000000
-C	0.0000000	0.0847050	0.0000000
-N	-0.1365220	1.2760300	0.0000000
-H	0.5719640	-2.1548720	0.0000000
+C       0.097415    -1.205933     0.000000
+C      -0.000000     0.083724     0.000000
+N      -0.163243     1.271397     0.000000
+H       0.558207    -2.166525     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hccn.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+cyanomethylene, ROHF/cc-pVTZ-F12
+
+0 3
+
+@ccpvtz-f12.gbs

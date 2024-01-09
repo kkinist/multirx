@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=clf5.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chlorine pentafluoride, B3LYP/pcseg-2
 
 0 1
-Cl	0.0000000	0.0000000	0.3059060
-F	0.0000000	0.0000000	-1.3181390
-F	0.0000000	1.6800660	0.1850790
-F	-1.6800660	0.0000000	0.1850790
-F	0.0000000	-1.6800660	0.1850790
-F	1.6800660	0.0000000	0.1850790
+Cl      0.000000     0.000000     0.300998
+F       0.000000     0.000000    -1.318017
+F       0.000000     1.688052     0.187366
+F      -1.688052     0.000000     0.187366
+F      -0.000000    -1.688052     0.187366
+F       1.688052    -0.000000     0.187366
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clf5.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chlorine pentafluoride, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

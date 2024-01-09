@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=c3h3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 cyclopropenyl, B3LYP/pcseg-2
 
 0 2
-C	-0.0366320	0.8887590	0.0000000
-H	0.7409140	1.6551080	0.0000000
-C	-0.0366320	-0.4184040	0.6554490
-C	-0.0366320	-0.4184040	-0.6554490
-H	-0.0407700	-0.9834070	1.5725950
-H	-0.0407700	-0.9834070	-1.5725950
+C      -0.035235     0.882901    -0.000000
+H       0.724268     1.661902    -0.000000
+C      -0.035235    -0.416567     0.653775
+C      -0.035235    -0.416567    -0.653775
+H      -0.045020    -0.980252     1.569006
+H      -0.045020    -0.980252    -1.569006
 
 @pcseg2.gbs
 
+--Link1--
+%chk=c3h3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+cyclopropenyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

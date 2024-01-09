@@ -1,17 +1,29 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ch2cchcl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chloroallene, B3LYP/pcseg-2
 
 0 1
-C         -1.227701      -0.183029       0.000000
-C         -2.415143       0.348412       0.000000
-C         -0.050160      -0.730291       0.000000
-H         -2.934144       0.581446       0.926155
-H         -2.934144       0.581446      -0.926155
-H          0.126489      -1.797815       0.000000
-Cl         1.432783       0.212154       0.000000
+C       1.142451     0.104794     0.000000
+C       2.293728    -0.497716     0.000000
+C       0.000000     0.717389     0.000000
+H       2.794229    -0.758771     0.925042
+H       2.794229    -0.758771    -0.925042
+H      -0.105266     1.791424     0.000000
+Cl     -1.535310    -0.130628     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ch2cchcl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chloroallene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

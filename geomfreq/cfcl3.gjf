@@ -1,15 +1,27 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=cfcl3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 trichlorofluoromethane, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.2499330
-F	0.0000000	0.0000000	1.5870900
-Cl	0.0000000	1.6979270	-0.3094790
-Cl	1.4704480	-0.8489640	-0.3094790
-Cl	-1.4704480	-0.8489640	-0.3094790
+C       0.000000     0.000000     0.250640
+F       0.000000     0.000000     1.590662
+Cl     -0.000000     1.689253    -0.310192
+Cl      1.462936    -0.844626    -0.310192
+Cl     -1.462936    -0.844626    -0.310192
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cfcl3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+trichlorofluoromethane, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
+%chk=cch2.chk
+%mem=500mw
+%nprocs=4
 # b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 vinylidene, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	-0.4772290
-C	0.0000000	0.0000000	0.8222840
-H	0.0000000	0.9346760	-1.0351640
-H	0.0000000	-0.9346760	-1.0351640
+C       0.000000    -0.000000    -0.474074
+C       0.000000     0.000000     0.816151
+H      -0.000000     0.935630    -1.026230
+H      -0.000000    -0.935630    -1.026230
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cch2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+vinylidene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

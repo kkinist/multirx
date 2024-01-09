@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=co3h2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 carbonic acid, B3LYP/pcseg-2
 
 0 1
-C	0.0000000	0.0000000	0.1014590
-O	0.0000000	0.0000000	1.3054710
-O	0.0000000	1.0890080	-0.6794270
-O	0.0000000	-1.0890080	-0.6794270
-H	0.0000000	1.8566390	-0.0908450
-H	0.0000000	-1.8566390	-0.0908450
+C      -0.000000    -0.000000     0.101473
+O      -0.000000    -0.000000     1.303655
+O       0.000000     1.088257    -0.678423
+O      -0.000000    -1.088257    -0.678423
+H       0.000000     1.854057    -0.091658
+H      -0.000000    -1.854057    -0.091658
 
 @pcseg2.gbs
 
+--Link1--
+%chk=co3h2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+carbonic acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

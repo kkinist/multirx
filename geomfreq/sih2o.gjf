@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=sih2o.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 silanone, B3LYP/pcseg-2
 
 0 1
-Si        -0.491824       0.000000       0.000000
-O          1.027734       0.000000       0.000000
-H         -1.329005       1.226130       0.000000
-H         -1.329005      -1.226130       0.000000
+Si      0.000000    -0.000000     0.437001
+O      -0.000000     0.000000    -1.081380
+H       0.000000     1.225746     1.266509
+H      -0.000000    -1.225746     1.266509
 
 @pcseg2.gbs
 
+--Link1--
+%chk=sih2o.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+silanone, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

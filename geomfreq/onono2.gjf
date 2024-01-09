@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=onono2.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 nitrosyl nitrate, B3LYP/pcseg-2
 
 0 1
-N    -0.979419   -0.354799   -0.035000
-O     0.000000    0.674481   -0.285000
-N     1.517297    0.086364    0.325000
-O     2.219451    0.970487   -0.050000
-O    -2.094096    0.082777    0.205000
-O    -0.595998   -1.492864   -0.125000
+N       1.037078     0.026409    -0.016961
+O      -0.213889    -0.634776    -0.144542
+N      -1.451858     0.372466     0.154903
+O      -2.408259    -0.201833    -0.018721
+O       1.950421    -0.739409     0.100613
+O       1.034659     1.227002    -0.058050
 
 @pcseg2.gbs
 
+--Link1--
+%chk=onono2.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+nitrosyl nitrate, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

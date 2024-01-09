@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
+%chk=cch.chk
+%mem=500mw
+%nprocs=4
 # b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 ethynyl, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.0000000	-0.4737810
-C	0.0000000	0.0000000	0.7299840
-H	0.0000000	0.0000000	-1.5372130
+C       0.000000     0.000000    -0.471660
+C       0.000000     0.000000     0.727512
+H       0.000000     0.000000    -1.535111
 
 @pcseg2.gbs
 
+--Link1--
+%chk=cch.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+ethynyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

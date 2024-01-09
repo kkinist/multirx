@@ -1,13 +1,25 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=chf.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 fluoromethylene, B3LYP/pcseg-2
 
 0 1
-H	-1.0308570	0.9576670	0.0000000
-C	0.0687240	0.7237410	0.0000000
-F	0.0687240	-0.5889020	0.0000000
+H      -1.028033     0.957805     0.000000
+C       0.068536     0.722409     0.000000
+F       0.068536    -0.588029     0.000000
 
 @pcseg2.gbs
 
+--Link1--
+%chk=chf.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+fluoromethylene, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

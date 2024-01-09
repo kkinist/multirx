@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=clo3.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chlorine trioxide, B3LYP/pcseg-2
 
 0 2
-Cl	0.0000000	0.0000000	0.2124710
-O	0.0000000	1.4280570	-0.1505000
-O	1.2367340	-0.7140290	-0.1505000
-O	-1.2367340	-0.7140290	-0.1505000
+Cl      0.000000     0.000000     0.216987
+O       0.000000     1.416946    -0.153699
+O       1.227111    -0.708473    -0.153699
+O      -1.227111    -0.708473    -0.153699
 
 @pcseg2.gbs
 
+--Link1--
+%chk=clo3.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chlorine trioxide, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

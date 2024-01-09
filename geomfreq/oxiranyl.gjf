@@ -1,16 +1,28 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=oxiranyl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 oxiranyl, B3LYP/pcseg-2
 
 0 2
-C         -0.853319      -0.081047       0.015832
-C          0.456182      -0.695998      -0.089888
-O          0.412137       0.663696       0.012182
-H          1.035916      -1.303235       0.603613
-H         -1.459375       0.050289      -0.877494
-H         -1.388818      -0.028243       0.962308
+C      -0.793695    -0.191767     0.017569
+C       0.590786    -0.567130    -0.157315
+O       0.331750     0.757261     0.030866
+H       1.293713    -1.110926     0.463689
+H      -1.438597    -0.108216    -0.848302
+H      -1.291659    -0.285568     0.976157
 
 @pcseg2.gbs
 
+--Link1--
+%chk=oxiranyl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+oxiranyl, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs

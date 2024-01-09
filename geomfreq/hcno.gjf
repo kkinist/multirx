@@ -1,14 +1,26 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=hcno.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 fulminic acid, B3LYP/pcseg-2
 
 0 1
-O	0.0000000	0.0000000	-1.1808610
-N	0.0000000	0.0000000	0.0195760
-C	0.0000000	0.0000000	1.1785850
-H	0.0000000	0.0000000	2.2383370
+O       0.000000     0.000000     1.179171
+N       0.000000     0.000000    -0.020627
+C       0.000000     0.000000    -1.175644
+H       0.000000     0.000000    -2.235114
 
 @pcseg2.gbs
 
+--Link1--
+%chk=hcno.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+fulminic acid, ROHF/cc-pVTZ-F12
+
+0 1
+
+@ccpvtz-f12.gbs

@@ -4,18 +4,26 @@ Energy:
   CCSD(T)-F12b: -460.37010739895
   CCSD-F12b: -460.361484868486
   HF: -460.111702491794
+  Nuclear_repulsion: 7.01924014
   basis: CC-PVTZ-F12
   basis_functions: 80
   nirreps: 4
+  point_group: C2v
   software: Molpro Version 2021.3
+  state: 1A1
 Frequencies:
-- 2934.6996
+- 2934.715
 Functional_groups:
   chloro: '[(1, 0)]'
 Geometry:
   E_scf: -460.846256702
+  HF_check: -460.11170241
+  Nuclear_repulsion: 7.0192401392
+  atom_mass:
+  - 34.96885
+  - 1.00783
   basis_functions: 48
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: HCl, B3LYP/pcseg-2
   coordinates:
   - - Cl
@@ -26,21 +34,18 @@ Geometry:
     - 0.0
     - 0.0
     - -1.210421
-  e-state: 1SG
+  date: 29-Sep-2023
+  e-state: 1-SG
   nimag: 0
   nirreps: 4
   software: Gaussian16 B.01
   unit: Angstrom
 Identifiers:
-  ATcT: 7647-01-0*0
   CASRN: 7647-01-0
   Hill: HCl
-  WebBook: C7647010
-  formula: HCl
+  formula: ClH
   local_label: hcl
   names:
-    ATcT: Hydrogen chloride
-    WebBook: Hydrogen chloride
     local: hydrogen chloride
 Refdata:
   ATcT:
@@ -51,34 +56,15 @@ Refdata:
     unc: 0.0062
     unit: kJ/mol
   WebBook:
-    EoF298: -92.31
-    comment: 'Review # CODATA Review value'
+  - EoF298: -92.31
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.1
     unit: kJ/mol
 Rotational:
-  A: 314.0883257
+  A: 314.088345
   point_group: C*V
   symmetry_number: 1
   unit: GHZ
 Spin_mult: 1
-natom: 2
-thermo:
-  Cp:
-    unit: J/K/mol
-    value: 0
-  E0:
-    unit: hartree
-    value: -460.36355552602595
-  S:
-    unit: J/K/mol
-    value: 0
-  T: 0
-  VZPE:
-    unit: kJ/mol
-    value: 17.20194
-  ZPE_scale: 0.98
-  ddH:
-    unit: kJ/mol
-    value: 0

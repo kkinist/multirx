@@ -30,22 +30,31 @@ Energy:
   CCSD(T)-F12b: -397.671067084526
   CCSD-F12b: -397.665748590569
   HF: -397.506704634123
+  Nuclear_repulsion: 0.0
   basis: CC-PVTZ-F12
   basis_functions: 62
   nirreps: 1
+  point_group: C1
   software: Molpro Version 2021.3
+  state: 3A
 Functional_groups:
   2S: '[0, 0]'
 Geometry:
   E_scf: -398.141514326
+  HF_check: -397.506704616
+  HF_state: '?'
+  Nuclear_repulsion: 0.0
+  atom_mass:
+  - 31.97207
   basis_functions: 34
-  command: b3lyp/gen opt freq
+  command: b3lyp/gen opt freq CPHF(Grid=OneStep)
   comment: sulfur atom, B3LYP/pcseg-2
   coordinates:
   - - S
     - 0.0
     - 0.0
     - 0.0
+  date: 30-Sep-2023
   e-state: '?'
   nirreps: 8
   software: Gaussian16 B.01
@@ -53,11 +62,9 @@ Geometry:
 Identifiers:
   CASRN: 7704-34-9
   Hill: S
-  WebBook: C7704349
   formula: S
   local_label: s
   names:
-    WebBook: Sulfur
     local: sulfur atom
 Refdata:
   Local:
@@ -68,13 +75,14 @@ Refdata:
     unc: 0.125
     unit: kJ/mol
   WebBook:
-    EoF298: 277.17
-    comment: 'Review # CODATA Review value'
+  - EoF298: 277.17
+    comment: 'method:Review # CODATA Review value'
     k_cover: 2.0
-    source: 1984COX/WAG1B
+    squib: 1984COX/WAG1B
     unc: 0.15
     unit: kJ/mol
   spin_orbit:
+    Term: 3P
     source: CCCBDB
     unc: -1.0
     unit: cm-1

@@ -1,12 +1,24 @@
-%mem=1000mw
-%nprocs=12
-# b3lyp/gen opt freq
+%chk=ccl.chk
+%mem=500mw
+%nprocs=4
+# b3lyp/gen opt freq CPHF(Grid=OneStep)
 
 chlormethylidyne, B3LYP/pcseg-2
 
 0 2
-C	0.0000000	0.0000000	-1.2374510
-Cl	0.0000000	0.0000000	0.4367470
+C       0.000000     0.000000    -1.228484
+Cl      0.000000     0.000000     0.433582
 
 @pcseg2.gbs
 
+--Link1--
+%chk=ccl.chk
+%mem=500mw
+%nprocs=4
+# rohf/gen geom=check guess=check
+
+chlormethylidyne, ROHF/cc-pVTZ-F12
+
+0 2
+
+@ccpvtz-f12.gbs
