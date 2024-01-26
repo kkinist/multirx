@@ -873,7 +873,7 @@ def build_reactions_DF(rxns, moldata, target, verbose=False):
 def select_expt(moldata, T=0, priority=['ATcT', 'Local', 'WebBook'], verbose=True):
     '''
     Return a dict of selected exptl thermochemistry
-        exptl[educt] = dict with keys [EoF, unc, unit, source]
+        exptl[educt] = dict with values [EoF, unc, unit, source]
             where 'unc' is the standard uncertainty (k=1)
     Args:
         moldata: dict of available data about educts
@@ -902,6 +902,9 @@ def select_expt(moldata, T=0, priority=['ATcT', 'Local', 'WebBook'], verbose=Tru
                     mdat['unc'] = x['unc'] / x['k_cover']
                 mdat['unit'] = x['unit']
                 mdat['source'] = src
+                # Nan values are not OK
+                if (np.isnan(eof) or np.isnan(x['unc'])):
+                    mdat = {}
                 break
             except KeyError:
                 # try the next, lower-priority data source
