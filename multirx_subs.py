@@ -1,7 +1,7 @@
 # Routines for multireaction thermochemistry
 # KKI July 2022
 
-import yaml, sys, os, time, glob, re
+import yaml, sys, os, time, glob, re, copy
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -132,12 +132,12 @@ def write_yaml(X, filename):
         yaml.dump(X, FY, allow_unicode=True, default_flow_style=False)
     return
 
-def write_molec_yaml(molec, mdata, verbose=True):
-    # 'molec' is label (short name) for molecule
-    # 'mdata' is dict of molecular data
+def encode_yaml(mdata, verbose=False):
     # This function handles the functional-group list of tuples
-    # Return the name of the yaml file
-    fungroups = mdata['Functional_groups']
+    # 'mdata' is dict of molecular data
+    # Return a new dict with [tupl] converted to str
+    newd = copy.deepcopy(mdata)
+    fungroups = newd['Functional_groups']
     if len(fungroups) and verbose:
         print('Encoding functional groups as text:')
     for grp in fungroups.keys():
@@ -147,8 +147,15 @@ def write_molec_yaml(molec, mdata, verbose=True):
             if verbose:
                 print(f'    {grp:<15s}  {tuplist}')
             fungroups[grp] = str(tuplist)  # convert list of tuples to string
+    return newd   
+    
+def write_molec_yaml(molec, mdata, verbose=True):
+    # 'molec' is label (short name) for molecule
+    # 'mdata' is dict of molecular data
+    # Return the name of the yaml file
+    strdata = encode_yaml(mdata)
     fout = os.sep.join([MDAT, f'{molec}.yml'])
-    write_yaml(mdata, fout)
+    write_yaml(strdata, fout)
     #with open(fout, 'w') as F:
     #    F.write(yaml.dump(mdata))
     if verbose:
