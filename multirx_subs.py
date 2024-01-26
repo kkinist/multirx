@@ -2576,8 +2576,6 @@ def gau_geom_freq_energy(FGAU):
     dfscf = gau.read_scfe(FGAU)
     dfcrd = gau.read_std_orient(FGAU)
     dfstate = gau.read_electronic_state(FGAU)
-    print('>>dfstate')
-    chem.displayDF(dfstate)
     dfbfn = gau.read_nbfn_DF(FGAU)
     dfspinmul = gau.read_charge_mult(FGAU)
     openshell = (dfspinmul.Mult > 1).any()
@@ -2930,7 +2928,7 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         data['ATcT_version'] = atct_version.replace('p', '.', 1)
         refdata['ATcT'] = data
         
-    # Select one value from the (possibly multiple) WebBook values for EoF
+    # Select and store only one value from the (possibly multiple) WebBook values for EoF
     data = {}
     if verbose:
         print(f'WebBook has {len(wbmol.get("thermo", ""))} values for EoF298')
@@ -2974,7 +2972,10 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         data = wbthermo[iumax]
     else:
         data = wbthermo
-    refdata['WebBook'] = data
+    if len(data) == 0:
+        refdata['WebBook'] = {}
+    else:
+        refdata['WebBook'] = data[0]
     
     # look for local reference thermochemical data for molecule
     if molec in reflocal.keys():
