@@ -2972,10 +2972,12 @@ def generate_molec_yaml(molec=None, atct=None, webbook=None, soc=None, dflabel=N
         data = wbthermo[iumax]
     else:
         data = wbthermo
-    if len(data) == 0:
-        refdata['WebBook'] = {}
-    else:
-        refdata['WebBook'] = data[0]
+    if isinstance(data, list):
+        # convert to dict
+        if len(data) == 0:
+            refdata['WebBook'] = {}
+        else:
+            refdata['WebBook'] = data[0]
     
     # look for local reference thermochemical data for molecule
     if molec in reflocal.keys():
