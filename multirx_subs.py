@@ -12,7 +12,7 @@ import sympy
 from sympy.parsing.sympy_parser import parse_expr
 import itertools 
 import multiprocessing
-#sys.path.insert(0, '../../karlib')
+sys.path.insert(0, '../../karlib')
 sys.path.insert(0, '../../atomic_SOC')
 import chem_subs as chem
 import molpro_subs as mpr
